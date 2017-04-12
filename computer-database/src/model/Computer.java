@@ -1,6 +1,6 @@
 package model;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 /**
  * @author ckeita
@@ -10,8 +10,8 @@ public class Computer {
 	
 	private int id;
 	private String name;
-	private Timestamp introduced;
-	private Timestamp discontinued;
+	private LocalDateTime introduced;
+	private LocalDateTime discontinued;
 	private int company_id;
 	
 	/**
@@ -41,25 +41,25 @@ public class Computer {
 	/**
 	 * @return the introduced
 	 */
-	public Timestamp getIntroduced() {
+	public LocalDateTime getIntroduced() {
 		return introduced;
 	}
 	/**
 	 * @param introduced the introduced to set
 	 */
-	public void setIntroduced(Timestamp introduced) {
+	public void setIntroduced(LocalDateTime introduced) {
 		this.introduced = introduced;
 	}
 	/**
 	 * @return the discontinued
 	 */
-	public Timestamp getDiscontinued() {
+	public LocalDateTime getDiscontinued() {
 		return discontinued;
 	}
 	/**
 	 * @param discontinued the discontinued to set
 	 */
-	public void setDiscontinued(Timestamp discontinued) {
+	public void setDiscontinued(LocalDateTime discontinued) {
 		this.discontinued = discontinued;
 	}
 	/**
