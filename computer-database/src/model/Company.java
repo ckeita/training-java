@@ -10,6 +10,17 @@ public class Company {
 	private int id;
 	private String name;
 	
+	public Company () {
+		
+	}
+	/**
+	 * @param id
+	 * @param name
+	 */
+	public Company(int id, String name) {
+		this.id = id;
+		this.name = name;
+	}
 	/**
 	 * @return the id
 	 */

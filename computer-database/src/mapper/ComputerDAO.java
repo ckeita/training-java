@@ -81,6 +81,52 @@ public class ComputerDAO {
 	}
 	
 	/**
+	 * @param offset: Offset of the first row
+	 * @param max: number of rows
+	 * @return
+	 */
+	public List<Computer> findByLimit (int offset, int max) {
+		
+		try {
+			//create a list of computer
+			List<Computer> list = new ArrayList<Computer>();
+			//Create the sql query to find computers
+			String query = "SELECT * FROM computer LIMIT ?,?";
+			
+			//Initialize a preparedStatement
+			PreparedStatement pstm = (PreparedStatement) Persistence.getInstance().getConnection().prepareStatement(query);
+			//Set the parameters of preparedStatement
+			pstm.setInt(1,offset); 
+			pstm.setInt(2,max); 
+			//Execute the query
+			ResultSet result = pstm.executeQuery();
+			
+			//Fetching data from database
+			while(result.next()) {
+				//create a new computer
+				Computer comp = new Computer();
+				//initialize the computer fields by data from database
+				comp.setId(result.getInt(1));
+				comp.setName(result.getString(2));
+				if (result.getString(3) != null) {
+					comp.setIntroduced(LocalDateTime.parse(result.getString(3), Util.FORMATTER));
+				}
+				if (result.getString(4) != null) {				
+					comp.setDiscontinued(LocalDateTime.parse(result.getString(4), Util.FORMATTER));
+				}
+				comp.setCompany_id(result.getInt(5));
+				
+				//Add new computer to the list
+				list.add(comp);
+			}
+			return list;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	/**
 	 * @return the list all computers
 	 * @throws SQLException 
 	 */
@@ -144,7 +190,11 @@ public class ComputerDAO {
 			}else {
 				pstm.setNull(3, Types.TIMESTAMP);
 			}
-			pstm.setInt(4, comp.getCompany_id());
+			if (comp.getCompany_id() == 0) {
+				pstm.setNull(4, Types.BIGINT);
+			} else {
+				pstm.setInt(4, comp.getCompany_id());
+			}
 			//Execute the query
 			System.out.println(pstm.executeUpdate());
 		} catch (MySQLIntegrityConstraintViolationException ex) {

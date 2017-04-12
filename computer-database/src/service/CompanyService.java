@@ -34,4 +34,13 @@ public class CompanyService {
 	public List<Company> findAllCompanies () {
 		return companyDAO.findAll();
 	}
+	
+	/**
+	 * @param offset: Offset of the first row
+	 * @param max: number of rows
+	 * @return the list of computers
+	 */
+	public List<Company>  findCompaniesByLimit (int offset, int max) {
+		return companyDAO.findByLimit(offset, max);
+	}
 }

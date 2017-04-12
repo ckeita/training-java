@@ -5,10 +5,14 @@ package mapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import com.mysql.jdbc.PreparedStatement;
+
+import Utils.Util;
 import model.Company;
+import model.Computer;
 import persistence.Persistence;
 
 /**
@@ -43,6 +47,45 @@ public class CompanyDAO {
 				comp.setName(result.getString(2));
 			}
 			return comp;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	/**
+	 * @param offset: Offset of the first row
+	 * @param max: number of rows
+	 * @return
+	 */
+	public List<Company> findByLimit (int offset, int max) {
+			
+		try {
+			//create a list of computer
+			List<Company> list = new ArrayList<>();
+			//Create the sql query to find companies
+			String query = "SELECT * FROM company LIMIT ?,?";
+			
+			//Initialize a preparedStatement
+			PreparedStatement pstm = (PreparedStatement) Persistence.getInstance().getConnection().prepareStatement(query);
+			//Set the parameters of preparedStatement
+			pstm.setInt(1,offset); 
+			pstm.setInt(2,max); 
+			//Execute the query
+			ResultSet result = pstm.executeQuery();
+			
+			//Fetching data from database
+			while(result.next()) {
+				//create a new company
+				Company comp = new Company();
+				//initialize the company fields by data from database
+				comp.setId(result.getInt(1));
+				comp.setName(result.getString(2));
+				
+				//Add new company to the list
+				list.add(comp);
+			}
+			return list;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

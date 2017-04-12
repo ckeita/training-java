@@ -14,6 +14,24 @@ public class Computer {
 	private LocalDateTime discontinued;
 	private int company_id;
 	
+	public Computer () {
+		
+	}
+	
+	/**
+	 * @param id
+	 * @param name
+	 * @param introduced
+	 * @param discontinued
+	 * @param company_id
+	 */
+	public Computer(int id, String name, LocalDateTime introduced, LocalDateTime discontinued, int company_id) {
+		this.id = id;
+		this.name = name;
+		this.introduced = introduced;
+		this.discontinued = discontinued;
+		this.company_id = company_id;
+	}
 	/**
 	 * @return the id
 	 */

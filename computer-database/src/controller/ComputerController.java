@@ -30,14 +30,18 @@ public class ComputerController {
 			String choice; 
 			
 			System.out.println("****Computer Management****");
-			System.out.println("0 => Show all companies\n1 => Back to main menu");
+			System.out.println("0 => Show all computers\n1 => Create new Computer\n2 => Back to main menu");
 			choice = input.next();
 			switch (choice) {
 			case "0":
 				//List all computers
-				computerUI.viewComputer((new ComputerService()).findAllComputers());
+				computerUI.viewComputer();
 				break;
 			case "1":
+				//Create new Computer
+				computerUI.createComputer();
+				break;
+			case "2":
 				//Set 'back' to go back to main menu
 				back = true;
 				break;

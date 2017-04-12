@@ -36,7 +36,7 @@ public class CompanyController {
 			switch (choice) {
 			case "0":
 				//List all companies
-				companyUI.viewCompany((new CompanyService()).findAllCompanies());
+				companyUI.viewCompany();
 				break;
 			case "1":
 				//Set 'back' to go back to main menu

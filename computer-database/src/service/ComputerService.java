@@ -28,6 +28,15 @@ public class ComputerService {
 	}
 	
 	/**
+	 * @param offset: Offset of the first row
+	 * @param max: number of rows
+	 * @return the list of computers
+	 */
+	public List<Computer>  findComputersByLimit (int offset, int max) {
+		return computerDAO.findByLimit(offset, max);
+	}
+	
+	/**
 	 * @return the list all computers
 	 */
 	public List<Computer> findAllComputers () {
