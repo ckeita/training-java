@@ -3,6 +3,8 @@
  */
 package ui;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
@@ -54,7 +56,7 @@ public class ComputerUI {
 	public void createComputer () {
 		Computer comp = new Computer();
 		Scanner input = new Scanner(System.in);
-		boolean checkDates = false, parsableDate = false;
+		boolean checkDates = false, parsableDate = false, intrValid = false, discValid = false;
 		String name, intrDate=null, discDate=null, cmpId;
 		System.out.println("***Create new Computer***");
 		
@@ -66,29 +68,62 @@ public class ComputerUI {
 		comp.setName(name);
 		
 		while(!checkDates) {
-			while (!parsableDate) {
-				try {
-					System.out.println("Set introduced date");
-					intrDate = input.nextLine();
-					if (intrDate.length() != 0) {
-						comp.setIntroduced(LocalDateTime.parse(intrDate,Util.FORMATTER));;
-					}		
-					System.out.println("Set discontinued date");
-					discDate = input.nextLine();
-					if (discDate.length() != 0) {
-						comp.setDiscontinued(LocalDateTime.parse(discDate,Util.FORMATTER));
+//			while (!parsableDate) {
+//				try {
+//					System.out.println("Set introduced date");
+//					intrDate = input.nextLine();
+//					if (intrDate.length() != 0) {
+//						comp.setIntroduced(LocalDateTime.parse(intrDate,Util.FORMATTER));;
+//					}		
+//					System.out.println("Set discontinued date");
+//					discDate = input.nextLine();
+//					if (discDate.length() != 0) {
+//						comp.setDiscontinued(LocalDateTime.parse(discDate,Util.FORMATTER));
+//					}
+//					
+//					if (intrDate.length() == 0 || discDate.length() == 0) {
+//						checkDates = true;
+//					} else if (intrDate.length() != 0 && discDate.length() != 0) {
+//						checkDates = checkDates(comp.getIntroduced(), comp.getDiscontinued());
+//					}
+//				} catch (DateTimeParseException ex) {
+//					System.out.println("Set a valid date: the format is yyyy-MM-dd HH:mm:ss");
+//				}
+//			}
+			while (!intrValid) {
+				System.out.println("Set introduced date");
+				intrDate = input.nextLine();
+				if (intrDate.length() != 0) {
+					if (isValidDate(intrDate)) {
+						comp.setIntroduced(LocalDateTime.parse(intrDate,Util.IN_FORMATTER));
+						intrValid = true;
+					} else {
+						intrValid = false;
 					}
-					
-					if (intrDate.length() == 0 || discDate.length() == 0) {
-						checkDates = true;
-					} else if (intrDate.length() != 0 && discDate.length() != 0) {
-						checkDates = checkDates(comp.getIntroduced(), comp.getDiscontinued());
-					}
-				} catch (DateTimeParseException ex) {
-					System.out.println("Set a valid date: the format is yyyy-MM-dd HH:mm:ss");
+				} else {
+					intrValid = true;
 				}
-				System.out.println("hhhh");
-				parsableDate = true;
+			} 
+			
+			while (!discValid); {
+				System.out.println("Set discontinued date");
+				discDate = input.nextLine();
+				if (discDate.length() != 0) {
+					if (isValidDate(discDate)) {
+						comp.setDiscontinued(LocalDateTime.parse(discDate,Util.IN_FORMATTER));
+						discValid = true;
+					} else {
+						discValid = false;
+					}	
+				} else {
+					discValid = true;
+				}
+			} 
+			
+			if (intrDate.length() == 0 || discDate.length() == 0) {
+				checkDates = true;
+			} else if (intrDate.length() != 0 && discDate.length() != 0) {
+				checkDates = checkDates(comp.getIntroduced(), comp.getDiscontinued());
 			}
 		} 
 		System.out.println("Set company ID");
@@ -100,6 +135,7 @@ public class ComputerUI {
 		//computerService.createComputer(comp);
 	}
 	
+	
 	private boolean checkDates (LocalDateTime intrDate, LocalDateTime discDate) {
 		if (intrDate != null && discDate != null) {
 			if (!intrDate.isBefore(discDate)) {
@@ -108,5 +144,17 @@ public class ComputerUI {
 			return intrDate.isBefore(discDate);
 		}
 		return false;
+	}
+
+	boolean isValidDate(String input) {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	     try {
+	          format.parse(input);
+	          return true;
+	     }
+	     catch(ParseException e){
+	    	 System.out.println("Set a valid date: the format is yyyy-MM-dd HH:mm:ss");
+	         return false;
+	     }
 	}
 }
