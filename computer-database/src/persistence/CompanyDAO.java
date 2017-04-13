@@ -1,7 +1,7 @@
 /**
  * 
  */
-package mapper;
+package persistence;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,7 +17,6 @@ import com.mysql.jdbc.PreparedStatement;
 import Utils.Util;
 import model.Company;
 import model.Computer;
-import persistence.Persistence;
 
 /**
  * @author ckeita
@@ -63,11 +62,9 @@ public class CompanyDAO {
 	 * @param max: number of rows
 	 * @return
 	 */
-	public List<Company> findByLimit (int offset, int max) {
+	public ResultSet findByLimit (int offset, int max) {
 			
 		try {
-			//create a list of computer
-			List<Company> list = new ArrayList<>();
 			//Create the sql query to find companies
 			String query = "SELECT * FROM company LIMIT ?,?";
 			
@@ -79,19 +76,8 @@ public class CompanyDAO {
 			//Execute the query
 			ResultSet result = pstm.executeQuery();
 			
-			//Fetching data from database
-			while(result.next()) {
-				//create a new company
-				Company comp = new Company();
-				//initialize the company fields by data from database
-				comp.setId(result.getInt(1));
-				comp.setName(result.getString(2));
-				
-				//Add new company to the list
-				list.add(comp);
-			}
-			logger.info("Selected: "+list.size()+" elements from database");
-			return list;
+			logger.info("Selected: "+result.getFetchSize()+" elements from database");
+			return result;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -99,14 +85,12 @@ public class CompanyDAO {
 	}
 	
 	/**
-	 * @return list: the list of companies
+	 * @return result: the resultSet of all companies
 	 * @throws SQLException 
 	 */
-	public List<Company> findAll() {
+	public ResultSet findAll() {
 		
-		try {
-			//create a list of Company
-			List<Company> list = new ArrayList<Company>();
+		try {	
 			//Create the sql query to find company
 			String query = "SELECT * FROM company";
 			
@@ -114,16 +98,9 @@ public class CompanyDAO {
 			PreparedStatement pstm = (PreparedStatement) Persistence.getInstance().getConnection().prepareStatement(query);
 			//Execute the query
 			ResultSet result = pstm.executeQuery();
-			
-			//Fetching data from database
-			while(result.next()) {
-				Company comp = new Company();
-				comp.setId(result.getInt(1));
-				comp.setName(result.getString(2));
-				list.add(comp);
-			}
-			logger.info("Selected: "+list.size()+" elements from database");
-			return list;
+		
+			logger.info("Selected: "+result.getFetchSize()+" elements from database");
+			return result;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

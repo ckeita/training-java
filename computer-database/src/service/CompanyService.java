@@ -5,8 +5,9 @@ package service;
 
 import java.util.List;
 
-import mapper.CompanyDAO;
+import mapper.CompanyMapper;
 import model.Company;
+import persistence.CompanyDAO;
 
 /**
  * @author ckeita
@@ -15,9 +16,11 @@ import model.Company;
 public class CompanyService {
 	
 	CompanyDAO companyDAO;
+	CompanyMapper companyMapper;
 	
 	public CompanyService () {
 		companyDAO = new CompanyDAO();
+		companyMapper = new CompanyMapper();
 	}
 	
 	/**
@@ -31,8 +34,8 @@ public class CompanyService {
 	/**
 	 * @return the list af all companies
 	 */
-	public List<Company> findAllCompanies () {
-		return companyDAO.findAll();
+	public List<String> findAllCompanies () {
+		return companyMapper.getAll();
 	}
 	
 	/**
@@ -40,7 +43,7 @@ public class CompanyService {
 	 * @param max: number of rows
 	 * @return the list of computers
 	 */
-	public List<Company>  findCompaniesByLimit (int offset, int max) {
-		return companyDAO.findByLimit(offset, max);
+	public List<String>  findCompaniesByLimit (int offset, int max) {
+		return companyMapper.getByPage(offset, max);
 	}
 }

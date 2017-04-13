@@ -4,8 +4,9 @@
 package service;
 
 import java.util.List;
-import mapper.ComputerDAO;
+
 import model.Computer;
+import persistence.ComputerDAO;
 
 /**
  * @author ckeita

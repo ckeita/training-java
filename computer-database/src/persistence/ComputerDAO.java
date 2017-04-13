@@ -1,7 +1,7 @@
 /**
  * 
  */
-package mapper;
+package persistence;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,7 +17,6 @@ import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import Utils.Util;
 import model.Computer;
-import persistence.Persistence;
 
 /**
  * @author ckeita

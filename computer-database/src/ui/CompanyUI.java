@@ -23,7 +23,7 @@ public class CompanyUI {
 	public void viewCompany () {
 		System.out.println("****List of Companies****");
 		//To check instance of list elements
-		List<Company> list = new ArrayList<>();
+		List<String> list = new ArrayList<>();
 		boolean finish = false;
 		String choice;
 		Scanner input = new Scanner(System.in);
