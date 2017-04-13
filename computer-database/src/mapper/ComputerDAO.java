@@ -9,6 +9,10 @@ import java.sql.Types;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import Utils.Util;
@@ -20,6 +24,7 @@ import persistence.Persistence;
  *
  */
 public class ComputerDAO {
+	private static Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
 	
 	/**
 	 * @param the id of the computer
@@ -73,6 +78,7 @@ public class ComputerDAO {
 				}
 				return comp_str;
 			}
+			logger.info("Found element from database");
 			return comp.toString();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -119,6 +125,7 @@ public class ComputerDAO {
 				//Add new computer to the list
 				list.add(comp);
 			}
+			logger.info("Selected: "+list.size()+" elements from database");
 			return list;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -161,6 +168,7 @@ public class ComputerDAO {
 				//Add new computer to the list
 				list.add(comp);
 			}
+			logger.info("Selected: "+list.size()+" elements from database");
 			return list;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -196,9 +204,13 @@ public class ComputerDAO {
 				pstm.setInt(4, comp.getCompany_id());
 			}
 			//Execute the query
-			System.out.println(pstm.executeUpdate());
+			if (pstm.executeUpdate() == 0) {
+				logger.info("Computer Insert: Impossible to insert");
+			} else {
+				logger.info("Computer Insert: Inserted successfully");
+			}
 		} catch (MySQLIntegrityConstraintViolationException ex) {
-			System.out.println("Impossible to insert: The company is not found in database");
+			logger.info("Impossible to insert: The company is not found in database");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -218,7 +230,11 @@ public class ComputerDAO {
 			//Set the parameter name through the preparedStatement
 			pstm.setInt(1, comp.getId());
 			//Execute the query
-			System.out.println(pstm.executeUpdate());
+			if (pstm.executeUpdate() == 0) {
+				logger.info("Impossible to delete: The computer is not found");
+			} else {
+				logger.info("Deleted successfully");
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -247,12 +263,20 @@ public class ComputerDAO {
 			}else {
 				pstm.setNull(3, Types.TIMESTAMP);
 			}
-			pstm.setInt(4, comp.getCompany_id());
+			if (comp.getCompany_id() != 0) {
+				pstm.setInt(4, comp.getCompany_id());
+			} else {
+				pstm.setNull(4, Types.BIGINT);
+			}			
 			pstm.setInt(5, comp.getId());
 			//Execute the query
-			System.out.println(pstm.executeUpdate());
+			if (pstm.executeUpdate() == 0) {
+				logger.info("Impossible to update: The computer is not found");
+			} else {
+				logger.info("Updated successfully");
+			}
 		} catch (MySQLIntegrityConstraintViolationException ex) {
-			System.out.println("Impossible to update: The company is not found in database");
+			logger.info("Impossible to update: The company is not found in the database");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

@@ -36,11 +36,16 @@ public class Page {
 		this.instanceOfComputer = instanceOfComputer;
 	}
 	
+	/**
+	 * Process the paging
+	 */
 	public void paging () {
+		
 		Scanner input = new Scanner(System.in);
 		ComputerService computerService = new ComputerService();
 		CompanyService companyService = new CompanyService();
 		String choice; 
+		boolean fromNext = false;
 		while (!finish) {
 			System.out.println("0 => Next>> "+numberOfRow+" Elements\n1 => Back<<\n2 => Return to previous menu");
 			choice = input.next();
@@ -55,9 +60,11 @@ public class Page {
 				}
 				//Set offset to next page
 				offset += numberOfRow;
+				
 				if (list.size() != 0) {
 					//show the current page
 					printElements();
+					fromNext = true;
 				} else { //the end is reached
 					System.out.println("*You reach the end*\n");
 				}
@@ -65,8 +72,18 @@ public class Page {
 			case "1":
 				/**List previous numberOfRow Computers*/
 				//Set offset to previous page
-				offset -= numberOfRow;
 				if(offset > 0) {
+					if (offset - numberOfRow >= 0) {
+						//offset -= numberOfRow;
+						if (fromNext) {
+							offset -= 2*numberOfRow;
+							fromNext = false;
+						} else {
+							offset -= numberOfRow;
+						}
+					} else {
+						offset = 0;
+					}
 					if (instanceOfComputer) {
 						list = computerService.findComputersByLimit(offset, numberOfRow);
 					} else {
@@ -76,7 +93,6 @@ public class Page {
 					printElements();
 				} else { //the end is reached
 					System.out.println("*You reach the top*\n");
-					offset += numberOfRow;
 				}
 				break;
 			case "2":

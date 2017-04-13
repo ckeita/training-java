@@ -8,6 +8,10 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.mysql.jdbc.PreparedStatement;
 
 import Utils.Util;
@@ -20,7 +24,7 @@ import persistence.Persistence;
  *
  */
 public class CompanyDAO {
-	
+	private static Logger logger = LoggerFactory.getLogger(CompanyDAO.class);
 	/**
 	 * @param id: the id of company to find
 	 * @return the company founded
@@ -46,6 +50,7 @@ public class CompanyDAO {
 				comp.setId(result.getInt(1));
 				comp.setName(result.getString(2));
 			}
+			logger.info("Selected one element from database");
 			return comp;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -85,6 +90,7 @@ public class CompanyDAO {
 				//Add new company to the list
 				list.add(comp);
 			}
+			logger.info("Selected: "+list.size()+" elements from database");
 			return list;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -116,6 +122,7 @@ public class CompanyDAO {
 				comp.setName(result.getString(2));
 				list.add(comp);
 			}
+			logger.info("Selected: "+list.size()+" elements from database");
 			return list;
 		} catch (SQLException e) {
 			e.printStackTrace();

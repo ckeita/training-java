@@ -6,7 +6,6 @@ package ui;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -51,92 +50,128 @@ public class ComputerUI {
 	}
 	
 	/**
-	 * Create a new computer 
+	 * Create or Update a new computer 
 	 */
-	public void createComputer () {
+	public void createOrUpdateComputer (boolean update) {
 		Computer comp = new Computer();
 		Scanner input = new Scanner(System.in);
-		boolean checkDates = false, parsableDate = false, intrValid = false, discValid = false;
-		String name, intrDate=null, discDate=null, cmpId;
-		System.out.println("***Create new Computer***");
+		boolean checkDates = false, intrValid = false, discValid = false;
+		String name, intrDate=null, discDate=null, cmpId, computId = null;
+		
+		//Choose if we create or update
+		if (update) {
+			System.out.println("***Update Computer***");
+			do {
+				System.out.println("Choose The id of the computer to update");
+				computId = input.nextLine();
+			} while (computId.length() == 0);
+			comp.setId(Integer.parseInt(computId));
+		} else {
+			System.out.println("***Create new Computer***");
+		}
 		
 		//Make sure that the name is set because it's mandatory
 		do{
 			System.out.println("Set name");
 			name = input.nextLine();
-		} while (name.length() == 0);
+		} while (!update && name.length() == 0);
 		comp.setName(name);
 		
+		//Handle the dates properly
 		while(!checkDates) {
-//			while (!parsableDate) {
-//				try {
-//					System.out.println("Set introduced date");
-//					intrDate = input.nextLine();
-//					if (intrDate.length() != 0) {
-//						comp.setIntroduced(LocalDateTime.parse(intrDate,Util.FORMATTER));;
-//					}		
-//					System.out.println("Set discontinued date");
-//					discDate = input.nextLine();
-//					if (discDate.length() != 0) {
-//						comp.setDiscontinued(LocalDateTime.parse(discDate,Util.FORMATTER));
-//					}
-//					
-//					if (intrDate.length() == 0 || discDate.length() == 0) {
-//						checkDates = true;
-//					} else if (intrDate.length() != 0 && discDate.length() != 0) {
-//						checkDates = checkDates(comp.getIntroduced(), comp.getDiscontinued());
-//					}
-//				} catch (DateTimeParseException ex) {
-//					System.out.println("Set a valid date: the format is yyyy-MM-dd HH:mm:ss");
-//				}
-//			}
+			
+			/**
+			 * Check if the introduced date
+			 * is well set and formated 
+			 */
 			while (!intrValid) {
 				System.out.println("Set introduced date");
 				intrDate = input.nextLine();
-				if (intrDate.length() != 0) {
-					if (isValidDate(intrDate)) {
+				if (intrDate.length() != 0) {//introduced date is set
+					if (isValidDate(intrDate)) {//introduced date is valid
 						comp.setIntroduced(LocalDateTime.parse(intrDate,Util.IN_FORMATTER));
 						intrValid = true;
-					} else {
+					} else {//introduced date is not valid
 						intrValid = false;
 					}
-				} else {
+				} else {//introduced date is not set
 					intrValid = true;
 				}
 			} 
-			
-			while (!discValid); {
+			/**
+			 * Check if the discontinued date
+			 * is well set and formated 
+			 */
+			while (!discValid) {
 				System.out.println("Set discontinued date");
 				discDate = input.nextLine();
-				if (discDate.length() != 0) {
-					if (isValidDate(discDate)) {
+				if (discDate.length() != 0) {//discontinued date is set
+					if (isValidDate(discDate)) {//discontinued date is valid
 						comp.setDiscontinued(LocalDateTime.parse(discDate,Util.IN_FORMATTER));
 						discValid = true;
-					} else {
+					} else {//discontinued date is not valid
 						discValid = false;
 					}	
-				} else {
+				} else {//discontinued date is not set
 					discValid = true;
 				}
 			} 
 			
-			if (intrDate.length() == 0 || discDate.length() == 0) {
+			
+			if (intrDate.length() == 0 || discDate.length() == 0) {//Accept the dates are not set
 				checkDates = true;
-			} else if (intrDate.length() != 0 && discDate.length() != 0) {
+			} else if (intrDate.length() != 0 && discDate.length() != 0) {//Check if the dates valid if they are set
 				checkDates = checkDates(comp.getIntroduced(), comp.getDiscontinued());
+				if (!checkDates) {//Do not Accept the dates if they are not valid
+					intrValid = false;
+					discValid = false;
+				}
 			}
 		} 
 		System.out.println("Set company ID");
 		cmpId = input.nextLine();
 		if (cmpId.length() != 0) {
 			comp.setCompany_id(Integer.parseInt(cmpId));
-		}		
-		//Computer comp = new Computer(0, name, LocalDateTime.parse(intrDate,Util.FORMATTER), LocalDateTime.parse(discDate,Util.FORMATTER), Integer.parseInt(cmpId));
-		//computerService.createComputer(comp);
+		}	
+		
+		//Process Update or Delete
+		if (update) {
+			computerService.updateComputer(comp);
+		} else {
+			computerService.createComputer(comp);
+		}
+	}
+	
+	/**
+	 * Delete a computer
+	 */
+	public void deleteComputer () {
+		
+		Scanner input = new Scanner(System.in);
+		String computId;
+		Computer comp = new Computer();
+		
+		System.out.println("***Delete Computer***");
+		
+		do {
+			System.out.println("Choose The id of the computer to delete");
+			computId = input.nextLine();
+		} while (computId.length() == 0);
+		comp.setId(Integer.parseInt(computId));
+		
+		//Process delete
+		computerService.deleteComputer(comp);
 	}
 	
 	
+	/**
+	 * @param intrDate: The introduced date
+	 * @param discDate: the discontinued date
+	 * @return 'true' if discontinued date is greater than 
+	 * 		   The introduced date and 'false' if not
+	 */
 	private boolean checkDates (LocalDateTime intrDate, LocalDateTime discDate) {
+		
 		if (intrDate != null && discDate != null) {
 			if (!intrDate.isBefore(discDate)) {
 				System.out.println("The discontinued date must be greater than the introduced date");
@@ -146,14 +181,18 @@ public class ComputerUI {
 		return false;
 	}
 
-	boolean isValidDate(String input) {
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	/**
+	 * @param input: the string of the date to check the format
+	 * @return 'true' if it's well formatted and 'false' if not
+	 */
+	private boolean isValidDate(String input) {
+		SimpleDateFormat format = new SimpleDateFormat(Util.IN_FORMAT);
 	     try {
 	          format.parse(input);
 	          return true;
 	     }
 	     catch(ParseException e){
-	    	 System.out.println("Set a valid date: the format is yyyy-MM-dd HH:mm:ss");
+	    	 System.out.println("Set a valid date: the format is "+Util.IN_FORMAT);
 	         return false;
 	     }
 	}
