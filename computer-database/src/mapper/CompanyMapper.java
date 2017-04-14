@@ -22,9 +22,9 @@ public class CompanyMapper {
 	/**
 	 * @return the list of companies
 	 */
-	public List<String> getAll () {
+	public List<String> getByPage (int offset, int max) {
 		
-		ResultSet resultSet = companyDAO.findAll();
+		ResultSet resultSet = companyDAO.findByLimit(offset, max);
 		List<String> list = new ArrayList<>();
 		
 		try {
@@ -39,14 +39,6 @@ public class CompanyMapper {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
-	}
-	
-	/**
-	 * @return the list of limited companies
-	 */
-	public List<String> getByPage (int offset, int max) {
-		
 		return null;
 	}
 }

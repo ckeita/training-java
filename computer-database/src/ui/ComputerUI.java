@@ -26,7 +26,7 @@ public class ComputerUI {
 	 * @param list: the list of all computers
 	 */
 	public void viewComputer () {
-		List<Computer> list = new ArrayList<>();
+		List<String> list = new ArrayList<>();
 		//To check instance of list elements
 		boolean finish = false;
 		String choice;
@@ -163,6 +163,19 @@ public class ComputerUI {
 		computerService.deleteComputer(comp);
 	}
 	
+	public void showComputerDetails () {
+		String computId;
+		Scanner input = new Scanner(System.in);
+		
+		System.out.println("***Show Computer Details***");
+		
+		do {
+			System.out.println("Choose The id of the computer to show");
+			computId = input.nextLine();
+		} while (computId.length() == 0);
+		
+		System.out.println(computerService.findComputerById(Integer.parseInt(computId)));
+	}
 	
 	/**
 	 * @param intrDate: The introduced date

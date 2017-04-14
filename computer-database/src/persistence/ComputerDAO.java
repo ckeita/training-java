@@ -30,10 +30,10 @@ public class ComputerDAO {
 	 * @return the string of the object
 	 * @throws SQLException 
 	 */
-	public String findById(int id) {
+	public ResultSet findById(int id) {
 		try {
 			//create a new Computer
-			Computer comp = new Computer();
+			int company_id = 0;
 			//Create the sql query to find Computer by id
 			String query = "SELECT * FROM computer WHERE id=?";
 			
@@ -43,22 +43,14 @@ public class ComputerDAO {
 			pstm.setInt(1,id); 
 			//Execute the query
 			ResultSet result = pstm.executeQuery();
-			
 			//Fetching data from database
-			while(result.next()) {
-				comp.setId(result.getInt(1));
-				comp.setName(result.getString(2));
-				if(result.getString(3) != null) {
-					comp.setDiscontinued(LocalDateTime.parse(result.getString(3), Util.FORMATTER));
-				}
-				if (result.getString(4) != null) {
-					comp.setDiscontinued(LocalDateTime.parse(result.getString(4), Util.FORMATTER));
-				}
-				comp.setCompany_id(result.getInt(5));
+			while (result.next()) {
+				company_id = result.getInt(5);
 			}
-			
+			//reset the ResultSet
+			result.beforeFirst();
 			//Find company name if it's defined
-			if (comp.getCompany_id() != 0) {
+			if (company_id != 0) {
 				//Create the sql query to find Computer by id
 				query = "SELECT * FROM computer LEFT JOIN company ON computer.company_id=company.id WHERE computer.id=?";
 				//Initialize a preparedStatement
@@ -68,17 +60,10 @@ public class ComputerDAO {
 				//pstm.setInt(2,comp.getCompany_id()); 
 				//Execute the query
 				result = pstm.executeQuery();
-				
-				String comp_str = null;
-				//Fetching data from database
-				//System.out.println(result.si);
-				while (result.next()) {
-					comp_str = comp.toString()+" "+result.getString(7);
-				}
-				return comp_str;
+				return result;
 			}
 			logger.info("Found element from database");
-			return comp.toString();
+			return result;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -90,11 +75,11 @@ public class ComputerDAO {
 	 * @param max: number of rows
 	 * @return
 	 */
-	public List<Computer> findByLimit (int offset, int max) {
+	public ResultSet findByLimit (int offset, int max) {
 		
 		try {
 			//create a list of computer
-			List<Computer> list = new ArrayList<Computer>();
+			
 			//Create the sql query to find computers
 			String query = "SELECT * FROM computer LIMIT ?,?";
 			
@@ -106,69 +91,8 @@ public class ComputerDAO {
 			//Execute the query
 			ResultSet result = pstm.executeQuery();
 			
-			//Fetching data from database
-			while(result.next()) {
-				//create a new computer
-				Computer comp = new Computer();
-				//initialize the computer fields by data from database
-				comp.setId(result.getInt(1));
-				comp.setName(result.getString(2));
-				if (result.getString(3) != null) {
-					comp.setIntroduced(LocalDateTime.parse(result.getString(3), Util.FORMATTER));
-				}
-				if (result.getString(4) != null) {				
-					comp.setDiscontinued(LocalDateTime.parse(result.getString(4), Util.FORMATTER));
-				}
-				comp.setCompany_id(result.getInt(5));
-				
-				//Add new computer to the list
-				list.add(comp);
-			}
-			logger.info("Selected: "+list.size()+" elements from database");
-			return list;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	/**
-	 * @return the list all computers
-	 * @throws SQLException 
-	 */
-	public List<Computer> findAll() {
-		
-		try {
-			//create a list of computer
-			List<Computer> list = new ArrayList<Computer>();
-			//Create the sql query to find computer
-			String query = "SELECT * FROM computer";
-			
-			//Initialize a preparedStatement
-			PreparedStatement pstm = (PreparedStatement) Persistence.getInstance().getConnection().prepareStatement(query);
-			//Execute the query
-			ResultSet result = pstm.executeQuery();
-			
-			//Fetching data from database
-			while(result.next()) {
-				//create a new computer
-				Computer comp = new Computer();
-				//initialize the computer fields by data from database
-				comp.setId(result.getInt(1));
-				comp.setName(result.getString(2));
-				if (result.getString(3) != null) {
-					comp.setIntroduced(LocalDateTime.parse(result.getString(3), Util.FORMATTER));
-				}
-				if (result.getString(4) != null) {				
-					comp.setDiscontinued(LocalDateTime.parse(result.getString(4), Util.FORMATTER));
-				}
-				comp.setCompany_id(result.getInt(5));
-				
-				//Add new computer to the list
-				list.add(comp);
-			}
-			logger.info("Selected: "+list.size()+" elements from database");
-			return list;
+			logger.info("Selected: "+result.getFetchSize()+" elements from database");
+			return result;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

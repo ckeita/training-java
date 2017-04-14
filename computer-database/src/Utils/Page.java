@@ -6,6 +6,8 @@ package Utils;
 import java.util.List;
 import java.util.Scanner;
 
+import mapper.CompanyMapper;
+import mapper.ComputerMapper;
 import model.Company;
 import model.Computer;
 import service.CompanyService;
@@ -29,7 +31,7 @@ public class Page {
 	 * @param numberOfRow: the number of elements by one page
 	 * @param list: the list of element page
 	 */
-	public Page(int numberOfRow, List<?> list, boolean instanceOfComputer) {
+	public Page(int numberOfRow, List<String> list, boolean instanceOfComputer) {
 		this.numberOfRow = numberOfRow;
 		this.list = list;
 		finish = false;
@@ -42,8 +44,8 @@ public class Page {
 	public void paging () {
 		
 		Scanner input = new Scanner(System.in);
-		ComputerService computerService = new ComputerService();
-		CompanyService companyService = new CompanyService();
+		CompanyMapper companyMapper = new CompanyMapper();
+		ComputerMapper computerMapper = new ComputerMapper();
 		String choice; 
 		boolean fromNext = false;
 		while (!finish) {
@@ -54,9 +56,9 @@ public class Page {
 				/**List next numberOfRow Computers*/
 				//check instance of elements in list
 				if (instanceOfComputer) {
-					list = computerService.findComputersByLimit(offset, numberOfRow);
+					list = computerMapper.getByPage(offset, numberOfRow);
 				} else {
-					list = companyService.findCompaniesByLimit(offset, numberOfRow);
+					list = companyMapper.getByPage(offset, numberOfRow);
 				}
 				//Set offset to next page
 				offset += numberOfRow;
@@ -85,9 +87,9 @@ public class Page {
 						offset = 0;
 					}
 					if (instanceOfComputer) {
-						list = computerService.findComputersByLimit(offset, numberOfRow);
+						list = computerMapper.getByPage(offset, numberOfRow);
 					} else {
-						list = companyService.findCompaniesByLimit(offset, numberOfRow);
+						list = companyMapper.getByPage(offset, numberOfRow);
 					}
 					//show the current page
 					printElements();

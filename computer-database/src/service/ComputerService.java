@@ -5,6 +5,7 @@ package service;
 
 import java.util.List;
 
+import mapper.ComputerMapper;
 import model.Computer;
 import persistence.ComputerDAO;
 
@@ -15,9 +16,11 @@ import persistence.ComputerDAO;
 public class ComputerService {
 	
 	private ComputerDAO computerDAO;
+	private ComputerMapper computerMapper;
 	
 	public ComputerService () {
 		computerDAO = new ComputerDAO();
+		computerMapper = new ComputerMapper();
 	}
 	
 	/**
@@ -25,7 +28,7 @@ public class ComputerService {
 	 * @return the string of the object
 	 */
 	public String  findComputerById (int id) {
-		return computerDAO.findById(id);
+		return computerMapper.getById(id);
 	}
 	
 	/**
@@ -33,15 +36,8 @@ public class ComputerService {
 	 * @param max: number of rows
 	 * @return the list of computers
 	 */
-	public List<Computer>  findComputersByLimit (int offset, int max) {
-		return computerDAO.findByLimit(offset, max);
-	}
-	
-	/**
-	 * @return the list all computers
-	 */
-	public List<Computer> findAllComputers () {
-		return computerDAO.findAll();
+	public List<String>  findComputersByLimit (int offset, int max) {
+		return computerMapper.getByPage(offset, max);
 	}
 	
 	/**

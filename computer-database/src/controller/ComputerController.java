@@ -29,7 +29,7 @@ public class ComputerController {
 			String choice; 
 			
 			System.out.println("****Computer Management****");
-			System.out.println("0 => Show All Computers\n1 => Create Computer\n2 => Update Computer\n3 => Delete Computer\n4 => Back to Main Menu");
+			System.out.println("0 => Show All Computers\n1 => Show Computer details\n2 => Create Computer\n3 => Update Computer\n4 => Delete Computer\n5 => Back to Main Menu");
 			choice = input.next();
 			switch (choice) {
 			case "0":
@@ -37,18 +37,22 @@ public class ComputerController {
 				computerUI.viewComputer();
 				break;
 			case "1":
+				//Show Computer details
+				computerUI.showComputerDetails();
+				break;
+			case "2":
 				//Create new Computer
 				computerUI.createOrUpdateComputer(false);
 				break;
-			case "2":
+			case "3":
 				//Update a Computer
 				computerUI.createOrUpdateComputer(true);
 				break;
-			case "3":
+			case "4":
 				//Delete a Computer
 				computerUI.deleteComputer();
 				break;
-			case "4":
+			case "5":
 				//Set 'back' to go back to main menu
 				back = true;
 				break;

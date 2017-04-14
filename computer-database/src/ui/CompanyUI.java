@@ -16,8 +16,7 @@ import model.Company;
  */
 public class CompanyUI {
 	
-	public void viewCompany (Company cmp) {
-		
+	public void viewCompany (Company cmp) {	
 	}
 	
 	public void viewCompany () {

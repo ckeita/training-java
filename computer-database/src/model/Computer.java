@@ -100,4 +100,9 @@ public class Computer {
 		return "Computer [id=" + id + ", name=" + name + ", introduced=" + introduced + ", discontinued=" + discontinued
 				+ ", company_id=" + company_id + "]";
 	}
+	
+	public String toString(String company_name) {
+		return "Computer [id=" + id + ", name=" + name + ", introduced=" + introduced + ", discontinued=" + discontinued
+				+ ", company_id=" + company_id + ", company_name=" + company_name + "]";
+	}
 }
