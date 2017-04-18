@@ -56,7 +56,6 @@ public class AddComputerServlet extends HttpServlet {
 	    										.discontinued(LocalDateTime.parse(discontinued+Util.STR_HOUR, Util.IN_FORMATTER))
 	    										.company_id(Integer.parseInt(company))
 	    										.build());
-		//response.getWriter().print("Not Added bitch");
 	}
 
 }
