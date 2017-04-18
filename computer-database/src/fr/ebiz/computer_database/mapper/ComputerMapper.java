@@ -18,29 +18,36 @@ import fr.ebiz.computer_database.model.ComputerDTO;
  */
 public class ComputerMapper {
 
+	private int id;
+    private String name;
+    private LocalDateTime introduced;
+    private LocalDateTime discontinued;
+    private int company_id;
     /**
      * @param id: the id of the computer
      * @return the string of the object
      */
     public ComputerDTO getById(ResultSet resultSet) {
-        Computer comp = new Computer();
-
+    	
         try {
             while (resultSet.next()) {
-                comp.setId(resultSet.getInt(1));
-                comp.setName(resultSet.getString(2));
+                id = resultSet.getInt(1);
+                name = resultSet.getString(2);
                 if (resultSet.getString(3) != null) {
-                    comp.setDiscontinued(LocalDateTime.parse(resultSet.getString(3), Util.FORMATTER));
+                    introduced = LocalDateTime.parse(resultSet.getString(3), Util.FORMATTER);
                 }
                 if (resultSet.getString(4) != null) {
-                    comp.setDiscontinued(LocalDateTime.parse(resultSet.getString(4), Util.FORMATTER));
+                    discontinued = LocalDateTime.parse(resultSet.getString(4), Util.FORMATTER);
                 }
-                comp.setCompany_id(resultSet.getInt(5));
+                company_id = resultSet.getInt(5);
                 
-                return new ComputerDTO(comp);
+                return new ComputerDTO(new Computer.ComputerBuilder(name)
+						.introduced(LocalDateTime.parse(introduced+Util.STR_HOUR, Util.IN_FORMATTER))
+						.discontinued(LocalDateTime.parse(discontinued+Util.STR_HOUR, Util.IN_FORMATTER))
+						.company_id(company_id)
+						.build());
             }
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return null;
@@ -56,25 +63,26 @@ public class ComputerMapper {
 
         try {
             while (resultSet.next()) {
-                // create a new computer
-                Computer comp = new Computer();
                 // initialize the computer fields by data from database
-                comp.setId(resultSet.getInt(1));
-                comp.setName(resultSet.getString(2));
+                id = resultSet.getInt(1);
+                name = resultSet.getString(2);
                 if (resultSet.getString(3) != null) {
-                    comp.setIntroduced(LocalDateTime.parse(resultSet.getString(3), Util.FORMATTER));
+                    introduced = LocalDateTime.parse(resultSet.getString(3), Util.FORMATTER);
                 }
                 if (resultSet.getString(4) != null) {
-                    comp.setDiscontinued(LocalDateTime.parse(resultSet.getString(4), Util.FORMATTER));
+                    discontinued = LocalDateTime.parse(resultSet.getString(4), Util.FORMATTER);
                 }
-                comp.setCompany_id(resultSet.getInt(5));
+                company_id = resultSet.getInt(5);
 
                 // Add new computer to the list
-                list.add(new ComputerDTO(comp));
+                list.add(new ComputerDTO(new Computer.ComputerBuilder(name)
+						.introduced(LocalDateTime.parse(introduced+Util.STR_HOUR, Util.IN_FORMATTER))
+						.discontinued(LocalDateTime.parse(discontinued+Util.STR_HOUR, Util.IN_FORMATTER))
+						.company_id(company_id)
+						.build()));
             }
             return list;
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return null;

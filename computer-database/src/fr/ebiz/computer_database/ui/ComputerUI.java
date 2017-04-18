@@ -22,7 +22,11 @@ import fr.ebiz.computer_database.service.ComputerService;
 public class ComputerUI {
 
     ComputerService computerService = new ComputerService();
-
+    private int id;
+    private String name;
+    private LocalDateTime introduced;
+    private LocalDateTime discontinued;
+    private int company_id;
     /**
      * @param list: the list of all computers
      */
@@ -55,7 +59,7 @@ public class ComputerUI {
      * Create or Update a new computer
      */
     public void createOrUpdateComputer(boolean update) {
-        Computer comp = new Computer();
+        //Computer comp = new Computer();
         Scanner input = new Scanner(System.in);
         boolean checkDates = false, intrValid = false, discValid = false;
         String name, intrDate = null, discDate = null, cmpId, computId = null;
@@ -67,7 +71,7 @@ public class ComputerUI {
                 System.out.println("Choose The id of the computer to update");
                 computId = input.nextLine();
             } while (computId.length() == 0);
-            comp.setId(Integer.parseInt(computId));
+            this.id = Integer.parseInt(computId);
         } else {
             System.out.println("***Create new Computer***");
         }
@@ -77,7 +81,7 @@ public class ComputerUI {
             System.out.println("Set name");
             name = input.nextLine();
         } while (!update && name.length() == 0);
-        comp.setName(name);
+        this.name = name;
 
         // Handle the dates properly
         while (!checkDates) {
@@ -90,7 +94,7 @@ public class ComputerUI {
                 intrDate = input.nextLine();
                 if (intrDate.length() != 0) {// introduced date is set
                     if (isValidDate(intrDate)) {// introduced date is valid
-                        comp.setIntroduced(LocalDateTime.parse(intrDate, Util.IN_FORMATTER));
+                        this.introduced = LocalDateTime.parse(intrDate, Util.IN_FORMATTER);
                         intrValid = true;
                     } else {// introduced date is not valid
                         intrValid = false;
@@ -107,7 +111,7 @@ public class ComputerUI {
                 discDate = input.nextLine();
                 if (discDate.length() != 0) {// discontinued date is set
                     if (isValidDate(discDate)) {// discontinued date is valid
-                        comp.setDiscontinued(LocalDateTime.parse(discDate, Util.IN_FORMATTER));
+                        this.discontinued = LocalDateTime.parse(discDate, Util.IN_FORMATTER);
                         discValid = true;
                     } else {// discontinued date is not valid
                         discValid = false;
@@ -130,7 +134,7 @@ public class ComputerUI {
                                                                           // they
                                                                           // are
                                                                           // set
-                checkDates = checkDates(comp.getIntroduced(), comp.getDiscontinued());
+                checkDates = checkDates(introduced, discontinued);
                 if (!checkDates) {// Do not Accept the dates if they are not
                                   // valid
                     intrValid = false;
@@ -141,14 +145,23 @@ public class ComputerUI {
         System.out.println("Set company ID");
         cmpId = input.nextLine();
         if (cmpId.length() != 0) {
-            comp.setCompany_id(Integer.parseInt(cmpId));
+            company_id = Integer.parseInt(cmpId);
         }
 
         // Process Update or Delete
         if (update) {
-            computerService.updateComputer(comp);
+            computerService.updateComputer(new Computer.ComputerBuilder(name)
+            											.introduced(introduced)
+            											.discontinued(discontinued)
+            											.company_id(company_id)
+            											.id(id)
+            											.build());
         } else {
-            computerService.createComputer(comp);
+            computerService.createComputer(new Computer.ComputerBuilder(name)
+							.introduced(introduced)
+							.discontinued(discontinued)
+							.company_id(company_id)
+							.build());
         }
     }
 
@@ -159,7 +172,6 @@ public class ComputerUI {
 
         Scanner input = new Scanner(System.in);
         String computId;
-        Computer comp = new Computer();
 
         System.out.println("***Delete Computer***");
 
@@ -167,10 +179,12 @@ public class ComputerUI {
             System.out.println("Choose The id of the computer to delete");
             computId = input.nextLine();
         } while (computId.length() == 0);
-        comp.setId(Integer.parseInt(computId));
+        this.id = Integer.parseInt(computId);
 
         // Process delete
-        computerService.deleteComputer(comp);
+        computerService.deleteComputer(new Computer.ComputerBuilder()
+													.id(id)
+													.build());
     }
 
     public void showComputerDetails() {

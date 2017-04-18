@@ -46,19 +46,17 @@ public class AddComputerServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-	    Computer comp = new Computer();
 	    name = request.getParameter(Util.NAME);
 	    introduced = request.getParameter(Util.INTRODUCED);
 	    discontinued = request.getParameter(Util.DISCONTINUED);
 	    company = request.getParameter(Util.COMPANY_ID);
-	    System.out.println(introduced);
-	    comp.setName(name);
-	    comp.setIntroduced(LocalDateTime.parse(introduced+Util.STR_HOUR, Util.IN_FORMATTER));
-	    comp.setDiscontinued(LocalDateTime.parse(discontinued+Util.STR_HOUR, Util.IN_FORMATTER));
-	    comp.setCompany_id(Integer.parseInt(company));
-	    computerService.createComputer(comp);
-		response.getWriter().print("Not Added bitch");
+
+	    computerService.createComputer(new Computer.ComputerBuilder(name)
+	    										.introduced(LocalDateTime.parse(introduced+Util.STR_HOUR, Util.IN_FORMATTER))
+	    										.discontinued(LocalDateTime.parse(discontinued+Util.STR_HOUR, Util.IN_FORMATTER))
+	    										.company_id(Integer.parseInt(company))
+	    										.build());
+		//response.getWriter().print("Not Added bitch");
 	}
 
 }

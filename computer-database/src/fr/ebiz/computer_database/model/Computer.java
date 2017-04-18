@@ -78,9 +78,12 @@ public class Computer {
         private LocalDateTime discontinued;
         private int company_id;
         
-        public ComputerBuilder name(String name) {
+        public ComputerBuilder () {
+        	
+        }
+        
+        public ComputerBuilder (String name) {
             this.name = name;
-            return this;
         }
         
         public ComputerBuilder introduced(LocalDateTime introduced) {
@@ -96,6 +99,11 @@ public class Computer {
         public ComputerBuilder company_id(int id) {
             this.company_id = id;
             return this;
+        }
+        
+        public ComputerBuilder id(int id) {
+        	this.id = id;
+        	return this;
         }
         
         public Computer build () {
