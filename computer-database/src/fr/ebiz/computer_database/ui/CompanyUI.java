@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 import fr.ebiz.computer_database.Utils.Page;
 import fr.ebiz.computer_database.model.Company;
+import fr.ebiz.computer_database.model.CompanyDTO;
 
 /**
  * @author ebiz
@@ -21,7 +22,7 @@ public class CompanyUI {
     public void viewCompany() {
         System.out.println("****List of Companies****");
         // To check instance of list elements
-        List<String> list = new ArrayList<>();
+        List<CompanyDTO> list = new ArrayList<>();
         boolean finish = false;
         String choice;
         Scanner input = new Scanner(System.in);

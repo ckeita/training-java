@@ -13,6 +13,7 @@ import java.util.Scanner;
 import fr.ebiz.computer_database.Utils.Page;
 import fr.ebiz.computer_database.Utils.Util;
 import fr.ebiz.computer_database.model.Computer;
+import fr.ebiz.computer_database.model.ComputerDTO;
 import fr.ebiz.computer_database.service.ComputerService;
 
 /**
@@ -26,7 +27,7 @@ public class ComputerUI {
      * @param list: the list of all computers
      */
     public void viewComputer() {
-        List<String> list = new ArrayList<>();
+        List<ComputerDTO> list = new ArrayList<>();
         // To check instance of list elements
         boolean finish = false;
         String choice;

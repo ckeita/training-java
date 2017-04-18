@@ -4,7 +4,6 @@
 package fr.ebiz.computer_database.mapper;
 
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -12,26 +11,18 @@ import java.util.List;
 
 import fr.ebiz.computer_database.Utils.Util;
 import fr.ebiz.computer_database.model.Computer;
-import fr.ebiz.computer_database.persistence.ComputerDAO;
+import fr.ebiz.computer_database.model.ComputerDTO;
 
 /**
  * @author ckeita
  */
 public class ComputerMapper {
 
-    private ComputerDAO computerDAO;
-
-    public ComputerMapper() {
-        computerDAO = new ComputerDAO();
-    }
-
     /**
      * @param id: the id of the computer
-     * @return tthe string of the object
+     * @return the string of the object
      */
-    public String getById(int id) {
-
-        ResultSet resultSet = computerDAO.findById(id);
+    public ComputerDTO getById(ResultSet resultSet) {
         Computer comp = new Computer();
 
         try {
@@ -45,12 +36,8 @@ public class ComputerMapper {
                     comp.setDiscontinued(LocalDateTime.parse(resultSet.getString(4), Util.FORMATTER));
                 }
                 comp.setCompany_id(resultSet.getInt(5));
-                ResultSetMetaData rsm = resultSet.getMetaData();
-                if (rsm.getColumnCount() > 5) {// Join was did
-                    return comp.toString(resultSet.getString(7));
-                } else {
-                    return comp.toString();
-                }
+                
+                return new ComputerDTO(comp);
             }
         } catch (SQLException e) {
             // TODO Auto-generated catch block
@@ -64,10 +51,8 @@ public class ComputerMapper {
      * @param max: number of rows
      * @return
      */
-    public List<String> getByPage(int offset, int max) {
-
-        ResultSet resultSet = computerDAO.findByLimit(offset, max);
-        List<String> list = new ArrayList<>();
+    public List<ComputerDTO> getByPage(ResultSet resultSet) {
+        List<ComputerDTO> list = new ArrayList<>();
 
         try {
             while (resultSet.next()) {
@@ -85,7 +70,7 @@ public class ComputerMapper {
                 comp.setCompany_id(resultSet.getInt(5));
 
                 // Add new computer to the list
-                list.add(comp.toString());
+                list.add(new ComputerDTO(comp));
             }
             return list;
         } catch (SQLException e) {

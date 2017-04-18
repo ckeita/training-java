@@ -17,7 +17,29 @@ import com.mysql.jdbc.PreparedStatement;
 public class CompanyDAO {
 
     private static Logger logger = LoggerFactory.getLogger(CompanyDAO.class);
+    
+    /**
+     * @param the id of the Company
+     * @return the ResultSet of the query
+     */
+    public ResultSet findById(int id) {
+        try {
+            // Create the sql query to find Computer by id
+            String query = "SELECT * FROM company WHERE id=?";
 
+            // Initialize a preparedStatement
+            PreparedStatement pstm = (PreparedStatement) Persistence.getInstance().getConnection()
+                    .prepareStatement(query);
+            // Set the parameter id through the preparedStatement
+            pstm.setInt(1, id);
+            // Execute the query
+            ResultSet result = pstm.executeQuery();
+            return result;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     /**
      * @param offset: Offset of the first row
      * @param max: number of rows

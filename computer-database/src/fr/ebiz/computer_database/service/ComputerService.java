@@ -3,10 +3,12 @@
  */
 package fr.ebiz.computer_database.service;
 
+import java.sql.ResultSet;
 import java.util.List;
 
 import fr.ebiz.computer_database.mapper.ComputerMapper;
 import fr.ebiz.computer_database.model.Computer;
+import fr.ebiz.computer_database.model.ComputerDTO;
 import fr.ebiz.computer_database.persistence.ComputerDAO;
 
 /**
@@ -26,8 +28,9 @@ public class ComputerService {
      * @param the id of the computer
      * @return the string of the object
      */
-    public String findComputerById(int id) {
-        return computerMapper.getById(id);
+    public ComputerDTO findComputerById(int id) {
+        ResultSet resultSet = computerDAO.findById(id);
+        return computerMapper.getById(resultSet);
     }
 
     /**
@@ -35,8 +38,9 @@ public class ComputerService {
      * @param max: number of rows
      * @return the list of computers
      */
-    public List<String> findComputersByLimit(int offset, int max) {
-        return computerMapper.getByPage(offset, max);
+    public List<ComputerDTO> findComputersByLimit(int offset, int max) {
+        ResultSet resultSet = computerDAO.findByLimit(offset, max);
+        return computerMapper.getByPage(resultSet);
     }
 
     /**

@@ -173,8 +173,7 @@ public class ComputerDAO {
             String query = "UPDATE computer SET name=?, introduced=?, discontinued=?, company_id=? WHERE id=?";
 
             // Initialize a preparedStatement
-            PreparedStatement pstm = (PreparedStatement) Persistence.getInstance().getConnection()
-                    .prepareStatement(query);
+            PreparedStatement pstm = (PreparedStatement) Persistence.getInstance().getConnection().prepareStatement(query);
             // Set the parameter name through the preparedStatement
             pstm.setString(1, comp.getName());
             if (comp.getIntroduced() != null) {
