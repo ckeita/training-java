@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 
+import fr.ebiz.computer_database.exceptions.DAOException;
 import fr.ebiz.computer_database.model.Computer;
 
 /**
@@ -24,9 +25,10 @@ public class ComputerDAO {
     /**
      * @param the id of the computer
      * @return the string of the object
+     * @throws DAOException 
      * @throws SQLException
      */
-    public ResultSet findById(int id) {
+    public ResultSet findById(int id) throws DAOException {
         try {
             // create a new Computer
             int company_id = 0;
@@ -40,39 +42,20 @@ public class ComputerDAO {
             pstm.setInt(1, id);
             // Execute the query
             ResultSet result = pstm.executeQuery();
-            // Fetching data from database
-            while (result.next()) {
-                company_id = result.getInt(5);
-            }
-            // reset the ResultSet
-            result.beforeFirst();
-            // Find company name if it's defined
-            if (company_id != 0) {
-                // Create the sql query to find Computer by id
-                query = "SELECT * FROM computer LEFT JOIN company ON computer.company_id=company.id WHERE computer.id=?";
-                // Initialize a preparedStatement
-                pstm = (PreparedStatement) Persistence.getInstance().getConnection().prepareStatement(query);
-                // Set the parameter id through the preparedStatement
-                pstm.setInt(1, id);
-                // pstm.setInt(2,comp.getCompany_id());
-                // Execute the query
-                result = pstm.executeQuery();
-                return result;
-            }
             logger.info("Found element from database");
             return result;
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DAOException("Impossible to communicate with database"); 
         }
-        return null;
     }
 
     /**
      * @param offset: Offset of the first row
      * @param max: number of rows
      * @return
+     * @throws DAOException 
      */
-    public ResultSet findByLimit(int offset, int max) {
+    public ResultSet findByLimit(int offset, int max) throws DAOException {
 
         try {
             // create a list of computer
@@ -92,16 +75,16 @@ public class ComputerDAO {
             logger.info("Selected: " + result.getFetchSize() + " elements from database");
             return result;
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DAOException("Impossible to communicate with database"); 
         }
-        return null;
     }
 
     /**
      * @param comp: the computer to put on database
+     * @throws DAOException 
      * @throws SQLException
      */
-    public void create(Computer comp) {
+    public void create(Computer comp) throws DAOException {
 
         try {
             String query = "INSERT INTO computer(name,introduced,discontinued,company_id) VALUES(?,?,?,?)";
@@ -134,7 +117,7 @@ public class ComputerDAO {
         } catch (MySQLIntegrityConstraintViolationException ex) {
             logger.info("Impossible to insert: The company is not found in database");
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DAOException("Impossible to communicate with database"); 
         }
 
     }

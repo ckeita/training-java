@@ -5,6 +5,7 @@ package fr.ebiz.computer_database.controller;
 
 import java.util.Scanner;
 
+import fr.ebiz.computer_database.exceptions.DAOException;
 import fr.ebiz.computer_database.ui.CompanyUI;
 
 /**
@@ -22,8 +23,9 @@ public class CompanyController {
 
     /**
      * Dispatch towards the good view
+     * @throws DAOException 
      */
-    public void dispatchView() {
+    public void dispatchView() throws DAOException {
         while (!back) {
             Scanner input = new Scanner(System.in);
             String choice;

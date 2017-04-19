@@ -11,27 +11,42 @@ import fr.ebiz.computer_database.service.CompanyService;
  */
 public class ComputerDTO {
     
+    private String id;
     private String name;
-    private String introducedDate;
-    private String discontinuedDate;
+    private String introduced;
+    private String discontinued;
     private String company;
     
     public ComputerDTO (Computer comp) {
-        
-        name = comp.getName();
+        this.id = Integer.toString(comp.getId());
+        this.name = comp.getName();
         if (comp.getIntroduced() != null) {
-            introducedDate = comp.getIntroduced().toString();
+            this.introduced = comp.getIntroduced().toString();
         }
         
         if (comp.getDiscontinued() != null) {
-            discontinuedDate = comp.getDiscontinued().toString();
+            this.discontinued = comp.getDiscontinued().toString();
         }
         
         if (comp.getCompany_id() != 0) {
             CompanyService compServ = new CompanyService();
             CompanyDTO compDTO = compServ.findCompanyById(comp.getCompany_id());
-            company = compDTO.getName();
+            this.company = compDTO.getName();
         }
+    }
+
+    /**
+     * @return the id
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(String id) {
+        this.id = id;
     }
 
     /**
@@ -49,31 +64,31 @@ public class ComputerDTO {
     }
 
     /**
-     * @return the introducedDate
+     * @return the introduced
      */
-    public String getIntroducedDate() {
-        return introducedDate;
+    public String getintroduced() {
+        return introduced;
     }
 
     /**
-     * @param introducedDate the introducedDate to set
+     * @param introduced the introduced to set
      */
-    public void setIntroducedDate(String introducedDate) {
-        this.introducedDate = introducedDate;
+    public void setintroduced(String introduced) {
+        this.introduced = introduced;
     }
 
     /**
-     * @return the discontinuedDate
+     * @return the discontinued
      */
-    public String getDiscontinuedDate() {
-        return discontinuedDate;
+    public String getdiscontinued() {
+        return discontinued;
     }
 
     /**
-     * @param discontinuedDate the discontinuedDate to set
+     * @param discontinued the discontinued to set
      */
-    public void setDiscontinuedDate(String discontinuedDate) {
-        this.discontinuedDate = discontinuedDate;
+    public void setdiscontinued(String discontinued) {
+        this.discontinued = discontinued;
     }
 
     /**
@@ -95,8 +110,8 @@ public class ComputerDTO {
      */
     @Override
     public String toString() {
-        return "ComputerDTO [name=" + name + ", introducedDate=" + introducedDate + ", discontinuedDate="
-                + discontinuedDate + ", company=" + company + "]";
+        return "ComputerDTO [name=" + name + ", introduced=" + introduced + ", discontinued="
+                + discontinued + ", company=" + company + "]";
     }
     
     

@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import fr.ebiz.computer_database.Utils.Page;
+import fr.ebiz.computer_database.exceptions.DAOException;
 import fr.ebiz.computer_database.model.Company;
 import fr.ebiz.computer_database.model.CompanyDTO;
 
@@ -19,7 +20,7 @@ public class CompanyUI {
     public void viewCompany(Company cmp) {
     }
 
-    public void viewCompany() {
+    public void viewCompany() throws DAOException {
         System.out.println("****List of Companies****");
         // To check instance of list elements
         List<CompanyDTO> list = new ArrayList<>();

@@ -5,13 +5,14 @@ package fr.ebiz.computer_database.ui;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 import fr.ebiz.computer_database.Utils.Page;
 import fr.ebiz.computer_database.Utils.Util;
+import fr.ebiz.computer_database.exceptions.DAOException;
 import fr.ebiz.computer_database.model.Computer;
 import fr.ebiz.computer_database.model.ComputerDTO;
 import fr.ebiz.computer_database.service.ComputerService;
@@ -24,13 +25,14 @@ public class ComputerUI {
     ComputerService computerService = new ComputerService();
     private int id;
     private String name;
-    private LocalDateTime introduced;
-    private LocalDateTime discontinued;
+    private LocalDate introduced;
+    private LocalDate discontinued;
     private int company_id;
     /**
      * @param list: the list of all computers
+     * @throws DAOException 
      */
-    public void viewComputer() {
+    public void viewComputer() throws DAOException {
         List<ComputerDTO> list = new ArrayList<>();
         // To check instance of list elements
         boolean finish = false;
@@ -57,8 +59,9 @@ public class ComputerUI {
 
     /**
      * Create or Update a new computer
+     * @throws DAOException 
      */
-    public void createOrUpdateComputer(boolean update) {
+    public void createOrUpdateComputer(boolean update) throws DAOException {
         //Computer comp = new Computer();
         Scanner input = new Scanner(System.in);
         boolean checkDates = false, intrValid = false, discValid = false;
@@ -94,7 +97,7 @@ public class ComputerUI {
                 intrDate = input.nextLine();
                 if (intrDate.length() != 0) {// introduced date is set
                     if (isValidDate(intrDate)) {// introduced date is valid
-                        this.introduced = LocalDateTime.parse(intrDate, Util.IN_FORMATTER);
+                        this.introduced = LocalDate.parse(intrDate, Util.TO_FORMATTER);
                         intrValid = true;
                     } else {// introduced date is not valid
                         intrValid = false;
@@ -111,7 +114,7 @@ public class ComputerUI {
                 discDate = input.nextLine();
                 if (discDate.length() != 0) {// discontinued date is set
                     if (isValidDate(discDate)) {// discontinued date is valid
-                        this.discontinued = LocalDateTime.parse(discDate, Util.IN_FORMATTER);
+                        this.discontinued = LocalDate.parse(discDate, Util.TO_FORMATTER);
                         discValid = true;
                     } else {// discontinued date is not valid
                         discValid = false;
@@ -187,7 +190,7 @@ public class ComputerUI {
 													.build());
     }
 
-    public void showComputerDetails() {
+    public void showComputerDetails() throws NumberFormatException, DAOException {
         String computId;
         Scanner input = new Scanner(System.in);
 
@@ -207,7 +210,7 @@ public class ComputerUI {
      * @return 'true' if discontinued date is greater than The introduced date
      *         and 'false' if not
      */
-    private boolean checkDates(LocalDateTime intrDate, LocalDateTime discDate) {
+    private boolean checkDates(LocalDate intrDate, LocalDate discDate) {
 
         if (intrDate != null && discDate != null) {
             if (!intrDate.isBefore(discDate)) {

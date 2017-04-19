@@ -1,6 +1,6 @@
 package fr.ebiz.computer_database.model;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 /**
  * @author ckeita
@@ -9,11 +9,12 @@ public class Computer {
 
     private int id;
     private final String name;
-    private LocalDateTime introduced;
-    private LocalDateTime discontinued;
+    private LocalDate introduced;
+    private LocalDate discontinued;
     private int company_id;
 
     private  Computer(ComputerBuilder computerBuilder) {
+        this.id = computerBuilder.id;
         this.name = computerBuilder.name;
         this.introduced = computerBuilder.introduced;
         this.discontinued = computerBuilder.discontinued;
@@ -37,14 +38,14 @@ public class Computer {
     /**
      * @return the introduced
      */
-    public LocalDateTime getIntroduced() {
+    public LocalDate getIntroduced() {
         return introduced;
     }
 
     /**
      * @return the discontinued
      */
-    public LocalDateTime getDiscontinued() {
+    public LocalDate getDiscontinued() {
         return discontinued;
     }
 
@@ -74,8 +75,8 @@ public class Computer {
     public static class ComputerBuilder {
         private int id;
         private String name;
-        private LocalDateTime introduced;
-        private LocalDateTime discontinued;
+        private LocalDate introduced;
+        private LocalDate discontinued;
         private int company_id;
         
         public ComputerBuilder () {
@@ -86,17 +87,17 @@ public class Computer {
             this.name = name;
         }
         
-        public ComputerBuilder introduced(LocalDateTime introduced) {
+        public ComputerBuilder introduced(LocalDate introduced) {
             this.introduced = introduced;
             return this;
         }
         
-        public ComputerBuilder discontinued(LocalDateTime discontinued) {
-            this.introduced = discontinued;
+        public ComputerBuilder discontinued(LocalDate discontinued) {
+            this.discontinued = discontinued;
             return this;
         }
         
-        public ComputerBuilder company_id(int id) {
+        public ComputerBuilder company_id (int id) {
             this.company_id = id;
             return this;
         }

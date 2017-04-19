@@ -10,18 +10,10 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class DeleteComputerServlet
  */
-@WebServlet("/deleteComputer")
+@WebServlet("/delete_computer")
 public class DeleteComputerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public DeleteComputerServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-
+    
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */

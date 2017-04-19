@@ -6,6 +6,7 @@ package fr.ebiz.computer_database.Utils;
 import java.util.List;
 import java.util.Scanner;
 
+import fr.ebiz.computer_database.exceptions.DAOException;
 import fr.ebiz.computer_database.service.CompanyService;
 import fr.ebiz.computer_database.service.ComputerService;
 
@@ -35,8 +36,9 @@ public class Page {
 
     /**
      * Process the paging
+     * @throws DAOException 
      */
-    public void paging() {
+    public void paging() throws DAOException {
 
         Scanner input = new Scanner(System.in);
         CompanyService companyService = new CompanyService();

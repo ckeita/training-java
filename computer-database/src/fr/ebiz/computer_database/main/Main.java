@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import fr.ebiz.computer_database.controller.CompanyController;
 import fr.ebiz.computer_database.controller.ComputerController;
+import fr.ebiz.computer_database.exceptions.DAOException;
 
 /**
  * @author ckeita
@@ -28,11 +29,21 @@ public class Main {
             case "0":
                 // Initialize the controller and dispatch
                 CompanyController cmpy = new CompanyController();
-                cmpy.dispatchView();
+                try {
+                    cmpy.dispatchView();
+                } catch (DAOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
                 break;
             case "1":
                 ComputerController cmpr = new ComputerController();
-                cmpr.dispatchView();
+                try {
+                    cmpr.dispatchView();
+                } catch (DAOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
                 break;
             case "2":
                 // Set 'quit' to exit the application

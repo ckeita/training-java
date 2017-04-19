@@ -27,14 +27,15 @@
 				<form id="searchForm" action="#" method="GET" class="form-inline">
 
 					<input type="search" id="searchbox" name="search"
-						class="form-control" placeholder="Search name" /> <input
+						class="form-c
+						ontrol" placeholder="Search name" /> <input
 						type="submit" id="searchsubmit" value="Filter by name"
 						class="btn btn-primary" />
 				</form>
 			</div>
 			<div class="pull-right">
-				<a class="btn btn-success" id="addComputer" href="${pageContext.request.contextPath}/addComputer">Add
-					Computer</a> <a class="btn btn-default" id="editComputer" href="${pageContext.request.contextPath}/editComputer"
+				<a class="btn btn-success" id="addComputer" href="${pageContext.request.contextPath}/add_computer">Add
+					Computer</a> <a class="btn btn-default" id="editComputer" href="${pageContext.request.contextPath}/edit_computer"
 					onclick="$.fn.toggleEditMode();">Edit</a>
 			</div>
 		</div>
@@ -73,11 +74,24 @@
 					<tr>
 						<td class="editMode"><input type="checkbox" name="cb"
 						class="cb" value="0"></td>
-						<td><a href="editComputer.html" onclick="">${computer.name}</a></td>
-						<td>${computer.introducedDate}</td>
-						<td>${computer.discontinuedDate}</td>
-						<td>${computer.company}</td>
+						<td><a href="${pageContext.request.contextPath}/edit_computer?id=${computer.id}" onclick="">${computer.name}</a></td>
+						<td>
+							<c:if test="${not empty computer.introduced}">
+	    						${computer.introduced}
+							</c:if>
+						</td>
+						<td>
+							<c:if test="${not empty computer.discontinued}">
+	    						${computer.discontinued}
+							</c:if>
+						</td>
+						<td>
+							<c:if test="${not empty computer.company}">
+	    						${computer.company}
+							</c:if>
+						</td>
 					</tr>
+					<input type="hidden" name="id" value="${computer.id}" />
 				</c:forEach>
 			</tbody>
 		</table>

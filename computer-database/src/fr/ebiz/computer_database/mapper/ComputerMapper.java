@@ -5,7 +5,7 @@ package fr.ebiz.computer_database.mapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,8 +20,8 @@ public class ComputerMapper {
 
 	private int id;
     private String name;
-    private LocalDateTime introduced;
-    private LocalDateTime discontinued;
+    private LocalDate introduced;
+    private LocalDate discontinued;
     private int company_id;
     /**
      * @param id: the id of the computer
@@ -34,16 +34,17 @@ public class ComputerMapper {
                 id = resultSet.getInt(1);
                 name = resultSet.getString(2);
                 if (resultSet.getString(3) != null) {
-                    introduced = LocalDateTime.parse(resultSet.getString(3), Util.FORMATTER);
+                    introduced = LocalDate.parse(resultSet.getString(3), Util.FROM_FORMATTER);
                 }
                 if (resultSet.getString(4) != null) {
-                    discontinued = LocalDateTime.parse(resultSet.getString(4), Util.FORMATTER);
+                    discontinued = LocalDate.parse(resultSet.getString(4), Util.FROM_FORMATTER);
                 }
                 company_id = resultSet.getInt(5);
                 
                 return new ComputerDTO(new Computer.ComputerBuilder(name)
-						.introduced(LocalDateTime.parse(introduced+Util.STR_HOUR, Util.IN_FORMATTER))
-						.discontinued(LocalDateTime.parse(discontinued+Util.STR_HOUR, Util.IN_FORMATTER))
+                        .id(id)
+						.introduced(introduced)
+						.discontinued(discontinued)
 						.company_id(company_id)
 						.build());
             }
@@ -67,17 +68,18 @@ public class ComputerMapper {
                 id = resultSet.getInt(1);
                 name = resultSet.getString(2);
                 if (resultSet.getString(3) != null) {
-                    introduced = LocalDateTime.parse(resultSet.getString(3), Util.FORMATTER);
+                    introduced = LocalDate.parse(resultSet.getString(3), Util.FROM_FORMATTER);
                 }
                 if (resultSet.getString(4) != null) {
-                    discontinued = LocalDateTime.parse(resultSet.getString(4), Util.FORMATTER);
+                    discontinued = LocalDate.parse(resultSet.getString(4), Util.FROM_FORMATTER);
                 }
                 company_id = resultSet.getInt(5);
 
                 // Add new computer to the list
                 list.add(new ComputerDTO(new Computer.ComputerBuilder(name)
-						.introduced(LocalDateTime.parse(introduced+Util.STR_HOUR, Util.IN_FORMATTER))
-						.discontinued(LocalDateTime.parse(discontinued+Util.STR_HOUR, Util.IN_FORMATTER))
+                        .id(id)
+						.introduced(introduced)
+						.discontinued(discontinued)
 						.company_id(company_id)
 						.build()));
             }
