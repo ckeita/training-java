@@ -5,11 +5,9 @@ package fr.ebiz.computer_database.mapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.ebiz.computer_database.Utils.Util;
 import fr.ebiz.computer_database.model.Computer;
 import fr.ebiz.computer_database.model.ComputerDTO;
 
@@ -20,8 +18,8 @@ public class ComputerMapper {
 
 	private int id;
     private String name;
-    private LocalDate introduced;
-    private LocalDate discontinued;
+    private String introduced;
+    private String discontinued;
     private int company_id;
     /**
      * @param id: the id of the computer
@@ -34,10 +32,10 @@ public class ComputerMapper {
                 id = resultSet.getInt(1);
                 name = resultSet.getString(2);
                 if (resultSet.getString(3) != null) {
-                    introduced = LocalDate.parse(resultSet.getString(3), Util.FROM_FORMATTER);
+                    introduced = resultSet.getString(3);
                 }
                 if (resultSet.getString(4) != null) {
-                    discontinued = LocalDate.parse(resultSet.getString(4), Util.FROM_FORMATTER);
+                    discontinued = resultSet.getString(4);
                 }
                 company_id = resultSet.getInt(5);
                 
@@ -52,6 +50,19 @@ public class ComputerMapper {
             e.printStackTrace();
         }
         return null;
+    }
+    
+    public int getNumberOfComputers(ResultSet resultSet) {
+        int number=0;
+        try {
+            while (resultSet.next()) {
+                number = resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return number;
     }
 
     /**
@@ -68,10 +79,10 @@ public class ComputerMapper {
                 id = resultSet.getInt(1);
                 name = resultSet.getString(2);
                 if (resultSet.getString(3) != null) {
-                    introduced = LocalDate.parse(resultSet.getString(3), Util.FROM_FORMATTER);
+                    introduced = resultSet.getString(3);
                 }
                 if (resultSet.getString(4) != null) {
-                    discontinued = LocalDate.parse(resultSet.getString(4), Util.FROM_FORMATTER);
+                    discontinued =resultSet.getString(4);
                 }
                 company_id = resultSet.getInt(5);
 

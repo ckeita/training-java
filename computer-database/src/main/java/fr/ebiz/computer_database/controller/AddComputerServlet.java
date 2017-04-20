@@ -1,7 +1,7 @@
 package fr.ebiz.computer_database.controller;
 
 import java.io.IOException;
-import java.time.LocalDate;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,7 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import fr.ebiz.computer_database.Utils.Util;
 import fr.ebiz.computer_database.exceptions.DAOException;
+import fr.ebiz.computer_database.model.CompanyDTO;
 import fr.ebiz.computer_database.model.Computer;
+import fr.ebiz.computer_database.service.CompanyService;
 import fr.ebiz.computer_database.service.ComputerService;
 
 /**
@@ -27,12 +29,15 @@ public class AddComputerServlet extends HttpServlet {
 	private String company;
 	
 	private ComputerService computerService = new ComputerService();
-
+	private CompanyService companyService = new CompanyService();
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+	    List<CompanyDTO> companies;
+        companies = companyService.findCompaniesByLimit(Util.OFFSET, Util.ALL_COMPANIES);        
+        request.setAttribute("companies", companies);
+        
 	    this.getServletContext().getRequestDispatcher(Util.ADD_COMPUTER_VIEW).forward(request, response);
 	}
 
@@ -44,11 +49,11 @@ public class AddComputerServlet extends HttpServlet {
 	    introduced = request.getParameter(Util.PARAM_INTRODUCED);
 	    discontinued = request.getParameter(Util.PARAM_DISCONTINUED);
 	    company = request.getParameter(Util.PARAM_COMPANY_ID);
-
+	    
 	    try {
             computerService.createComputer(new Computer.ComputerBuilder(name)
-            										.introduced(LocalDate.parse(introduced, Util.TO_FORMATTER))
-            										.discontinued(LocalDate.parse(discontinued, Util.TO_FORMATTER))
+            										.introduced(introduced)
+            										.discontinued(discontinued)
             										.company_id(Integer.parseInt(company))
             										.build());
         } catch (NumberFormatException e) {
@@ -58,6 +63,7 @@ public class AddComputerServlet extends HttpServlet {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+	    response.sendRedirect(Util.DASH_REDIRECT);
 	}
 
 }

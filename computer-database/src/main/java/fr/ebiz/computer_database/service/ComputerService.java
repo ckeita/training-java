@@ -33,8 +33,12 @@ public class ComputerService {
     public ComputerDTO findComputerById(int id) throws DAOException {
         ResultSet resultSet = computerDAO.findById(id);
         ComputerDTO comp = computerMapper.getById(resultSet);
-        System.out.println(comp);
         return comp;
+    }
+    
+    public int getNumberOfComputers() throws DAOException {
+        ResultSet resultSet = computerDAO.getNumberOfComputers();
+        return computerMapper.getNumberOfComputers(resultSet);
     }
 
     /**

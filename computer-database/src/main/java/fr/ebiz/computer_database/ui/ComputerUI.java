@@ -25,8 +25,8 @@ public class ComputerUI {
     ComputerService computerService = new ComputerService();
     private int id;
     private String name;
-    private LocalDate introduced;
-    private LocalDate discontinued;
+    private String introduced;
+    private String discontinued;
     private int company_id;
     /**
      * @param list: the list of all computers
@@ -97,7 +97,7 @@ public class ComputerUI {
                 intrDate = input.nextLine();
                 if (intrDate.length() != 0) {// introduced date is set
                     if (isValidDate(intrDate)) {// introduced date is valid
-                        this.introduced = LocalDate.parse(intrDate, Util.TO_FORMATTER);
+                        this.introduced = intrDate;
                         intrValid = true;
                     } else {// introduced date is not valid
                         intrValid = false;
@@ -114,7 +114,7 @@ public class ComputerUI {
                 discDate = input.nextLine();
                 if (discDate.length() != 0) {// discontinued date is set
                     if (isValidDate(discDate)) {// discontinued date is valid
-                        this.discontinued = LocalDate.parse(discDate, Util.TO_FORMATTER);
+                        this.discontinued = discDate;
                         discValid = true;
                     } else {// discontinued date is not valid
                         discValid = false;
@@ -137,7 +137,7 @@ public class ComputerUI {
                                                                           // they
                                                                           // are
                                                                           // set
-                checkDates = checkDates(introduced, discontinued);
+                checkDates = checkDates(LocalDate.parse(introduced, Util.TO_FORMATTER), LocalDate.parse(discontinued, Util.TO_FORMATTER));
                 if (!checkDates) {// Do not Accept the dates if they are not
                                   // valid
                     intrValid = false;

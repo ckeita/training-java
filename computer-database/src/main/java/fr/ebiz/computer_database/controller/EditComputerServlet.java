@@ -26,10 +26,8 @@ public class EditComputerServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	    int id_compt = Integer.parseInt(request.getParameter(Util.PARAM_ID));
-        System.out.println("id: "+id_compt);
         try {
             ComputerDTO computer = computerService.findComputerById(id_compt);
-            System.out.println(computer);
             request.setAttribute("computer", computer);            
             this.getServletContext().getRequestDispatcher(Util.EDIT_COMPUTER_VIEW).forward(request, response);
             
@@ -44,7 +42,7 @@ public class EditComputerServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+	    response.sendRedirect(Util.DASH_REDIRECT);
 	}
 
 }

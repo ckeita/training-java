@@ -48,6 +48,25 @@ public class ComputerDAO {
             throw new DAOException("Impossible to communicate with database"); 
         }
     }
+    
+    public ResultSet getNumberOfComputers() throws DAOException {
+        
+        try {
+            // Create the sql query to find Computer by id
+            String query = "SELECT count(*) FROM computer";
+
+            // Initialize a preparedStatement
+            PreparedStatement pstm = (PreparedStatement) Persistence.getInstance().getConnection()
+                    .prepareStatement(query);
+            // Execute the query
+            ResultSet result = pstm.executeQuery();
+            logger.info("Found elements from database");
+            return result;
+        } catch (SQLException e) {
+            throw new DAOException("Impossible to communicate with database"); 
+        }
+        
+    }
 
     /**
      * @param offset: Offset of the first row

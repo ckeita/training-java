@@ -2,6 +2,8 @@ package fr.ebiz.computer_database.model;
 
 import java.time.LocalDate;
 
+import fr.ebiz.computer_database.Utils.Util;
+
 /**
  * @author ckeita
  */
@@ -16,8 +18,24 @@ public class Computer {
     private  Computer(ComputerBuilder computerBuilder) {
         this.id = computerBuilder.id;
         this.name = computerBuilder.name;
-        this.introduced = computerBuilder.introduced;
-        this.discontinued = computerBuilder.discontinued;
+        if (computerBuilder.introduced != null) {
+            if(computerBuilder.introduced.length() != 0) {
+                if (computerBuilder.introduced.contains(":")) {
+                    this.introduced = LocalDate.parse(computerBuilder.introduced, Util.FROM_FORMATTER);
+                } else {
+                    this.introduced = LocalDate.parse(computerBuilder.introduced, Util.TO_FORMATTER);
+                }
+            }
+        }
+        if(computerBuilder.discontinued != null) {
+            if(computerBuilder.discontinued.length() != 0) {
+                if (computerBuilder.discontinued.contains(":")) {
+                    this.discontinued = LocalDate.parse(computerBuilder.discontinued, Util.FROM_FORMATTER);
+                } else {
+                    this.discontinued = LocalDate.parse(computerBuilder.discontinued, Util.TO_FORMATTER);
+                }
+            }
+        }
         this.company_id = computerBuilder.company_id;
     }
 
@@ -75,8 +93,8 @@ public class Computer {
     public static class ComputerBuilder {
         private int id;
         private String name;
-        private LocalDate introduced;
-        private LocalDate discontinued;
+        private String introduced;
+        private String discontinued;
         private int company_id;
         
         public ComputerBuilder () {
@@ -87,12 +105,12 @@ public class Computer {
             this.name = name;
         }
         
-        public ComputerBuilder introduced(LocalDate introduced) {
+        public ComputerBuilder introduced(String introduced) {
             this.introduced = introduced;
             return this;
         }
         
-        public ComputerBuilder discontinued(LocalDate discontinued) {
+        public ComputerBuilder discontinued(String discontinued) {
             this.discontinued = discontinued;
             return this;
         }

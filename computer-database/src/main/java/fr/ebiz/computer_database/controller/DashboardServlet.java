@@ -17,23 +17,29 @@ import fr.ebiz.computer_database.service.ComputerService;
 /**
  * Servlet implementation class DashboardServlet
  */
-@WebServlet("")
+@WebServlet("/dashboard")
 public class DashboardServlet extends HttpServlet {
     
     private static final long serialVersionUID = 1L;
-
+    private ComputerService computerService = new ComputerService();
+    private int nbComputers;
+    private int nbPages;
     /**
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
      *      response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // TODO Auto-generated method stub
-        ComputerService computerService = new ComputerService();
-        List<ComputerDTO> computers;
+        List<ComputerDTO> computers = null;
+        
         try {
-            computers = computerService.findComputersByLimit(0, 10);
+            int current; 
+            nbComputers = computerService.getNumberOfComputers();
+            computers = computerService.findComputersByLimit(Util.OFFSET, Util.PAGING);
+            nbPages = nbComputers/Util.PAGING;
             request.setAttribute("computers", computers);
+            request.setAttribute("nbComputers", nbComputers);
+            request.setAttribute("nbPages", nbPages);
             this.getServletContext().getRequestDispatcher(Util.DASHBOARD_VIEW).forward(request, response);
         } catch (DAOException e) {
             // TODO Auto-generated catch block

@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="mytags" tagdir="/WEB-INF/tags" %>
+<mytags:pagination page="${requestScope.page.current}" page_count="${requestScope.page.count}"/>  
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -21,7 +24,7 @@
 
 	<section id="main">
 	<div class="container">
-		<h1 id="homeTitle">121 Computers found</h1>
+		<h1 id="homeTitle">${nbComputers} Computers found</h1>
 		<div id="actions" class="form-horizontal">
 			<div class="pull-left">
 				<form id="searchForm" action="#" method="GET" class="form-inline">
@@ -35,7 +38,7 @@
 			</div>
 			<div class="pull-right">
 				<a class="btn btn-success" id="addComputer" href="${pageContext.request.contextPath}/add_computer">Add
-					Computer</a> <a class="btn btn-default" id="editComputer" href="${pageContext.request.contextPath}/edit_computer"
+					Computer</a> <a class="btn btn-default" id="editComputer" href="#"
 					onclick="$.fn.toggleEditMode();">Edit</a>
 			</div>
 		</div>
@@ -99,16 +102,17 @@
 	</section>
 
 	<footer class="navbar-fixed-bottom">
-		<div class="container text-center">
+		<div
+		 class="container text-center">
 			<ul class="pagination">
 				<li><a href="#" aria-label="Previous"> <span
 						aria-hidden="true">&laquo;</span>
 				</a></li>
-				<li><a href="#">1</a></li>
-				<li><a href="#">2</a></li>
-				<li><a href="#">3</a></li>
-				<li><a href="#">4</a></li>
-				<li><a href="#">5</a></li>
+				
+				<c:forEach var="i" begin="1" end="${nbPages}">
+					<mytags:link target="dashboard?current=${i}&limit=${10}" current="${current+i}" limit="${10}"/>
+				</c:forEach>
+				
 				<li><a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
 				</a></li>
 			</ul>
