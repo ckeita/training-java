@@ -24,6 +24,7 @@ public class DashboardServlet extends HttpServlet {
     private ComputerService computerService = new ComputerService();
     private int nbComputers;
     private int nbPages;
+    private int nbLinks;
     /**
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
      *      response)
@@ -31,15 +32,22 @@ public class DashboardServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         List<ComputerDTO> computers = null;
-        
+        int offset = 1;
+        int curPage = 0;
+        if (request.getParameter("current") != null) {
+        	offset = Integer.parseInt(request.getParameter("current"));
+        }
         try {
-            int current; 
             nbComputers = computerService.getNumberOfComputers();
-            computers = computerService.findComputersByLimit(Util.OFFSET, Util.PAGING);
+            computers = computerService.findComputersByLimit((offset-1)*Util.PAGING, Util.PAGING);
             nbPages = nbComputers/Util.PAGING;
+            nbLinks = nbPages/Util.PAGING;
+            System.out.println(nbLinks);
             request.setAttribute("computers", computers);
             request.setAttribute("nbComputers", nbComputers);
             request.setAttribute("nbPages", nbPages);
+            request.setAttribute("nbLinks", nbLinks);
+            request.setAttribute("curPage", curPage);
             this.getServletContext().getRequestDispatcher(Util.DASHBOARD_VIEW).forward(request, response);
         } catch (DAOException e) {
             // TODO Auto-generated catch block

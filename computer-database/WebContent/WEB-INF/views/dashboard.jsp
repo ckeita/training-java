@@ -104,8 +104,9 @@
 	<footer class="navbar-fixed-bottom">
 		<div
 		 class="container text-center">
+		 	<c:set var="curPage" scope="session" value="${curPage}"/>
 			<ul class="pagination">
-				<li><a href="#" aria-label="Previous"> <span
+				<li><a href="" aria-label="Previous"> <span
 						aria-hidden="true">&laquo;</span>
 				</a></li>
 				
@@ -116,7 +117,6 @@
 				<li><a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
 				</a></li>
 			</ul>
-	
 			<div class="btn-group btn-group-sm pull-right" role="group">
 				<button type="button" class="btn btn-default">10</button>
 				<button type="button" class="btn btn-default">50</button>
