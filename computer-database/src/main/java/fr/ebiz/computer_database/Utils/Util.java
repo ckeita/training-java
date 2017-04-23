@@ -31,7 +31,7 @@ public interface Util {
     public final String PARAM_DISCONTINUED = "discontinued";
     public final String PARAM_COMPANY_ID = "companyId";
     
-    public final String DASH_REDIRECT = "dashborad";
+    public final String DASH_REDIRECT = "dashboard";
     
     public final int PAGING = 10;
     public final int OFFSET = 0;

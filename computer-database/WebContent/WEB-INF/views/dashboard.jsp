@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix="mytags" tagdir="/WEB-INF/tags" %>
-<mytags:pagination page="${requestScope.page.current}" page_count="${requestScope.page.count}"/>  
+<%@ taglib prefix="mytags" tagdir="/WEB-INF/tags" %> 
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -80,7 +79,7 @@
 						<td><a href="${pageContext.request.contextPath}/edit_computer?id=${computer.id}" onclick="">${computer.name}</a></td>
 						<td>
 							<c:if test="${not empty computer.introduced}">
-	    						${computer.introduced}
+								${computer.introduced}
 							</c:if>
 						</td>
 						<td>
@@ -102,25 +101,32 @@
 	</section>
 
 	<footer class="navbar-fixed-bottom">
-		<div
-		 class="container text-center">
-		 	<c:set var="curPage" scope="session" value="${curPage}"/>
+		<c:set var="start" value="${curPage}" scope="page"/>
+		<c:set var="end" value="${nbPages+1}" scope="page"/>
+		<div class="container text-center">
 			<ul class="pagination">
-				<li><a href="" aria-label="Previous"> <span
-						aria-hidden="true">&laquo;</span>
-				</a></li>
-				
-				<c:forEach var="i" begin="1" end="${nbLinks}">
-					<mytags:link target="dashboard?current=${i}&limit=${10}" current="${current+i}" limit="${10}"/>
+				<c:if test="${curPage-1 > 0}">
+					<li>
+						<a href="dashboard?current=${curPage-1}" aria-label="Previous"> <span aria-hidden="true">&laquo;</span></a>
+					</li>
+				</c:if>
+				<c:if test="${start+4 <= nbPages}">
+					<c:set var="end" value="${start+4}" scope="page"/>
+				</c:if>
+				<c:forEach var="i" begin="${start}" end="${end}">
+					<mytags:link target="dashboard?current=${i}" current="${current+i}"/>
 				</c:forEach>
-				
-				<li><a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-				</a></li>
+				<c:if test="${curPage+1 < nbPages-2}">
+					<li>
+						<a href="dashboard?current=${curPage+1}" aria-label="Next"> <span aria-hidden="true">&raquo;</span></a>
+					</li>
+				</c:if>
 			</ul>
 			<div class="btn-group btn-group-sm pull-right" role="group">
-				<button type="button" class="btn btn-default">10</button>
-				<button type="button" class="btn btn-default">50</button>
-				<button type="button" class="btn btn-default">100</button>
+				<mytags:pagination  target="dashboard?limit=${10}" limit="${10}"/>
+				<mytags:pagination  target="#" limit="${nbPages}"/>
+				<mytags:pagination  target="dashboard?limit=${50}" limit="${50}"/>
+				<mytags:pagination  target="dashboard?limit=${100}" limit="${100}"/>
 			</div>
 		</div>
 	</footer>

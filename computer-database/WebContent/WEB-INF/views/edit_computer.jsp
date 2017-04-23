@@ -26,7 +26,7 @@
                     <h1>Edit Computer</h1>
 
                     <form action="edit_computer" method="POST">
-                        <input type="hidden" value="0" id="id"/> <!-- TODO: Change this value with the computer id -->
+                        <input type="hidden" value="${computer.id}" id="id" name="id"/> <!-- TODO: Change this value with the computer id -->
                         <fieldset>
                             <div class="form-group">
                                 <label for="computerName">Computer name</label>
@@ -43,7 +43,10 @@
                             <div class="form-group">
                                 <label for="companyId">Company</label>
                                 <select class="form-control" id="companyId" name="companyId" >
-                                    <option value="${computer.company}">--</option>
+                                    <option value="0">${computer.company}</option>
+                                    <c:forEach var="company" items="${companies}">
+                                		<option value="${company.id}">${company.name}</option>	
+                                	</c:forEach>
                                 </select>
                             </div>            
                         </fieldset>

@@ -18,7 +18,7 @@ import fr.ebiz.computer_database.persistence.ComputerDAO;
 public class ComputerService {
 
     private ComputerDAO computerDAO;
-    private ComputerMapper computerMapper;
+    ComputerMapper computerMapper;
 
     public ComputerService() {
         computerDAO = new ComputerDAO();
@@ -31,12 +31,14 @@ public class ComputerService {
      * @throws DAOException 
      */
     public ComputerDTO findComputerById(int id) throws DAOException {
-        ResultSet resultSet = computerDAO.findById(id);
+    	//ComputerMapper computerMapper = new ComputerMapper();
+    	ResultSet resultSet = computerDAO.findById(id);
         ComputerDTO comp = computerMapper.getById(resultSet);
         return comp;
     }
     
     public int getNumberOfComputers() throws DAOException {
+    	//ComputerMapper computerMapper = new ComputerMapper();
         ResultSet resultSet = computerDAO.getNumberOfComputers();
         return computerMapper.getNumberOfComputers(resultSet);
     }
@@ -48,6 +50,7 @@ public class ComputerService {
      * @throws DAOException 
      */
     public List<ComputerDTO> findComputersByLimit(int offset, int max) throws DAOException {
+    	//ComputerMapper computerMapper = new ComputerMapper();
         ResultSet resultSet = computerDAO.findByLimit(offset, max);
         return computerMapper.getByPage(resultSet);
     }

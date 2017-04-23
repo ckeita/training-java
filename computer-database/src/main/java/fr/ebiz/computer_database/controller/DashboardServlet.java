@@ -53,7 +53,7 @@ public class DashboardServlet extends HttpServlet {
             request.setAttribute("nbPages", nbPages);
             request.setAttribute("nbLinks", nbLinks);
             request.setAttribute("curPage", curPage);
-            System.out.println(computers);
+            //System.out.println(computers);
             this.getServletContext().getRequestDispatcher(Util.DASHBOARD_VIEW).forward(request, response);
         } catch (DAOException e) {
             // TODO Auto-generated catch block

@@ -31,12 +31,8 @@ public class ComputerMapper {
             while (resultSet.next()) {
                 id = resultSet.getInt(1);
                 name = resultSet.getString(2);
-                if (resultSet.getString(3) != null) {
-                    introduced = resultSet.getString(3);
-                }
-                if (resultSet.getString(4) != null) {
-                    discontinued = resultSet.getString(4);
-                }
+                introduced = resultSet.getString(3);
+                discontinued = resultSet.getString(4);
                 company_id = resultSet.getInt(5);
                 
                 return new ComputerDTO(new Computer.ComputerBuilder(name)
@@ -78,21 +74,17 @@ public class ComputerMapper {
                 // initialize the computer fields by data from database
                 id = resultSet.getInt(1);
                 name = resultSet.getString(2);
-                if (resultSet.getString(3) != null) {
-                    introduced = resultSet.getString(3);
-                }
-                if (resultSet.getString(4) != null) {
-                    discontinued =resultSet.getString(4);
-                }
+                introduced = resultSet.getString(3);
+                discontinued = resultSet.getString(4);
                 company_id = resultSet.getInt(5);
 
                 // Add new computer to the list
                 list.add(new ComputerDTO(new Computer.ComputerBuilder(name)
-                        .id(id)
-						.introduced(introduced)
-						.discontinued(discontinued)
-						.company_id(company_id)
-						.build()));
+				                        .id(id)
+										.introduced(introduced)
+										.discontinued(discontinued)
+										.company_id(company_id)
+										.build()));
             }
             return list;
         } catch (SQLException e) {

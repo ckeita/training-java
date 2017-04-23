@@ -14,27 +14,29 @@ public class Computer {
     private LocalDate introduced;
     private LocalDate discontinued;
     private int company_id;
+    private int i;
 
     private  Computer(ComputerBuilder computerBuilder) {
         this.id = computerBuilder.id;
         this.name = computerBuilder.name;
+        
         if (computerBuilder.introduced != null) {
-            if(computerBuilder.introduced.length() != 0) {
+            //if(computerBuilder.introduced.length() != 0) {
                 if (computerBuilder.introduced.contains(":")) {
                     this.introduced = LocalDate.parse(computerBuilder.introduced, Util.FROM_FORMATTER);
                 } else {
                     this.introduced = LocalDate.parse(computerBuilder.introduced, Util.TO_FORMATTER);
                 }
-            }
+           // }
         }
         if(computerBuilder.discontinued != null) {
-            if(computerBuilder.discontinued.length() != 0) {
+           // if(computerBuilder.discontinued.length() != 0) {
                 if (computerBuilder.discontinued.contains(":")) {
                     this.discontinued = LocalDate.parse(computerBuilder.discontinued, Util.FROM_FORMATTER);
                 } else {
                     this.discontinued = LocalDate.parse(computerBuilder.discontinued, Util.TO_FORMATTER);
                 }
-            }
+           // }
         }
         this.company_id = computerBuilder.company_id;
     }
@@ -98,7 +100,6 @@ public class Computer {
         private int company_id;
         
         public ComputerBuilder () {
-        	
         }
         
         public ComputerBuilder (String name) {
@@ -115,7 +116,7 @@ public class Computer {
             return this;
         }
         
-        public ComputerBuilder company_id (int id) {
+        public ComputerBuilder company_id(int id) {
             this.company_id = id;
             return this;
         }
