@@ -79,6 +79,7 @@
 				</excludes>
 			</resource>
 		</resources>
+		<testSourceDirectory>src/java/test</testSourceDirectory>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>

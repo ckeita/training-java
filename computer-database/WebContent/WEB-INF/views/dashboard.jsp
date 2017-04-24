@@ -124,7 +124,6 @@
 			</ul>
 			<div class="btn-group btn-group-sm pull-right" role="group">
 				<mytags:pagination  target="dashboard?limit=${10}" limit="${10}"/>
-				<mytags:pagination  target="#" limit="${nbPages}"/>
 				<mytags:pagination  target="dashboard?limit=${50}" limit="${50}"/>
 				<mytags:pagination  target="dashboard?limit=${100}" limit="${100}"/>
 			</div>
