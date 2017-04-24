@@ -78,12 +78,14 @@
 						class="cb" value="0"></td>
 						<td><a href="${pageContext.request.contextPath}/edit_computer?id=${computer.id}" onclick="">${computer.name}</a></td>
 						<td>
-							<!--  ${computer.introduced}-->
+							<c:if test="${not empty computer.introduced}">
+								${computer.introduced}
+							</c:if>
 						</td>
 						<td>
-							<!--<c:if test="${not empty computer.discontinued}">
+							<c:if test="${not empty computer.discontinued}">
 	    						${computer.discontinued}
-							</c:if>-->
+							</c:if>
 						</td>
 						<td>
 							<c:if test="${not empty computer.company}">
@@ -100,6 +102,7 @@
 
 	<footer class="navbar-fixed-bottom">
 		<c:set var="start" value="${curPage}" scope="page"/>
+		<c:set var="end" value="${nbPages+1}" scope="page"/>
 		<div class="container text-center">
 			<ul class="pagination">
 				<c:if test="${curPage-1 > 0}">
@@ -107,10 +110,13 @@
 						<a href="dashboard?current=${curPage-1}" aria-label="Previous"> <span aria-hidden="true">&laquo;</span></a>
 					</li>
 				</c:if>
-				<c:forEach var="i" begin="${start}" end="${start+4}">
+				<c:if test="${start+4 <= nbPages}">
+					<c:set var="end" value="${start+4}" scope="page"/>
+				</c:if>
+				<c:forEach var="i" begin="${start}" end="${end}">
 					<mytags:link target="dashboard?current=${i}" current="${current+i}"/>
 				</c:forEach>
-				<c:if test="${curPage+1 < nbPages}">
+				<c:if test="${curPage+1 < nbPages-2}">
 					<li>
 						<a href="dashboard?current=${curPage+1}" aria-label="Next"> <span aria-hidden="true">&raquo;</span></a>
 					</li>
