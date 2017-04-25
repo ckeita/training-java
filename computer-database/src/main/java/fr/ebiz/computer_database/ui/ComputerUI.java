@@ -1,6 +1,3 @@
-/**
- * 
- */
 package fr.ebiz.computer_database.ui;
 
 import java.text.ParseException;
@@ -27,10 +24,10 @@ public class ComputerUI {
     private String name;
     private String introduced;
     private String discontinued;
-    private int company_id;
+    private int companyId;
+
     /**
-     * @param list: the list of all computers
-     * @throws DAOException 
+     * @throws DAOException .
      */
     public void viewComputer() throws DAOException {
         List<ComputerDTO> list = new ArrayList<>();
@@ -42,8 +39,8 @@ public class ComputerUI {
             System.out.println("***Choose the number of elements by page***");
             choice = input.next();
             try {
-                if (Integer.parseInt(choice) > 0) {// Need at least one element
-                                                   // by page
+                // Need at least one element by page
+                if (Integer.parseInt(choice) > 0) {
                     // process the paging
                     Page p = new Page(Integer.parseInt(choice), list, true);
                     p.paging();
@@ -58,11 +55,11 @@ public class ComputerUI {
     }
 
     /**
-     * Create or Update a new computer
-     * @throws DAOException 
+     * @param update or not
+     * @throws DAOException .
      */
     public void createOrUpdateComputer(boolean update) throws DAOException {
-        //Computer comp = new Computer();
+        // Computer comp = new Computer();
         Scanner input = new Scanner(System.in);
         boolean checkDates = false, intrValid = false, discValid = false;
         String name, intrDate = null, discDate = null, cmpId, computId = null;
@@ -95,14 +92,18 @@ public class ComputerUI {
             while (!intrValid) {
                 System.out.println("Set introduced date");
                 intrDate = input.nextLine();
-                if (intrDate.length() != 0) {// introduced date is set
-                    if (isValidDate(intrDate)) {// introduced date is valid
+                // introduced date is set
+                if (intrDate.length() != 0) {
+                    // introduced date is valid
+                    if (isValidDate(intrDate)) {
                         this.introduced = intrDate;
                         intrValid = true;
-                    } else {// introduced date is not valid
+                    } else {
+                        // introduced date is not valid
                         intrValid = false;
                     }
-                } else {// introduced date is not set
+                } else {
+                    // introduced date is not set
                     intrValid = true;
                 }
             }
@@ -112,34 +113,31 @@ public class ComputerUI {
             while (!discValid) {
                 System.out.println("Set discontinued date");
                 discDate = input.nextLine();
-                if (discDate.length() != 0) {// discontinued date is set
-                    if (isValidDate(discDate)) {// discontinued date is valid
+                if (discDate.length() != 0) {
+                    // discontinued date is set
+                    if (isValidDate(discDate)) {
+                        // discontinued date is valid
                         this.discontinued = discDate;
                         discValid = true;
-                    } else {// discontinued date is not valid
+                    } else {
+                        // discontinued date is not valid
                         discValid = false;
                     }
-                } else {// discontinued date is not set
+                } else {
+                    // discontinued date is not set
                     discValid = true;
                 }
             }
 
-            if (intrDate.length() == 0 || discDate.length() == 0) {// Accept the
-                                                                   // dates are
-                                                                   // not set
+            if (intrDate.length() == 0 || discDate.length() == 0) {
+                // Accept the dates are not set
                 checkDates = true;
-            } else if (intrDate.length() != 0 && discDate.length() != 0) {// Check
-                                                                          // if
-                                                                          // the
-                                                                          // dates
-                                                                          // valid
-                                                                          // if
-                                                                          // they
-                                                                          // are
-                                                                          // set
-                checkDates = checkDates(LocalDate.parse(introduced, Util.TO_FORMATTER), LocalDate.parse(discontinued, Util.TO_FORMATTER));
-                if (!checkDates) {// Do not Accept the dates if they are not
-                                  // valid
+            } else if (intrDate.length() != 0 && discDate.length() != 0) {
+                // Check if the dates valid if they are set
+                checkDates = checkDates(LocalDate.parse(introduced, Util.TO_FORMATTER),
+                        LocalDate.parse(discontinued, Util.TO_FORMATTER));
+                if (!checkDates) {
+                    // Do not Accept the dates if they are not valid
                     intrValid = false;
                     discValid = false;
                 }
@@ -148,28 +146,21 @@ public class ComputerUI {
         System.out.println("Set company ID");
         cmpId = input.nextLine();
         if (cmpId.length() != 0) {
-            company_id = Integer.parseInt(cmpId);
+            companyId = Integer.parseInt(cmpId);
         }
 
         // Process Update or Delete
         if (update) {
-            computerService.updateComputer(new Computer.ComputerBuilder(name)
-            											.introduced(introduced)
-            											.discontinued(discontinued)
-            											.company_id(company_id)
-            											.id(id)
-            											.build());
+            computerService.updateComputer(new Computer.ComputerBuilder(name).introduced(introduced)
+                    .discontinued(discontinued).companyId(companyId).id(id).build());
         } else {
-            computerService.createComputer(new Computer.ComputerBuilder(name)
-							.introduced(introduced)
-							.discontinued(discontinued)
-							.company_id(company_id)
-							.build());
+            computerService.createComputer(new Computer.ComputerBuilder(name).introduced(introduced)
+                    .discontinued(discontinued).companyId(companyId).build());
         }
     }
 
     /**
-     * Delete a computer
+     * Delete a computer.
      */
     public void deleteComputer() {
 
@@ -185,11 +176,13 @@ public class ComputerUI {
         this.id = Integer.parseInt(computId);
 
         // Process delete
-        computerService.deleteComputer(new Computer.ComputerBuilder()
-													.id(id)
-													.build());
+        computerService.deleteComputer(new Computer.ComputerBuilder().id(id).build());
     }
 
+    /**
+     * @throws NumberFormatException .
+     * @throws DAOException .
+     */
     public void showComputerDetails() throws NumberFormatException, DAOException {
         String computId;
         Scanner input = new Scanner(System.in);
@@ -205,8 +198,8 @@ public class ComputerUI {
     }
 
     /**
-     * @param intrDate: The introduced date
-     * @param discDate: the discontinued date
+     * @param intrDate The introduced date
+     * @param discDate the discontinued date
      * @return 'true' if discontinued date is greater than The introduced date
      *         and 'false' if not
      */
@@ -222,7 +215,7 @@ public class ComputerUI {
     }
 
     /**
-     * @param input: the string of the date to check the format
+     * @param input the string of the date to check the format
      * @return 'true' if it's well formatted and 'false' if not
      */
     private boolean isValidDate(String input) {

@@ -8,19 +8,6 @@ public class Company {
     private int id;
     private String name;
 
-    public Company() {
-
-    }
-
-    /**
-     * @param id
-     * @param name
-     */
-    public Company(int id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
     /**
      * @return the id
      */
@@ -51,7 +38,6 @@ public class Company {
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#toString()
      */
     @Override

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package fr.ebiz.computer_database.Utils;
 
 import java.util.List;
@@ -23,9 +20,9 @@ public class Page {
     private List<?> list;
 
     /**
-     * @param <T>
-     * @param numberOfRow: the number of elements by one page
-     * @param list: the list of element page
+     * @param instanceOfComputer the instance of the computer
+     * @param numberOfRow the number of elements by one page
+     * @param list the list of element page
      */
     public Page(int numberOfRow, List<?> list, boolean instanceOfComputer) {
         this.numberOfRow = numberOfRow;
@@ -35,8 +32,7 @@ public class Page {
     }
 
     /**
-     * Process the paging
-     * @throws DAOException 
+     * @throws DAOException .
      */
     public void paging() throws DAOException {
 
@@ -106,7 +102,7 @@ public class Page {
     }
 
     /**
-     * Print the current page
+     * Print the current page.
      */
     private void printElements() {
 

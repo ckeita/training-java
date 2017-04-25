@@ -1,6 +1,3 @@
-/**
- * 
- */
 package fr.ebiz.computer_database.ui;
 
 import java.util.ArrayList;
@@ -9,7 +6,6 @@ import java.util.Scanner;
 
 import fr.ebiz.computer_database.Utils.Page;
 import fr.ebiz.computer_database.exceptions.DAOException;
-import fr.ebiz.computer_database.model.Company;
 import fr.ebiz.computer_database.model.CompanyDTO;
 
 /**
@@ -17,9 +13,9 @@ import fr.ebiz.computer_database.model.CompanyDTO;
  */
 public class CompanyUI {
 
-    public void viewCompany(Company cmp) {
-    }
-
+    /**
+     * @throws DAOException .
+     */
     public void viewCompany() throws DAOException {
         System.out.println("****List of Companies****");
         // To check instance of list elements
@@ -31,8 +27,8 @@ public class CompanyUI {
             System.out.println("***Choose the number of elements by page***");
             choice = input.next();
             try {
-                if (Integer.parseInt(choice) > 0) {// Need at least one element
-                                                   // by page
+                // Need at least one element by page
+                if (Integer.parseInt(choice) > 0) {
                     // process the paging
                     Page p = new Page(Integer.parseInt(choice), list, false);
                     p.paging();

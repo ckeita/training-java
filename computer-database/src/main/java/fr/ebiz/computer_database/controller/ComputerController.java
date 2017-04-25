@@ -1,6 +1,3 @@
-/**
- * 
- */
 package fr.ebiz.computer_database.controller;
 
 import java.util.Scanner;
@@ -16,14 +13,15 @@ public class ComputerController {
     ComputerUI computerUI;
     private boolean back;
 
+    /**
+     * the default controller.
+     */
     public ComputerController() {
         computerUI = new ComputerUI();
         back = false;
     }
-
     /**
-     * Dispatch towards the good view
-     * @throws DAOException 
+     * @throws DAOException .
      */
     public void dispatchView() throws DAOException {
         while (!back) {

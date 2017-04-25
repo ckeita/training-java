@@ -1,10 +1,5 @@
-/**
- * 
- */
 package fr.ebiz.computer_database.mapper;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,80 +11,24 @@ import fr.ebiz.computer_database.model.ComputerDTO;
  */
 public class ComputerMapper {
 
-	private int id;
-    private String name;
-    private String introduced;
-    private String discontinued;
-    private int company_id;
     /**
-     * @param id: the id of the computer
+     * @param computer to translate
      * @return the string of the object
      */
-    public ComputerDTO getById(ResultSet resultSet) {
-    	
-        try {
-            while (resultSet.next()) {
-                id = resultSet.getInt(1);
-                name = resultSet.getString(2);
-                introduced = resultSet.getString(3);
-                discontinued = resultSet.getString(4);
-                company_id = resultSet.getInt(5);
-                
-                return new ComputerDTO(new Computer.ComputerBuilder(name)
-                        .id(id)
-						.introduced(introduced)
-						.discontinued(discontinued)
-						.company_id(company_id)
-						.build());
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-    
-    public int getNumberOfComputers(ResultSet resultSet) {
-        int number=0;
-        try {
-            while (resultSet.next()) {
-                number = resultSet.getInt(1);
-            }
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return number;
+    public ComputerDTO getById(Computer computer) {
+        return new ComputerDTO(computer);
     }
 
     /**
-     * @param offset: Offset of the first row
-     * @param max: number of rows
-     * @return
+     * @param computers the list
+     * @return the list of DTOs
      */
-    public List<ComputerDTO> getByPage(ResultSet resultSet) {
+    public List<ComputerDTO> getByPage(List<Computer> computers) {
         List<ComputerDTO> list = new ArrayList<>();
 
-        try {
-            while (resultSet.next()) {
-                // initialize the computer fields by data from database
-                id = resultSet.getInt(1);
-                name = resultSet.getString(2);
-                introduced = resultSet.getString(3);
-                discontinued = resultSet.getString(4);
-                company_id = resultSet.getInt(5);
-
-                // Add new computer to the list
-                list.add(new ComputerDTO(new Computer.ComputerBuilder(name)
-				                        .id(id)
-										.introduced(introduced)
-										.discontinued(discontinued)
-										.company_id(company_id)
-										.build()));
-            }
-            return list;
-        } catch (SQLException e) {
-            e.printStackTrace();
+        for (Computer computer : computers) {
+            list.add(new ComputerDTO(computer));
         }
-        return null;
+        return list;
     }
 }

@@ -11,6 +11,9 @@ import fr.ebiz.computer_database.exceptions.DAOException;
  */
 public class Main {
 
+    /**
+     * @param args of the program
+     */
     public static void main(String[] args) {
 
         // The boolean to handle the application exit

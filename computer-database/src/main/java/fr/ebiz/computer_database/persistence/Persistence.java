@@ -1,6 +1,3 @@
-/**
- * 
- */
 package fr.ebiz.computer_database.persistence;
 
 import java.sql.DriverManager;
@@ -17,8 +14,11 @@ public final class Persistence {
 
     private Connection connection = null;
 
-    private static Persistence persistence = null;
+    private static Persistence persistence = new Persistence();
 
+    /**
+     * create an persistence object.
+     */
     private Persistence() {
 
         try {
@@ -31,15 +31,16 @@ public final class Persistence {
         }
     }
 
+    /**
+     * @return the single instance
+     */
     public static Persistence getInstance() {
-        if (persistence == null) {
-            persistence = new Persistence();
-        }
         return persistence;
     }
 
     /**
-     * Close the connection
+     * Close the connection.
+     * @throws SQLException .
      */
     public void closeCon() throws SQLException {
         connection.close();

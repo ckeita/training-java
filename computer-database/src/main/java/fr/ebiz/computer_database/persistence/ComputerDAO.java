@@ -1,11 +1,10 @@
-/**
- * 
- */
 package fr.ebiz.computer_database.persistence;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,17 +20,20 @@ import fr.ebiz.computer_database.model.Computer;
  */
 public class ComputerDAO {
     private static Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
+    private int id;
+    private String name;
+    private String introduced;
+    private String discontinued;
+    private int companyId;
 
     /**
-     * @param the id of the computer
+     * @param id of the computer
      * @return the string of the object
-     * @throws DAOException 
-     * @throws SQLException
+     * @throws DAOException .
      */
-    public ResultSet findById(int id) throws DAOException {
+    public Computer findById(int id) throws DAOException {
+        Computer comp = null;
         try {
-            // create a new Computer
-            int company_id = 0;
             // Create the sql query to find Computer by id
             String query = "SELECT * FROM computer WHERE id=?";
 
@@ -42,15 +44,23 @@ public class ComputerDAO {
             pstm.setInt(1, id);
             // Execute the query
             ResultSet result = pstm.executeQuery();
+
+            while (result.next()) {
+                comp = daoMapper(result);
+            }
             logger.info("Found element from database");
-            return result;
+            return comp;
         } catch (SQLException e) {
-            throw new DAOException("Impossible to communicate with database"); 
+            throw new DAOException("Impossible to communicate with database");
         }
     }
-    
-    public ResultSet getNumberOfComputers() throws DAOException {
-        
+
+    /**
+     * @return number of computers in database
+     * @throws DAOException .
+     */
+    public int getNumberOfComputers() throws DAOException {
+        int number = 0;
         try {
             // Create the sql query to find Computer by id
             String query = "SELECT count(*) FROM computer";
@@ -60,22 +70,24 @@ public class ComputerDAO {
                     .prepareStatement(query);
             // Execute the query
             ResultSet result = pstm.executeQuery();
-            logger.info("Found elements from database");
-            return result;
+            while (result.next()) {
+                number = result.getInt(1);
+            }
+            logger.info("Found element from database");
+            return number;
         } catch (SQLException e) {
-            throw new DAOException("Impossible to communicate with database"); 
+            throw new DAOException("Impossible to communicate with database");
         }
-        
     }
 
     /**
-     * @param offset: Offset of the first row
-     * @param max: number of rows
-     * @return
-     * @throws DAOException 
+     * @param offset of the first row
+     * @param max number of rows
+     * @return resultSet
+     * @throws DAOException .
      */
-    public ResultSet findByLimit(int offset, int max) throws DAOException {
-
+    public List<Computer> findByLimit(int offset, int max) throws DAOException {
+        List<Computer> list = new ArrayList<>();
         try {
             // create a list of computer
 
@@ -90,18 +102,19 @@ public class ComputerDAO {
             pstm.setInt(2, max);
             // Execute the query
             ResultSet result = pstm.executeQuery();
-
+            while (result.next()) {
+                list.add(daoMapper(result));
+            }
             logger.info("Selected: " + result.getFetchSize() + " elements from database");
-            return result;
+            return list;
         } catch (SQLException e) {
-            throw new DAOException("Impossible to communicate with database"); 
+            throw new DAOException("Impossible to communicate with database");
         }
     }
 
     /**
-     * @param comp: the computer to put on database
-     * @throws DAOException 
-     * @throws SQLException
+     * @param comp the computer to put on database
+     * @throws DAOException .
      */
     public void create(Computer comp) throws DAOException {
 
@@ -122,10 +135,10 @@ public class ComputerDAO {
             } else {
                 pstm.setNull(3, Types.TIMESTAMP);
             }
-            if (comp.getCompany_id() == 0) {
+            if (comp.getcompanyId() == 0) {
                 pstm.setNull(4, Types.BIGINT);
             } else {
-                pstm.setInt(4, comp.getCompany_id());
+                pstm.setInt(4, comp.getcompanyId());
             }
             // Execute the query
             if (pstm.executeUpdate() == 0) {
@@ -136,13 +149,13 @@ public class ComputerDAO {
         } catch (MySQLIntegrityConstraintViolationException ex) {
             logger.info("Impossible to insert: The company is not found in database");
         } catch (SQLException e) {
-            throw new DAOException("Impossible to communicate with database"); 
+            throw new DAOException("Impossible to communicate with database");
         }
 
     }
 
     /**
-     * @param comp: the computer to delete from database
+     * @param comp the computer to delete from database
      * @throws SQLException
      */
     public void delete(Computer comp) {
@@ -158,7 +171,7 @@ public class ComputerDAO {
             if (pstm.executeUpdate() == 0) {
                 logger.info("Impossible to delete: The computer is not found");
             } else {
-                logger.info("Deleted successfully");
+                logger.info("Deleted succeDAOExceptionssfully");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -166,7 +179,7 @@ public class ComputerDAO {
     }
 
     /**
-     * @param comp: the computer to update
+     * @param comp the computer to update
      * @throws SQLException
      */
     public void update(Computer comp) {
@@ -175,7 +188,8 @@ public class ComputerDAO {
             String query = "UPDATE computer SET name=?, introduced=?, discontinued=?, company_id=? WHERE id=?";
 
             // Initialize a preparedStatement
-            PreparedStatement pstm = (PreparedStatement) Persistence.getInstance().getConnection().prepareStatement(query);
+            PreparedStatement pstm = (PreparedStatement) Persistence.getInstance().getConnection()
+                    .prepareStatement(query);
             // Set the parameter name through the preparedStatement
             pstm.setString(1, comp.getName());
             if (comp.getIntroduced() != null) {
@@ -188,8 +202,8 @@ public class ComputerDAO {
             } else {
                 pstm.setNull(3, Types.TIMESTAMP);
             }
-            if (comp.getCompany_id() != 0) {
-                pstm.setInt(4, comp.getCompany_id());
+            if (comp.getcompanyId() != 0) {
+                pstm.setInt(4, comp.getcompanyId());
             } else {
                 pstm.setNull(4, Types.BIGINT);
             }
@@ -204,6 +218,25 @@ public class ComputerDAO {
             logger.info("Impossible to update: The company is not found in the database");
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * @param resultSet the data from database
+     * @return the computer from database
+     * @exception DAOException .
+     */
+    private Computer daoMapper(ResultSet resultSet) throws DAOException {
+        try {
+            id = resultSet.getInt(1);
+            name = resultSet.getString(2);
+            introduced = resultSet.getString(3);
+            discontinued = resultSet.getString(4);
+            companyId = resultSet.getInt(5);
+            return new Computer.ComputerBuilder(name).id(id).introduced(introduced).discontinued(discontinued)
+                    .companyId(companyId).build();
+        } catch (SQLException e) {
+            throw new DAOException("Impossible to fetch data from database");
         }
     }
 

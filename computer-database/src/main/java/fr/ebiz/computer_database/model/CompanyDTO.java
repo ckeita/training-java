@@ -1,19 +1,16 @@
-/**
- * 
- */
 package fr.ebiz.computer_database.model;
-
 
 /**
  * @author ckeita
- *
  */
 public class CompanyDTO {
-    
     private String id;
     private String name;
-    
-    public CompanyDTO (Company comp) { 
+
+    /**
+     * @param comp the company to translate
+     */
+    public CompanyDTO(Company comp) {
         id = Integer.toString(comp.getId());
         name = comp.getName();
     }
@@ -45,10 +42,7 @@ public class CompanyDTO {
     public void setName(String name) {
         this.name = name;
     }
-    
-    /* (non-Javadoc)
-     * @see java.lang.Object#toString()
-     */
+
     @Override
     public String toString() {
         return "CompanyDTO [id=" + id + ", name=" + name + "]";

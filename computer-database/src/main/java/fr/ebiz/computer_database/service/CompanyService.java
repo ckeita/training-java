@@ -1,11 +1,8 @@
-/**
- * 
- */
 package fr.ebiz.computer_database.service;
 
-import java.sql.ResultSet;
 import java.util.List;
 
+import fr.ebiz.computer_database.exceptions.DAOException;
 import fr.ebiz.computer_database.mapper.CompanyMapper;
 import fr.ebiz.computer_database.model.CompanyDTO;
 import fr.ebiz.computer_database.persistence.CompanyDAO;
@@ -15,30 +12,25 @@ import fr.ebiz.computer_database.persistence.CompanyDAO;
  */
 public class CompanyService {
 
-    CompanyMapper companyMapper;
-    CompanyDAO companyDAO;
+    private static CompanyMapper companyMapper = new CompanyMapper();
+    private static CompanyDAO companyDAO = new CompanyDAO();
 
-    public CompanyService() {
-        companyMapper = new CompanyMapper();
-        companyDAO = new CompanyDAO();
-    }
-    
     /**
-     * @param the id of the computer
+     * @param id of the computer
      * @return the string of the object
+     * @exception DAOException .
      */
-    public CompanyDTO findCompanyById(int id) {
-        ResultSet resultSet = companyDAO.findById(id);
-        return companyMapper.getById(resultSet);
+    public CompanyDTO findCompanyById(int id) throws DAOException {
+        return companyMapper.getById(companyDAO.findById(id));
     }
-    
+
     /**
-     * @param offset: Offset of the first row
-     * @param max: number of rows
+     * @param offset of the first row
+     * @param max number of rows
      * @return the list of computers
+     * @exception DAOException .
      */
-    public List<CompanyDTO> findCompaniesByLimit(int offset, int max) {
-        ResultSet resultSet = companyDAO.findByLimit(offset, max);
-        return companyMapper.getByPage(resultSet);
+    public List<CompanyDTO> findCompaniesByLimit(int offset, int max) throws DAOException {
+        return companyMapper.getByPage(companyDAO.findByLimit(offset, max));
     }
 }
