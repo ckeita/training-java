@@ -2,7 +2,8 @@ package fr.ebiz.computer_database.model;
 
 import java.time.LocalDate;
 
-import fr.ebiz.computer_database.Utils.Util;
+import fr.ebiz.computer_database.exceptions.DateException;
+import fr.ebiz.computer_database.validation.ComputerValidation;
 
 /**
  * @author ckeita
@@ -15,31 +16,41 @@ public class Computer {
     private LocalDate discontinued;
     private int companyId;
     private int i;
+    private ComputerValidation computerValidation = new ComputerValidation();
 
     /**
      * @param computerBuilder to set
+     * @throws DateException .
      */
-    private Computer(ComputerBuilder computerBuilder) {
+    private Computer(ComputerBuilder computerBuilder) throws DateException {
         this.id = computerBuilder.id;
         this.name = computerBuilder.name;
-        if (computerBuilder.introduced != null) {
-            if (computerBuilder.introduced.length() != 0) {
-                if (computerBuilder.introduced.contains(":")) {
-                    this.introduced = LocalDate.parse(computerBuilder.introduced, Util.FROM_FORMATTER);
-                } else {
-                    this.introduced = LocalDate.parse(computerBuilder.introduced, Util.TO_FORMATTER);
-                }
-            }
-        }
-        if (computerBuilder.discontinued != null) {
-            if (computerBuilder.discontinued.length() != 0) {
-                if (computerBuilder.discontinued.contains(":")) {
-                    this.discontinued = LocalDate.parse(computerBuilder.discontinued, Util.FROM_FORMATTER);
-                } else {
-                    this.discontinued = LocalDate.parse(computerBuilder.discontinued, Util.TO_FORMATTER);
-                }
-            }
-        }
+        computerValidation.checkName(this.name);
+        this.introduced = computerValidation.dateValidation(computerBuilder.introduced);
+        this.discontinued = computerValidation.dateValidation(computerBuilder.discontinued);
+        computerValidation.checkDates(this.introduced, this.discontinued);
+        // if (computerBuilder.introduced != null) {
+        // if (computerBuilder.introduced.length() != 0) {
+        // if (computerBuilder.introduced.contains(":")) {
+        // this.introduced = LocalDate.parse(computerBuilder.introduced,
+        // Util.FROM_FORMATTER);
+        // } else {
+        // this.introduced = LocalDate.parse(computerBuilder.introduced,
+        // Util.TO_FORMATTER);
+        // }
+        // }
+        // }
+        // if (computerBuilder.discontinued != null) {
+        // if (computerBuilder.discontinued.length() != 0) {
+        // if (computerBuilder.discontinued.contains(":")) {
+        // this.discontinued = LocalDate.parse(computerBuilder.discontinued,
+        // Util.FROM_FORMATTER);
+        // } else {
+        // this.discontinued = LocalDate.parse(computerBuilder.discontinued,
+        // Util.TO_FORMATTER);
+        // }
+        // }
+        // }
         this.companyId = computerBuilder.companyId;
     }
 
@@ -209,8 +220,9 @@ public class Computer {
 
         /**
          * @return the new build computer
+         * @throws DateException .
          */
-        public Computer build() {
+        public Computer build() throws DateException {
             return new Computer(this);
         }
     }

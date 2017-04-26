@@ -1,8 +1,10 @@
 package fr.ebiz.computer_database.validation;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
-import fr.ebiz.computer_database.model.Computer;
+import fr.ebiz.computer_database.Utils.Util;
+import fr.ebiz.computer_database.exceptions.DateException;
 
 /**
  * @author ebiz
@@ -10,34 +12,45 @@ import fr.ebiz.computer_database.model.Computer;
 public class ComputerValidation {
 
     /**
-     * @param comp to valid
+     * @param date to valid
      * @return if dates are valid or not
+     * @exception DateException .
      */
-    public boolean datesValidation(Computer comp) {
-        // Accept the dates are not set
-        if (comp.getIntroduced().toString().length() == 0 || comp.getDiscontinued().toString().length() == 0) {
-            return true;
-            // Check if the dates valid if they are set
-        } else if (comp.getIntroduced().toString().length() != 0 && comp.getDiscontinued().toString().length() != 0) {
-            return checkDates(comp.getIntroduced(), comp.getDiscontinued());
+    public LocalDate dateValidation(String date) throws DateException {
+        if (date.length() != 0) {
+            try {
+                if (date.contains(":")) {
+                    return LocalDate.parse(date, Util.FROM_FORMATTER);
+                } else {
+                    return LocalDate.parse(date, Util.TO_FORMATTER);
+                }
+            } catch (DateTimeParseException e) {
+                throw new DateException(Util.DATE_FORMAT_EXCEPTION);
+            }
         }
-        return true;
+        return null;
     }
 
     /**
      * @param intrDate The introduced date
      * @param discDate the discontinued date
-     * @return 'true' if discontinued date is greater than The introduced date
-     *         and 'false' if not
+     * @throws DateException .
      */
-    private boolean checkDates(LocalDate intrDate, LocalDate discDate) {
+    public void checkDates(LocalDate intrDate, LocalDate discDate) throws DateException {
 
         if (intrDate != null && discDate != null) {
             if (!intrDate.isBefore(discDate)) {
-                System.out.println("The discontinued date must be greater than the introduced date");
+                throw new DateException(Util.GREATER_THAN);
             }
-            return intrDate.isBefore(discDate);
         }
-        return false;
+    }
+
+    /**
+     * @param name to check
+     */
+    public void checkName(String name) {
+        if (name.length() == 0) {
+            throw new IllegalArgumentException(Util.NAME_EXCEPTION);
+        }
     }
 }

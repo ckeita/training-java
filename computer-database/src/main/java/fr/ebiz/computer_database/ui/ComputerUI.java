@@ -10,6 +10,7 @@ import java.util.Scanner;
 import fr.ebiz.computer_database.Utils.Page;
 import fr.ebiz.computer_database.Utils.Util;
 import fr.ebiz.computer_database.exceptions.DAOException;
+import fr.ebiz.computer_database.exceptions.DateException;
 import fr.ebiz.computer_database.model.Computer;
 import fr.ebiz.computer_database.model.ComputerDTO;
 import fr.ebiz.computer_database.service.ComputerService;
@@ -151,11 +152,21 @@ public class ComputerUI {
 
         // Process Update or Delete
         if (update) {
-            computerService.updateComputer(new Computer.ComputerBuilder(name).introduced(introduced)
-                    .discontinued(discontinued).companyId(companyId).id(id).build());
+            try {
+                computerService.updateComputer(new Computer.ComputerBuilder(name).introduced(introduced)
+                        .discontinued(discontinued).companyId(companyId).id(id).build());
+            } catch (DateException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         } else {
-            computerService.createComputer(new Computer.ComputerBuilder(name).introduced(introduced)
-                    .discontinued(discontinued).companyId(companyId).build());
+            try {
+                computerService.createComputer(new Computer.ComputerBuilder(name).introduced(introduced)
+                        .discontinued(discontinued).companyId(companyId).build());
+            } catch (DateException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
     }
 
@@ -176,7 +187,12 @@ public class ComputerUI {
         this.id = Integer.parseInt(computId);
 
         // Process delete
-        computerService.deleteComputer(new Computer.ComputerBuilder().id(id).build());
+        try {
+            computerService.deleteComputer(new Computer.ComputerBuilder().id(id).build());
+        } catch (DateException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -194,7 +210,12 @@ public class ComputerUI {
             computId = input.nextLine();
         } while (computId.length() == 0);
 
-        System.out.println(computerService.findComputerById(Integer.parseInt(computId)));
+        try {
+            System.out.println(computerService.findComputerById(Integer.parseInt(computId)));
+        } catch (DateException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     /**

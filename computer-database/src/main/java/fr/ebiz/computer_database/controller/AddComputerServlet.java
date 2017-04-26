@@ -66,12 +66,9 @@ public class AddComputerServlet extends HttpServlet {
         try {
             computerService.createComputer(new Computer.ComputerBuilder(name).introduced(introduced)
                     .discontinued(discontinued).companyId(Integer.parseInt(company)).build());
-        } catch (NumberFormatException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (DAOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        } catch (Exception e) {
+            e.getMessage();
+            response.sendError(Util.ERROR_500);
         }
         response.sendRedirect(Util.DASH_REDIRECT);
     }

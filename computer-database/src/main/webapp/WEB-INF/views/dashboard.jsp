@@ -43,7 +43,7 @@
 		</div>
 	</div>
 
-	<form id="deleteForm" action="#" method="POST">
+	<form id="deleteForm" action="${pageContext.request.contextPath}/dashboard" method="POST">
 		<input type="hidden" name="selection" value="">
 	</form>
 

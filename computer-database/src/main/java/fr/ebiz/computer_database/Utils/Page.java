@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import fr.ebiz.computer_database.exceptions.DAOException;
+import fr.ebiz.computer_database.exceptions.DateException;
 import fr.ebiz.computer_database.service.CompanyService;
 import fr.ebiz.computer_database.service.ComputerService;
 
@@ -49,7 +50,12 @@ public class Page {
                 /** List next numberOfRow Computers */
                 // check instance of elements in list
                 if (instanceOfComputer) {
-                    list = computerService.findComputersByLimit(offset, numberOfRow);
+                    try {
+                        list = computerService.findComputersByLimit(offset, numberOfRow);
+                    } catch (DateException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
                 } else {
                     list = companyService.findCompaniesByLimit(offset, numberOfRow);
                 }
@@ -80,7 +86,12 @@ public class Page {
                         offset = 0;
                     }
                     if (instanceOfComputer) {
-                        list = computerService.findComputersByLimit(offset, numberOfRow);
+                        try {
+                            list = computerService.findComputersByLimit(offset, numberOfRow);
+                        } catch (DateException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
                     } else {
                         list = companyService.findCompaniesByLimit(offset, numberOfRow);
                     }

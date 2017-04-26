@@ -1,5 +1,7 @@
 package fr.ebiz.computer_database.persistence;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -7,8 +9,6 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.mysql.jdbc.PreparedStatement;
 
 import fr.ebiz.computer_database.exceptions.DAOException;
 import fr.ebiz.computer_database.model.Company;
@@ -27,23 +27,39 @@ public class CompanyDAO {
      */
     public Company findById(int id) throws DAOException {
         Company comp = new Company();
+        ResultSet result = null;
+        PreparedStatement pstm = null;
+        Connection connection = Persistence.getInstance().getConnection();
         try {
             // Create the sql query to find Computer by id
             String query = "SELECT * FROM company WHERE id=?";
-
             // Initialize a preparedStatement
-            PreparedStatement pstm = (PreparedStatement) Persistence.getInstance().getConnection()
-                    .prepareStatement(query);
+            pstm = connection.prepareStatement(query);
             // Set the parameter id through the preparedStatement
             pstm.setInt(1, id);
             // Execute the query
-            ResultSet result = pstm.executeQuery();
+            result = pstm.executeQuery();
             while (result.next()) {
                 comp = daoMApper(result);
             }
             return comp;
         } catch (SQLException e) {
             throw new DAOException("Impossible to fetch data from database");
+        } finally {
+            try {
+                if (result != null) {
+                    result.close();
+                }
+                if (pstm != null) {
+                    pstm.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+
+            } catch (SQLException e) {
+                throw new DAOException("Impossible to close connection");
+            }
         }
     }
 
@@ -55,18 +71,19 @@ public class CompanyDAO {
      */
     public List<Company> findByLimit(int offset, int max) throws DAOException {
         List<Company> list = new ArrayList<>();
+        ResultSet result = null;
+        PreparedStatement pstm = null;
+        Connection connection = Persistence.getInstance().getConnection();
         try {
             // Create the sql query to find companies
             String query = "SELECT * FROM company LIMIT ?,?";
-
             // Initialize a preparedStatement
-            PreparedStatement pstm = (PreparedStatement) Persistence.getInstance().getConnection()
-                    .prepareStatement(query);
+            pstm = connection.prepareStatement(query);
             // Set the parameters of preparedStatement
             pstm.setInt(1, offset);
             pstm.setInt(2, max);
             // Execute the query
-            ResultSet result = pstm.executeQuery();
+            result = pstm.executeQuery();
             while (result.next()) {
                 list.add(daoMApper(result));
             }
@@ -74,6 +91,21 @@ public class CompanyDAO {
             return list;
         } catch (SQLException e) {
             throw new DAOException("Impossible to fetch data from database");
+        } finally {
+            try {
+                if (result != null) {
+                    result.close();
+                }
+                if (pstm != null) {
+                    pstm.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+
+            } catch (SQLException e) {
+                throw new DAOException("Impossible to close connection");
+            }
         }
     }
 
