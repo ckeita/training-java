@@ -29,28 +29,6 @@ public class Computer {
         this.introduced = computerValidation.dateValidation(computerBuilder.introduced);
         this.discontinued = computerValidation.dateValidation(computerBuilder.discontinued);
         computerValidation.checkDates(this.introduced, this.discontinued);
-        // if (computerBuilder.introduced != null) {
-        // if (computerBuilder.introduced.length() != 0) {
-        // if (computerBuilder.introduced.contains(":")) {
-        // this.introduced = LocalDate.parse(computerBuilder.introduced,
-        // Util.FROM_FORMATTER);
-        // } else {
-        // this.introduced = LocalDate.parse(computerBuilder.introduced,
-        // Util.TO_FORMATTER);
-        // }
-        // }
-        // }
-        // if (computerBuilder.discontinued != null) {
-        // if (computerBuilder.discontinued.length() != 0) {
-        // if (computerBuilder.discontinued.contains(":")) {
-        // this.discontinued = LocalDate.parse(computerBuilder.discontinued,
-        // Util.FROM_FORMATTER);
-        // } else {
-        // this.discontinued = LocalDate.parse(computerBuilder.discontinued,
-        // Util.TO_FORMATTER);
-        // }
-        // }
-        // }
         this.companyId = computerBuilder.companyId;
     }
 

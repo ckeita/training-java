@@ -26,11 +26,9 @@
 		<h1 id="homeTitle">${nbComputers} Computers found</h1>
 		<div id="actions" class="form-horizontal">
 			<div class="pull-left">
-				<form id="searchForm" action="#" method="GET" class="form-inline">
-
+				<form id="searchForm" action="${pageContext.request.contextPath}/dashboard" method="GET" class="form-inline">
 					<input type="search" id="searchbox" name="search"
-						class="form-c
-						ontrol" placeholder="Search name" /> <input
+						class="form-control" placeholder="Search name" /> <input
 						type="submit" id="searchsubmit" value="Filter by name"
 						class="btn btn-primary" />
 				</form>
@@ -75,7 +73,7 @@
 				<c:forEach var="computer" items="${computers}">
 					<tr>
 						<td class="editMode"><input type="checkbox" name="cb"
-						class="cb" value="0"></td>
+						class="cb" value="${computer.id}"></td>
 						<td><a href="${pageContext.request.contextPath}/edit_computer?id=${computer.id}" onclick="">${computer.name}</a></td>
 						<td>
 							<c:if test="${not empty computer.introduced}">

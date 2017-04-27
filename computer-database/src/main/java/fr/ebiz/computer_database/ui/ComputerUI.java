@@ -188,8 +188,8 @@ public class ComputerUI {
 
         // Process delete
         try {
-            computerService.deleteComputer(new Computer.ComputerBuilder().id(id).build());
-        } catch (DateException e) {
+            computerService.deleteComputer(id);
+        } catch (DAOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }

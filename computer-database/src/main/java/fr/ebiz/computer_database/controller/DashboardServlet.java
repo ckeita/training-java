@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import fr.ebiz.computer_database.Utils.Util;
+import fr.ebiz.computer_database.exceptions.DAOException;
+import fr.ebiz.computer_database.exceptions.DateException;
 import fr.ebiz.computer_database.model.ComputerDTO;
 import fr.ebiz.computer_database.service.ComputerService;
 
@@ -25,6 +27,8 @@ public class DashboardServlet extends HttpServlet {
     private int nbPages;
     private int nbLinks;
     private int limit = 10;
+    private String search;
+    private boolean searchState;
 
     /**
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
@@ -36,6 +40,7 @@ public class DashboardServlet extends HttpServlet {
         List<ComputerDTO> computers = null;
         int offset = 1;
         int curPage = 1;
+
         if (request.getParameter("current") != null) {
             offset = Integer.parseInt(request.getParameter("current"));
             curPage = offset;
@@ -43,23 +48,42 @@ public class DashboardServlet extends HttpServlet {
         if (request.getParameter("limit") != null) {
             limit = Integer.parseInt(request.getParameter("limit"));
         }
-        nbComputers = computerService.getNumberOfComputers();
+        // if ((search = request.getParameter("search")) != null) {
+        // searchState = true;
+        // }
+        if (search == null) {
+            search = request.getParameter("search");
+            searchState = true;
+        }
+
         try {
-            computers = computerService.findComputersByLimit((offset - 1) * limit, limit);
-        } catch (Exception e) {
-            e.getMessage();
+            if (!searchState) {
+                nbComputers = computerService.getNumberOfComputers();
+                computers = computerService.findComputersByLimit((offset - 1) * limit, limit);
+            } else {
+                // computers = (List<ComputerDTO>)
+                // this.getServletContext().getAttribute("computers");
+                // System.out.println("searchresult");
+                // nbComputers = (int)
+                // this.getServletContext().getAttribute("nbComputers");
+                computers = computerService.searchComputers(search, (offset - 1) * limit, limit);
+                nbComputers = computers.size();
+            }
+
+            nbPages = nbComputers / limit;
+            nbLinks = nbPages / limit;
+
+            request.setAttribute("computers", computers);
+            request.setAttribute("nbComputers", nbComputers);
+            request.setAttribute("nbPages", nbPages);
+            request.setAttribute("nbLinks", nbLinks);
+            request.setAttribute("curPage", curPage);
+
+            this.getServletContext().getRequestDispatcher(Util.DASHBOARD_VIEW).forward(request, response);
+        } catch (DateException | DAOException | NumberFormatException e) {
+            System.out.println(e.getMessage());
             response.sendError(Util.ERROR_500);
         }
-        nbPages = nbComputers / limit;
-        nbLinks = nbPages / limit;
-
-        request.setAttribute("computers", computers);
-        request.setAttribute("nbComputers", nbComputers);
-        request.setAttribute("nbPages", nbPages);
-        request.setAttribute("nbLinks", nbLinks);
-        request.setAttribute("curPage", curPage);
-
-        this.getServletContext().getRequestDispatcher(Util.DASHBOARD_VIEW).forward(request, response);
     }
 
     /**
@@ -69,6 +93,12 @@ public class DashboardServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        try {
+            computerService.deleteComputer(Integer.parseInt(request.getParameter("selection")));
+            response.sendRedirect(Util.DASH_REDIRECT);
+        } catch (DAOException | NumberFormatException e) {
+            System.out.println(e.getMessage());
+            response.sendError(Util.ERROR_500);
+        }
     }
-
 }

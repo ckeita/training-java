@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 
+import fr.ebiz.computer_database.Utils.Util;
 import fr.ebiz.computer_database.exceptions.DAOException;
 import fr.ebiz.computer_database.exceptions.DateException;
 import fr.ebiz.computer_database.model.Computer;
@@ -27,6 +28,22 @@ public class ComputerDAO {
     private String introduced;
     private String discontinued;
     private int companyId;
+
+    // private String query;
+    //
+    // /**
+    // * the default constructor.
+    // */
+    // public ComputerDAO() {
+    // // TODO Auto-generated constructor stub
+    // }
+    //
+    // /**
+    // * @param query to execute
+    // */
+    // public ComputerDAO(String query) {
+    // this.query = query;
+    // }
 
     /**
      * @param id of the computer
@@ -118,6 +135,50 @@ public class ComputerDAO {
     }
 
     /**
+     * @param name to search
+     * @return number of searched computers in database
+     * @throws DAOException .
+     */
+    public int getNumberOfSearchedComputers(String name) throws DAOException {
+        int number = 0;
+        ResultSet result = null;
+        PreparedStatement pstm = null;
+        Connection connection = Persistence.getInstance().getConnection();
+        try {
+            // Create the sql query to find Computer by id
+            String query = Util.QUERY_NB_COMPUTER_SEARCH;
+            // Initialize a preparedStatement
+            pstm = connection.prepareStatement(query);
+            // Set the parameter name
+            pstm.setString(1, "%" + name + "%");
+            // Execute the query
+            result = pstm.executeQuery();
+            while (result.next()) {
+                number = result.getInt(1);
+            }
+            logger.info("Found elements from database");
+            return number;
+        } catch (SQLException e) {
+            throw new DAOException("Impossible to communicate with database");
+        } finally {
+            try {
+                if (result != null) {
+                    result.close();
+                }
+                if (pstm != null) {
+                    pstm.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+
+            } catch (SQLException e) {
+                throw new DAOException("Impossible to close connection");
+            }
+        }
+    }
+
+    /**
      * @param offset of the first row
      * @param max number of rows
      * @return resultSet
@@ -125,13 +186,12 @@ public class ComputerDAO {
      * @throws DAOException .
      */
     public List<Computer> findByLimit(int offset, int max) throws DAOException, DateException {
+        // create a list of computer
         List<Computer> list = new ArrayList<>();
         ResultSet result = null;
         PreparedStatement pstm = null;
         Connection connection = Persistence.getInstance().getConnection();
         try {
-            // create a list of computer
-
             // Create the sql query to find computers
             String query = "SELECT * FROM computer LIMIT ?,?";
 
@@ -140,6 +200,58 @@ public class ComputerDAO {
             // Set the parameters of preparedStatement
             pstm.setInt(1, offset);
             pstm.setInt(2, max);
+            // Execute the query
+            result = pstm.executeQuery();
+            while (result.next()) {
+                list.add(daoMapper(result));
+            }
+            logger.info("Selected: " + result.getFetchSize() + " elements from database");
+            return list;
+        } catch (SQLException e) {
+            throw new DAOException("Impossible to communicate with database");
+        } finally {
+            try {
+                if (result != null) {
+                    result.close();
+                }
+                if (pstm != null) {
+                    pstm.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+
+            } catch (SQLException e) {
+                throw new DAOException("Impossible to close connection");
+            }
+        }
+    }
+
+    /**
+     * @param name of computer to search
+     * @param offset of the first row
+     * @param max number of rows
+     * @return resultSet
+     * @throws DateException .
+     * @throws DAOException .
+     */
+    public List<Computer> searchByLimit(String name, int offset, int max) throws DAOException, DateException {
+        // create a list of computer
+        List<Computer> list = new ArrayList<>();
+        ResultSet result = null;
+        PreparedStatement pstm = null;
+        Connection connection = Persistence.getInstance().getConnection();
+        try {
+            // Create the sql query to find computers
+            String query = Util.QUERY_COMPUTER_SEARCH;
+
+            // Initialize a preparedStatement
+            pstm = connection.prepareStatement(query);
+            // Set the parameters of preparedStatement
+            pstm.setString(1, "%" + name + "%");
+            pstm.setInt(2, offset);
+            pstm.setInt(3, max);
+            System.out.println(pstm);
             // Execute the query
             result = pstm.executeQuery();
             while (result.next()) {
@@ -221,11 +333,11 @@ public class ComputerDAO {
     }
 
     /**
-     * @param comp the computer to delete from database
+     * @param compId the ID of computer to delete from database
      * @throws SQLException
      * @exception DAOException .
      */
-    public void delete(Computer comp) throws DAOException {
+    public void delete(int compId) throws DAOException {
         PreparedStatement pstm = null;
         Connection connection = Persistence.getInstance().getConnection();
         try {
@@ -234,7 +346,7 @@ public class ComputerDAO {
             // Initialize a preparedStatement
             pstm = connection.prepareStatement(query);
             // Set the parameter name through the preparedStatement
-            pstm.setInt(1, comp.getId());
+            pstm.setInt(1, compId);
             // Execute the query
             if (pstm.executeUpdate() == 0) {
                 logger.info("Impossible to delete: The computer is not found");
@@ -242,7 +354,7 @@ public class ComputerDAO {
                 logger.info("Deleted succeDAOExceptionssfully");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DAOException("Impossible to delete computer");
         } finally {
             try {
                 if (pstm != null) {
@@ -297,10 +409,55 @@ public class ComputerDAO {
             }
         } catch (MySQLIntegrityConstraintViolationException ex) {
             logger.info("Impossible to update: The company is not found in the database");
+            throw new DAOException("Impossible to update: The company is not found in the database");
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DAOException("Impossible to update computer");
         } finally {
             try {
+                if (pstm != null) {
+                    pstm.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                throw new DAOException("Impossible to close connection");
+            }
+        }
+    }
+
+    /**
+     * @param name to search
+     * @exception DAOException .
+     * @exception DateException .
+     * @return the list of found computers
+     */
+    public List<Computer> search(String name) throws DAOException, DateException {
+        // create a list of computer
+        List<Computer> list = new ArrayList<>();
+        PreparedStatement pstm = null;
+        ResultSet result = null;
+        Connection connection = Persistence.getInstance().getConnection();
+
+        // Initialize a preparedStatement
+        try {
+            String query = "SELECT * FROM computer WHERE name LIKE ?";
+            pstm = connection.prepareStatement(query);
+            // Set the parameter name
+            pstm.setString(1, "%" + name + "%");
+            // Execute the query
+            result = pstm.executeQuery();
+            while (result.next()) {
+                list.add(daoMapper(result));
+            }
+            return list;
+        } catch (SQLException e) {
+            throw new DAOException("Impossible to communicate with database");
+        } finally {
+            try {
+                if (result != null) {
+                    result.close();
+                }
                 if (pstm != null) {
                     pstm.close();
                 }

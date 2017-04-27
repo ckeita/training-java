@@ -31,14 +31,17 @@ public class ComputerService {
      * @return the number of computers
      * @throws DAOException .
      */
-    public int getNumberOfComputers() {
-        try {
-            return computerDAO.getNumberOfComputers();
-        } catch (DAOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return 0;
+    public int getNumberOfComputers() throws DAOException {
+        return computerDAO.getNumberOfComputers();
+    }
+
+    /**
+     * @param name to search
+     * @return the number of searched computers
+     * @throws DAOException .
+     */
+    public int getNumberOfSearchedComputers(String name) throws DAOException {
+        return computerDAO.getNumberOfSearchedComputers(name);
     }
 
     /**
@@ -53,6 +56,18 @@ public class ComputerService {
     }
 
     /**
+     * @param name of computer to search
+     * @param offset of the first row
+     * @param max number of rows
+     * @return the list of computers DTO
+     * @throws DAOException .
+     * @throws DateException .
+     */
+    public List<ComputerDTO> searchComputers(String name, int offset, int max) throws DateException, DAOException {
+        return computerMapper.getByPage(computerDAO.searchByLimit(name, offset, max));
+    }
+
+    /**
      * @param comp the computer to put on database
      * @throws DAOException .
      */
@@ -61,26 +76,28 @@ public class ComputerService {
     }
 
     /**
-     * @param comp the computer to delete from database
+     * @param compId the ID of computer to delete from database
+     * @exception DAOException .
      */
-    public void deleteComputer(Computer comp) {
-        try {
-            computerDAO.delete(comp);
-        } catch (DAOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+    public void deleteComputer(int compId) throws DAOException {
+        computerDAO.delete(compId);
     }
 
     /**
      * @param comp the computer to update
+     * @exception DAOException .
      */
-    public void updateComputer(Computer comp) {
-        try {
-            computerDAO.update(comp);
-        } catch (DAOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+    public void updateComputer(Computer comp) throws DAOException {
+        computerDAO.update(comp);
+    }
+
+    /**
+     * @param name to search
+     * @return the list of computers DTO
+     * @throws DAOException .
+     * @throws DateException .
+     */
+    public List<ComputerDTO> searchComputer(String name) throws DateException, DAOException {
+        return computerMapper.getByPage(computerDAO.search(name));
     }
 }

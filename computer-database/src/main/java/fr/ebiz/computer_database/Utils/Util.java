@@ -34,6 +34,12 @@ public interface Util {
     String PARAM_INTRODUCED = "introduced";
     String PARAM_DISCONTINUED = "discontinued";
     String PARAM_COMPANY_ID = "companyId";
+    String PARAM_SEARCH = "search";
+
+    String QUERY_COMPUTER_LIMIT = "SELECT * FROM computer LIMIT ?,?";
+    String QUERY_COMPUTER_SEARCH = "SELECT * FROM computer WHERE name LIKE ? LIMIT ?,?";
+    String QUERY_NB_COMPUTER = "SELECT count(*) FROM computer";
+    String QUERY_NB_COMPUTER_SEARCH = "SELECT count(*) FROM computer WHERE name LIKE ?";
 
     int ERROR_500 = 500;
     int ERROR_404 = 404;

@@ -17,15 +17,17 @@ public class ComputerValidation {
      * @exception DateException .
      */
     public LocalDate dateValidation(String date) throws DateException {
-        if (date.length() != 0) {
-            try {
-                if (date.contains(":")) {
-                    return LocalDate.parse(date, Util.FROM_FORMATTER);
-                } else {
-                    return LocalDate.parse(date, Util.TO_FORMATTER);
+        if (date != null) {
+            if (date.length() != 0) {
+                try {
+                    if (date.contains(":")) {
+                        return LocalDate.parse(date, Util.FROM_FORMATTER);
+                    } else {
+                        return LocalDate.parse(date, Util.TO_FORMATTER);
+                    }
+                } catch (DateTimeParseException e) {
+                    throw new DateException(Util.DATE_FORMAT_EXCEPTION);
                 }
-            } catch (DateTimeParseException e) {
-                throw new DateException(Util.DATE_FORMAT_EXCEPTION);
             }
         }
         return null;
@@ -39,7 +41,7 @@ public class ComputerValidation {
     public void checkDates(LocalDate intrDate, LocalDate discDate) throws DateException {
 
         if (intrDate != null && discDate != null) {
-            if (!intrDate.isBefore(discDate)) {
+            if (!intrDate.isBefore(discDate) && !intrDate.isEqual(discDate)) {
                 throw new DateException(Util.GREATER_THAN);
             }
         }
@@ -49,8 +51,10 @@ public class ComputerValidation {
      * @param name to check
      */
     public void checkName(String name) {
-        if (name.length() == 0) {
-            throw new IllegalArgumentException(Util.NAME_EXCEPTION);
+        if (name != null) {
+            if (name.length() == 0) {
+                throw new IllegalArgumentException(Util.NAME_EXCEPTION);
+            }
         }
     }
 }

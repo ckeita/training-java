@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import fr.ebiz.computer_database.Utils.Util;
+import fr.ebiz.computer_database.exceptions.DAOException;
+import fr.ebiz.computer_database.exceptions.DateException;
 import fr.ebiz.computer_database.model.CompanyDTO;
 import fr.ebiz.computer_database.model.Computer;
 import fr.ebiz.computer_database.model.ComputerDTO;
@@ -48,7 +50,7 @@ public class EditComputerServlet extends HttpServlet {
             request.setAttribute("companies", companies);
             this.getServletContext().getRequestDispatcher(Util.EDIT_COMPUTER_VIEW).forward(request, response);
 
-        } catch (Exception e) {
+        } catch (DateException | DAOException | NumberFormatException e) {
             e.getMessage();
             response.sendError(Util.ERROR_500);
         }
@@ -71,7 +73,7 @@ public class EditComputerServlet extends HttpServlet {
         try {
             computerService.updateComputer(new Computer.ComputerBuilder(name).id(Integer.parseInt(id))
                     .introduced(introduced).discontinued(discontinued).companyId(Integer.parseInt(company)).build());
-        } catch (Exception e) {
+        } catch (DateException | DAOException | NumberFormatException e) {
             e.getMessage();
             response.sendError(Util.ERROR_500);
         }
