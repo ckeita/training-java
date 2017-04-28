@@ -41,6 +41,10 @@ public class DashboardServlet extends HttpServlet {
         int offset = 1;
         int curPage = 1;
 
+        if (request.getParameter("current") == null && request.getParameter("search") == null
+                && request.getParameter("limit") == null) {
+            searchState = false;
+        }
         if (request.getParameter("current") != null) {
             offset = Integer.parseInt(request.getParameter("current"));
             curPage = offset;
@@ -48,11 +52,8 @@ public class DashboardServlet extends HttpServlet {
         if (request.getParameter("limit") != null) {
             limit = Integer.parseInt(request.getParameter("limit"));
         }
-        // if ((search = request.getParameter("search")) != null) {
-        // searchState = true;
-        // }
-        if (search == null) {
-            search = request.getParameter("search");
+        if ((search = request.getParameter("search")) != null) {
+            this.getServletContext().setAttribute("search", search.trim());
             searchState = true;
         }
 
@@ -61,13 +62,10 @@ public class DashboardServlet extends HttpServlet {
                 nbComputers = computerService.getNumberOfComputers();
                 computers = computerService.findComputersByLimit((offset - 1) * limit, limit);
             } else {
-                // computers = (List<ComputerDTO>)
-                // this.getServletContext().getAttribute("computers");
-                // System.out.println("searchresult");
-                // nbComputers = (int)
-                // this.getServletContext().getAttribute("nbComputers");
-                computers = computerService.searchComputers(search, (offset - 1) * limit, limit);
-                nbComputers = computers.size();
+                computers = computerService.searchComputers((String) this.getServletContext().getAttribute("search"),
+                        (offset - 1) * limit, limit);
+                nbComputers = computerService
+                        .getNumberOfSearchedComputers((String) this.getServletContext().getAttribute("search"));
             }
 
             nbPages = nbComputers / limit;

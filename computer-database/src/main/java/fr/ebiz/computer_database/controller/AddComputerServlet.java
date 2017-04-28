@@ -67,7 +67,7 @@ public class AddComputerServlet extends HttpServlet {
             computerService.createComputer(new Computer.ComputerBuilder(name).introduced(introduced)
                     .discontinued(discontinued).companyId(Integer.parseInt(company)).build());
         } catch (Exception e) {
-            e.getMessage();
+            System.out.println(e.getMessage());
             response.sendError(Util.ERROR_500);
         }
         response.sendRedirect(Util.DASH_REDIRECT);

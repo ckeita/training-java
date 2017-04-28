@@ -32,6 +32,7 @@ public final class Persistence {
         hikariConfig.setUsername(Util.USERNAME);
         hikariConfig.setPassword(Util.PASSWORD);
         hikariConfig.setMaximumPoolSize(Util.MAXPOOLSIZE);
+        hikariConfig.setAutoCommit(false);
         hikariConfig.addDataSourceProperty(Util.CACHE_PREP_STMTS, "true");
         hikariConfig.addDataSourceProperty(Util.PREP_STMT_CACHE_SIZE, "250");
         hikariConfig.addDataSourceProperty(Util.PREP_STMT_CACHE_SQL_LIMIT, "2048");
