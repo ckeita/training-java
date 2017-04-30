@@ -25,7 +25,7 @@
                     </div>
                     <h1>Edit Computer</h1>
 
-                    <form action="edit_computer" method="POST">
+                    <form data-toggle="validator" role="form" action="edit_computer" id="form_id" method="POST">
                         <input type="hidden" value="${computer.id}" id="id" name="id"/> <!-- TODO: Change this value with the computer id -->
                         <fieldset>
                             <div class="form-group">
@@ -33,12 +33,16 @@
                                 <input type="text" class="form-control" id="computerName" name="computerName" value="${computer.name}" placeholder="Computer name">
                             </div>
                             <div class="form-group">
-                                <label for="introduced">Introduced date</label>
-                                <input type="date" class="form-control" id="introduced" name="introduced" value="${computer.introduced}" placeholder="Introduced date">
+                            	<div class="input-append date" id="introduced_date">
+	                                <label for="introduced">Introduced date</label>
+	                                <input type="date" class="form-control" id="introduced" name="introduced" value="${computer.introduced}" placeholder="Introduced date">
+                                </div>
                             </div>
                             <div class="form-group">
-                                <label for="discontinued">Discontinued date</label>
-                                <input type="date" class="form-control" id="discontinued" name="discontinued" value="${computer.discontinued}" placeholder="Discontinued date">
+                            	<div class="input-append date" id="discontinued_date">
+	                                <label for="discontinued">Discontinued date</label>
+	                                <input type="date" class="form-control" id="discontinued" name="discontinued" value="${computer.discontinued}" placeholder="Discontinued date">
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="companyId">Company</label>
@@ -61,13 +65,12 @@
         </div>
     </section>
     <script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/bootstrap-datepicker.min.js"></script>
     <script type="text/javascript" src="js/bootstrap-datepicker.fr.min.js"></script>
-    <script type="text/javascript">
-	    $(function() {
-	    	$('#introduced').datepicker();
-	    	$('#discontinued').datepicker();
-	    });
-    </script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment-with-locales.min.js"></script>
+    <script type="text/javascript" src="js/front-validation.js"></script>
 </body>
 </html>

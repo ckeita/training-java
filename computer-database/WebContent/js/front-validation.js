@@ -4,7 +4,7 @@ $(function() {
 	$('#introduced').datepicker();
 	$('#discontinued').datepicker();
 	var int_date = $('#introduced').val();
-	$("#add_form").bootstrapValidator({
+	$("#form_id").bootstrapValidator({
 		feedbackIcons: {
             valid: 'glyphicon glyphicon-ok',
             invalid: 'glyphicon glyphicon-remove',
@@ -39,9 +39,9 @@ $(function() {
         }
 	});
 	$('#introduced_date').on('changeDate show', function(e) {
-        $('#add_form').bootstrapValidator('revalidateField', 'introduced');
+        $('#form_id').bootstrapValidator('revalidateField', 'introduced');
     });
 	$('#discontinued_date').on('changeDate show', function(e) {
-        $('#add_form').bootstrapValidator('revalidateField', 'discontinued');
+        $('#form_id').bootstrapValidator('revalidateField', 'discontinued');
     });
 });
