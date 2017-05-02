@@ -69,28 +69,28 @@ public class ComputerDTO {
     /**
      * @return the introduced
      */
-    public String getintroduced() {
+    public String getIntroduced() {
         return introduced;
     }
 
     /**
      * @param introduced the introduced to set
      */
-    public void setintroduced(String introduced) {
+    public void setIntroduced(String introduced) {
         this.introduced = introduced;
     }
 
     /**
      * @return the discontinued
      */
-    public String getdiscontinued() {
+    public String getDiscontinued() {
         return discontinued;
     }
 
     /**
      * @param discontinued the discontinued to set
      */
-    public void setdiscontinued(String discontinued) {
+    public void setDiscontinued(String discontinued) {
         this.discontinued = discontinued;
     }
 

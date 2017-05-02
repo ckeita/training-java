@@ -46,7 +46,7 @@
 	</form>
 
 	<div class="container" style="margin-top: 10px;">
-		<table class="table table-striped table-bordered">
+		<table class="table table-striped table-bordered" >
 			<thead>
 				<tr>
 					<!-- Variable declarations for passing labels as parameters -->
@@ -59,13 +59,13 @@
 								class="fa fa-trash-o fa-lg"></i>
 						</a>
 					</span></th>
-					<th>Computer name</th>
-					<th>Introduced date</th>
+					<mytags:orderby target="dashboard?orderby=name" column="Computer name" ></mytags:orderby>
+					<!-- Table header for Introduced Date -->
+					<mytags:orderby target="dashboard?orderby=introduced" column="Introduced date" ></mytags:orderby>
 					<!-- Table header for Discontinued Date -->
-					<th>Discontinued date</th>
+					<mytags:orderby target="dashboard?orderby=discontinued" column="Discontinued date" ></mytags:orderby>
 					<!-- Table header for Company -->
-					<th>Company</th>
-
+					<mytags:orderby target="dashboard?orderby=company" column="Company" ></mytags:orderby>
 				</tr>
 			</thead>
 			<!-- Browse attribute computers -->
