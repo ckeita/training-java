@@ -121,7 +121,36 @@ public class DashboardServlet extends HttpServlet {
                 System.out.println(computers);
                 break;
             case "discontinued":
-
+                computers = (List<ComputerDTO>) this.getServletContext().getAttribute("computers");
+                System.out.println(computers);
+                if (asc) {
+                    Collections.sort(computers, new Comparator<ComputerDTO>() {
+                        @Override
+                        public int compare(ComputerDTO o1, ComputerDTO o2) {
+                            asc = false;
+                            if (o1.getDiscontinued() != null && o2.getDiscontinued() != null) {
+                                return LocalDate.parse(o1.getDiscontinued(), Util.TO_FORMATTER)
+                                        .compareTo(LocalDate.parse(o2.getDiscontinued(), Util.TO_FORMATTER));
+                            } else {
+                                return 1;
+                            }
+                        }
+                    });
+                } else {
+                    Collections.sort(computers, new Comparator<ComputerDTO>() {
+                        @Override
+                        public int compare(ComputerDTO o1, ComputerDTO o2) {
+                            asc = true;
+                            if (o1.getDiscontinued() != null && o2.getDiscontinued() != null) {
+                                return LocalDate.parse(o2.getDiscontinued(), Util.TO_FORMATTER)
+                                        .compareTo(LocalDate.parse(o1.getDiscontinued(), Util.TO_FORMATTER));
+                            } else {
+                                return 1;
+                            }
+                        }
+                    });
+                }
+                System.out.println(computers);
                 break;
             case "company":
                 computers = (List<ComputerDTO>) this.getServletContext().getAttribute("computers");
@@ -159,7 +188,6 @@ public class DashboardServlet extends HttpServlet {
         } else {
             orderby = false;
         }
-
         try {
             if (!searchState && !orderby) {
                 nbComputers = computerService.getNumberOfComputers();
