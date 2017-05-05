@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter;
 public interface Util {
 
     String DB_CLASS = "com.mysql.jdbc.Driver";
-    String DATABASE = "jdbc:mysql://localhost:3306/computer-database-db?useSSL=false&zeroDateTimeBehavior=convertToNull";
+    String DATABASE = "jdbc:mysql://mysql-cdb-test/computer-database-db?useSSL=false&zeroDateTimeBehavior=convertToNull";
     String USERNAME = "admincdb";
     String PASSWORD = "qwerty1234";
     String CACHE_PREP_STMTS = "cachePrepStmts";
