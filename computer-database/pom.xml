@@ -6,7 +6,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<properties>
-        <skipTests>true</skipTests>
+        <!-- <skipTests>true</skipTests>  -->
     </properties>
 	<name>computer-database</name>
 	<dependencies>
@@ -88,7 +88,7 @@
 				<artifactId>maven-war-plugin</artifactId>
 				<version>3.0.0</version>
 				<configuration>
-					<warSourceDirectory>WebContent</warSourceDirectory>
+					<webappDirectory>src/main/webapp</webappDirectory>
 				</configuration>
 			</plugin>		
 			<!-- Tomcat plugin -->
