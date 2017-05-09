@@ -8,5 +8,5 @@ docker run -i --rm --name cdb-project -v "$SRC_DIR":/home/cdb -w /home/cdb maven
 docker build -t tomcat-cdb .
 
 # run tomcat cdb
-docker run -d -i --rm --name tomcat-cdb -p 8081:8080 tomcat:8.0.43-jre8
+docker run -d -i --rm --name tomcat-cdb -p 8081:8080 tomcat-cdb
 
