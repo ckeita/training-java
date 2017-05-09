@@ -89,6 +89,7 @@
 				<version>3.0.0</version>
 				<configuration>
 					<webappDirectory>src/main/webapp</webappDirectory>
+					<outputDirectory>/home/cdb</outputDirectory>
 				</configuration>
 			</plugin>		
 			<!-- Tomcat plugin -->
