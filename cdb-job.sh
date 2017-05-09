@@ -1,3 +1,4 @@
+
 # src directory
 SRC_DIR="/home/ebiz/Projects/training-java/computer-database"
 
