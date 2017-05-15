@@ -30,7 +30,7 @@
                         <fieldset>
                             <div class="form-group">
                                 <label for="computerName">Computer name</label>
-                                <input type="text" class="form-control" id="computerName" name="computerName" value="${computer.name}" placeholder="Computer name">
+                                <input type="text" class="form-control" id="name" name="name" value="${computer.name}" placeholder="Computer name">
                             </div>
                             <div class="form-group">
                             	<div class="input-append date" id="introduced_date">

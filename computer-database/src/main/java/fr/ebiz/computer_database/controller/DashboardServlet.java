@@ -57,7 +57,15 @@ public class DashboardServlet extends HttpServlet {
         if (request.getParameter("limit") != null) {
             limit = Integer.parseInt(request.getParameter("limit"));
         }
-        if ((search = request.getParameter("search")) != null) {
+        // if ((search = request.getParameter("search")) != null) {
+        // System.out.println(search);
+        // search = search.trim();
+        // this.getServletContext().setAttribute("search", search);
+        // searchState = true;
+        // }
+        if (request.getParameter("search") != null) {
+            System.out.println(search);
+            search = request.getParameter("search");
             this.getServletContext().setAttribute("search", search.trim());
             searchState = true;
         }
@@ -214,7 +222,7 @@ public class DashboardServlet extends HttpServlet {
             this.getServletContext().getRequestDispatcher(Util.DASHBOARD_VIEW).forward(request, response);
         } catch (DateException | DAOException | NumberFormatException e) {
             System.out.println(e.getMessage());
-            response.sendError(Util.ERROR_500);
+            response.setStatus(Util.ERROR_500);
         }
     }
 
@@ -226,11 +234,15 @@ public class DashboardServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            computerService.deleteComputer(Integer.parseInt(request.getParameter("selection")));
+            String[] listId = request.getParameterValues("selection");
+            for (String id : listId) {
+                computerService.deleteComputer(Integer.parseInt(id));
+            }
+            // computerService.deleteComputer(Integer.parseInt(request.getParameter("selection")));
             response.sendRedirect(Util.DASH_REDIRECT);
         } catch (DAOException | NumberFormatException e) {
             System.out.println(e.getMessage());
-            response.sendError(Util.ERROR_500);
+            response.setStatus(Util.ERROR_500);
         }
     }
 }

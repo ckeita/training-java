@@ -42,6 +42,8 @@ public class ComputerValidation {
 
         if (intrDate != null && discDate != null) {
             if (!intrDate.isBefore(discDate) && !intrDate.isEqual(discDate)) {
+                System.out.println("Discontinued " + discDate);
+                System.out.println("Introduced " + intrDate);
                 throw new DateException(Util.GREATER_THAN);
             }
         }

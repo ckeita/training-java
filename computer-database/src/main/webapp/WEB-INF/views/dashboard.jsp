@@ -26,7 +26,7 @@
 		<h1 id="homeTitle">${nbComputers} Computers found</h1>
 		<div id="actions" class="form-horizontal">
 			<div class="pull-left">
-				<form id="searchForm" action="${pageContext.request.contextPath}/dashboard" method="GET" class="form-inline">
+				<form id="searchForm" action="dashboard" method="GET" class="form-inline">
 					<input type="search" id="searchbox" name="search"
 						class="form-control" placeholder="Search name" /> <input
 						type="submit" id="searchsubmit" value="Filter by name"
@@ -41,7 +41,7 @@
 		</div>
 	</div>
 
-	<form id="deleteForm" action="${pageContext.request.contextPath}/dashboard" method="POST">
+	<form id="deleteForm" action="dashboard" method="POST">
 		<input type="hidden" name="selection" value="">
 	</form>
 
@@ -74,7 +74,7 @@
 					<tr>
 						<td class="editMode"><input type="checkbox" name="cb"
 						class="cb" value="${computer.id}"></td>
-						<td><a href="${pageContext.request.contextPath}/edit_computer?id=${computer.id}" onclick="">${computer.name}</a></td>
+						<td><a href="edit_computer?id=${computer.id}" onclick="">${computer.name}</a></td>
 						<td>
 							<c:if test="${not empty computer.introduced}">
 								${computer.introduced}

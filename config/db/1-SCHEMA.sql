@@ -1,3 +1,4 @@
+set @@sql_mode='no_engine_substitution';
 drop schema if exists `computer-database-db`;
   create schema if not exists `computer-database-db`;
   use `computer-database-db`;

@@ -211,8 +211,8 @@ public class ComputerDAO {
         ResultSet result = null;
         PreparedStatement pstm = null;
         // Transaction.startTransaction();
-        // Connection connection = Transaction.getTransactionId();
-        Connection connection = Persistence.getInstance().getConnection();
+        Connection connection = Transaction.getTransactionId();
+        // Connection connection = Persistence.getInstance().getConnection();
         try {
             // Create the sql query to find computers
             String query = Util.QUERY_COMPUTER_SEARCH;
@@ -397,7 +397,8 @@ public class ComputerDAO {
         List<Computer> list = new ArrayList<>();
         PreparedStatement pstm = null;
         ResultSet result = null;
-        Connection connection = Persistence.getInstance().getConnection();
+        // Connection connection = Persistence.getInstance().getConnection();
+        Connection connection = Transaction.getTransactionId();
 
         // Initialize a preparedStatement
         try {

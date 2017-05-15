@@ -32,6 +32,7 @@ public class ComputerService {
         Transaction.setTransaction(connection);
         ComputerDTO computerDTO = computerMapper.getById(computerDAO.findById(id));
         try {
+            connection.commit();
             connection.close();
             Transaction.removeTransaction();
             return computerDTO;
@@ -49,6 +50,7 @@ public class ComputerService {
         Transaction.setTransaction(connection);
         int nbComputers = computerDAO.getNumberOfComputers();
         try {
+            connection.commit();
             connection.close();
             Transaction.removeTransaction();
             return nbComputers;
@@ -67,6 +69,7 @@ public class ComputerService {
         Transaction.setTransaction(connection);
         int nbFoundComputers = computerDAO.getNumberOfSearchedComputers(name);
         try {
+            connection.commit();
             connection.close();
             Transaction.removeTransaction();
             return nbFoundComputers;
@@ -87,6 +90,7 @@ public class ComputerService {
         Transaction.setTransaction(connection);
         List<ComputerDTO> computers = computerMapper.getByPage(computerDAO.findByLimit(offset, max));
         try {
+            connection.commit();
             connection.close();
             Transaction.removeTransaction();
             return computers;
@@ -108,6 +112,7 @@ public class ComputerService {
         Transaction.setTransaction(connection);
         List<ComputerDTO> computers = computerMapper.getByPage(computerDAO.searchByLimit(name, offset, max));
         try {
+            connection.commit();
             connection.close();
             Transaction.removeTransaction();
             return computers;

@@ -68,7 +68,8 @@ public class AddComputerServlet extends HttpServlet {
                     .discontinued(discontinued).companyId(Integer.parseInt(company)).build());
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            response.sendError(Util.ERROR_500);
+            // response.sendError(Util.ERROR_500);
+            response.setStatus(Util.ERROR_500);
         }
         response.sendRedirect(Util.DASH_REDIRECT);
     }

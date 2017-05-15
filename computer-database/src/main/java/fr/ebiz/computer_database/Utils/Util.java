@@ -29,7 +29,7 @@ public interface Util {
     String EDIT_COMPUTER_VIEW = "/WEB-INF/views/edit_computer.jsp";
 
     String PARAM_ID = "id";
-    String PARAM_NAME = "computerName";
+    String PARAM_NAME = "name";
     String PARAM_INTRODUCED = "introduced";
     String PARAM_DISCONTINUED = "discontinued";
     String PARAM_COMPANY_ID = "companyId";
