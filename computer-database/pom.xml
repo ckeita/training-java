@@ -73,7 +73,7 @@
 				</excludes>
 			</resource>
 		</resources>
-		<testSourceDirectory>src/java/test</testSourceDirectory>
+		<testSourceDirectory>src/test/java</testSourceDirectory>
 		<plugins>
 			<!-- Maven compile plugin -->
 			<plugin>
@@ -89,7 +89,7 @@
 				<version>3.0.0</version>
 				<configuration>
 					<webappDirectory>src/main/webapp</webappDirectory>
-					<outputDirectory>/home/cdb</outputDirectory>
+					<!-- <outputDirectory>/home/cdb</outputDirectory> -->
 				</configuration>
 			</plugin>		
 			<!-- Tomcat plugin -->
