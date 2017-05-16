@@ -59,13 +59,13 @@
 								class="fa fa-trash-o fa-lg"></i>
 						</a>
 					</span></th>
-					<mytags:orderby target="dashboard?orderby=name" column="Computer name" ></mytags:orderby>
+					<mytags:orderby target="dashboard?column=name&order=${order}" column="Computer name" ></mytags:orderby>
 					<!-- Table header for Introduced Date -->
-					<mytags:orderby target="dashboard?orderby=introduced" column="Introduced date" ></mytags:orderby>
+					<mytags:orderby target="dashboard?column=introduced&order=${order}" column="Introduced date" ></mytags:orderby>
 					<!-- Table header for Discontinued Date -->
-					<mytags:orderby target="dashboard?orderby=discontinued" column="Discontinued date" ></mytags:orderby>
+					<mytags:orderby target="dashboard?column=discontinued&order=${order}" column="Discontinued date" ></mytags:orderby>
 					<!-- Table header for Company -->
-					<mytags:orderby target="dashboard?orderby=company" column="Company" ></mytags:orderby>
+					<mytags:orderby target="dashboard?column=company&order=${order}" column="Company" ></mytags:orderby>
 				</tr>
 			</thead>
 			<!-- Browse attribute computers -->

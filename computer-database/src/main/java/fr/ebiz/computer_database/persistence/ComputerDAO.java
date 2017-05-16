@@ -55,7 +55,7 @@ public class ComputerDAO {
             while (result.next()) {
                 comp = daoMapper(result);
             }
-            logger.info("Found element from database");
+            logger.info("[findById] Found element from database");
             return comp;
         } catch (SQLException e) {
             throw new DAOException("Impossible to communicate with database findById");
@@ -81,7 +81,6 @@ public class ComputerDAO {
         int number = 0;
         ResultSet result = null;
         PreparedStatement pstm = null;
-        // Connection connection = Persistence.getInstance().getConnection();
         Connection connection = Transaction.getTransactionId();
         try {
             // Create the sql query to find Computer by id
@@ -94,7 +93,7 @@ public class ComputerDAO {
             while (result.next()) {
                 number = result.getInt(1);
             }
-            logger.info("Found element from database");
+            logger.info("[getNumberOfComputers] Found element from database");
             return number;
         } catch (SQLException e) {
             throw new DAOException("Impossible to communicate with database getNumberOfComputers");
@@ -121,7 +120,6 @@ public class ComputerDAO {
         int number = 0;
         ResultSet result = null;
         PreparedStatement pstm = null;
-        // Connection connection = Persistence.getInstance().getConnection();
         Connection connection = Transaction.getTransactionId();
         try {
             // Create the sql query to find Computer by id
@@ -135,7 +133,7 @@ public class ComputerDAO {
             while (result.next()) {
                 number = result.getInt(1);
             }
-            logger.info("Found elements from database");
+            logger.info("[getNumberOfSearchedComputers] Found elements from database");
             return number;
         } catch (SQLException e) {
             throw new DAOException("Impossible to communicate with database getNumberOfSearchedComputers");
@@ -176,13 +174,55 @@ public class ComputerDAO {
             pstm.setInt(2, max);
             // Execute the query
             result = pstm.executeQuery();
+            logger.info("[findByLimit] Selected: " + result.getFetchSize() + " elements from database");
             while (result.next()) {
                 list.add(daoMapper(result));
             }
-            logger.info("Selected: " + result.getFetchSize() + " elements from database");
+
             return list;
         } catch (SQLException e) {
             throw new DAOException("Impossible to communicate with database findByLimit");
+        } finally {
+            try {
+                if (result != null) {
+                    result.close();
+                }
+                if (pstm != null) {
+                    pstm.close();
+                }
+            } catch (SQLException e) {
+                throw new DAOException("Impossible to close connection");
+            }
+        }
+    }
+
+    /**
+     * @param order for ordering
+     * @param orderBy for ordering
+     * @return resultSet
+     * @throws DateException .
+     * @throws DAOException .
+     */
+    public List<Computer> findByOrder(String orderBy, String order) throws DAOException, DateException {
+        // create a list of computer
+        List<Computer> list = new ArrayList<>();
+        ResultSet result = null;
+        PreparedStatement pstm = null;
+        Connection connection = Transaction.getTransactionId();
+        try {
+            // Create the sql query to find computers
+            String query = "SELECT * FROM computer ORDER BY " + orderBy + " " + order;
+            // Initialize a preparedStatement
+            pstm = connection.prepareStatement(query);
+            result = pstm.executeQuery();
+            logger.info("[findByLimit] Selected: " + result.getFetchSize() + " elements from database");
+            while (result.next()) {
+                list.add(daoMapper(result));
+            }
+
+            return list;
+        } catch (SQLException e) {
+            throw new DAOException("[findByLimit] Impossible to communicate with database");
         } finally {
             try {
                 if (result != null) {
@@ -212,7 +252,6 @@ public class ComputerDAO {
         PreparedStatement pstm = null;
         // Transaction.startTransaction();
         Connection connection = Transaction.getTransactionId();
-        // Connection connection = Persistence.getInstance().getConnection();
         try {
             // Create the sql query to find computers
             String query = Util.QUERY_COMPUTER_SEARCH;
@@ -305,7 +344,6 @@ public class ComputerDAO {
     public void delete(int compId) throws DAOException {
         PreparedStatement pstm = null;
         Connection connection = Transaction.getTransactionId();
-        // Connection connection = Persistence.getInstance().getConnection();
         try {
             String query = "DELETE FROM computer WHERE id=?";
 
@@ -340,7 +378,6 @@ public class ComputerDAO {
     public void update(Computer comp) throws DAOException {
         PreparedStatement pstm = null;
         Connection connection = Transaction.getTransactionId();
-        // Connection connection = Persistence.getInstance().getConnection();
         try {
             String query = "UPDATE computer SET name=?, introduced=?, discontinued=?, company_id=? WHERE id=?";
 

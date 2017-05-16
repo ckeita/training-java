@@ -29,7 +29,7 @@
                     <form data-toggle="validator" role="form" action="add_computer" id="form_id"  method="POST">
                         <fieldset>
                             <div class="form-group">
-                                <label for="computerName">Computer name</label>
+                                <label for="name">Computer name</label>
                                 <input type="text" class="form-control" id="name" name="name" placeholder="Computer name" required>
                             </div>
                             <div class="form-group">

@@ -52,7 +52,7 @@ public class EditComputerServlet extends HttpServlet {
 
         } catch (DateException | DAOException | NumberFormatException e) {
             e.getMessage();
-            response.setStatus(Util.ERROR_500);
+            response.sendError(Util.ERROR_500);
         }
 
     }
@@ -75,7 +75,7 @@ public class EditComputerServlet extends HttpServlet {
                     .introduced(introduced).discontinued(discontinued).companyId(Integer.parseInt(company)).build());
         } catch (DateException | DAOException | NumberFormatException e) {
             e.getMessage();
-            response.setStatus(Util.ERROR_500);
+            response.sendError(Util.ERROR_500);
         }
         response.sendRedirect(Util.DASH_REDIRECT);
     }

@@ -26,7 +26,7 @@
 		<h1 id="homeTitle">${nbComputers} Computers found</h1>
 		<div id="actions" class="form-horizontal">
 			<div class="pull-left">
-				<form id="searchForm" action="${pageContext.request.contextPath}/dashboard" method="GET" class="form-inline">
+				<form id="searchForm" action="dashboard" method="GET" class="form-inline">
 					<input type="search" id="searchbox" name="search"
 						class="form-control" placeholder="Search name" /> <input
 						type="submit" id="searchsubmit" value="Filter by name"
@@ -41,7 +41,7 @@
 		</div>
 	</div>
 
-	<form id="deleteForm" action="${pageContext.request.contextPath}/dashboard" method="POST">
+	<form id="deleteForm" action="dashboard" method="POST">
 		<input type="hidden" name="selection" value="">
 	</form>
 
@@ -59,13 +59,13 @@
 								class="fa fa-trash-o fa-lg"></i>
 						</a>
 					</span></th>
-					<mytags:orderby target="dashboard?orderby=name" column="Computer name" ></mytags:orderby>
+					<mytags:orderby target="dashboard?column=name&order=${order}" column="Computer name" ></mytags:orderby>
 					<!-- Table header for Introduced Date -->
-					<mytags:orderby target="dashboard?orderby=introduced" column="Introduced date" ></mytags:orderby>
+					<mytags:orderby target="dashboard?column=introduced&order=${order}" column="Introduced date" ></mytags:orderby>
 					<!-- Table header for Discontinued Date -->
-					<mytags:orderby target="dashboard?orderby=discontinued" column="Discontinued date" ></mytags:orderby>
+					<mytags:orderby target="dashboard?column=discontinued&order=${order}" column="Discontinued date" ></mytags:orderby>
 					<!-- Table header for Company -->
-					<mytags:orderby target="dashboard?orderby=company" column="Company" ></mytags:orderby>
+					<mytags:orderby target="dashboard?column=company&order=${order}" column="Company" ></mytags:orderby>
 				</tr>
 			</thead>
 			<!-- Browse attribute computers -->
@@ -74,7 +74,7 @@
 					<tr>
 						<td class="editMode"><input type="checkbox" name="cb"
 						class="cb" value="${computer.id}"></td>
-						<td><a href="${pageContext.request.contextPath}/edit_computer?id=${computer.id}" onclick="">${computer.name}</a></td>
+						<td><a href="edit_computer?id=${computer.id}" onclick="">${computer.name}</a></td>
 						<td>
 							<c:if test="${not empty computer.introduced}">
 								${computer.introduced}

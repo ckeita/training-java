@@ -33,6 +33,7 @@ public interface Util {
     String PARAM_INTRODUCED = "introduced";
     String PARAM_DISCONTINUED = "discontinued";
     String PARAM_COMPANY_ID = "companyId";
+    String PARAM_COMPANY_NAME = "company";
     String PARAM_SEARCH = "search";
 
     String QUERY_COMPUTER_LIMIT = "SELECT * FROM computer LIMIT ?,?";
@@ -45,6 +46,14 @@ public interface Util {
     int ERROR_403 = 403;
 
     String DASH_REDIRECT = "dashboard";
+
+    String ASC = "ASC";
+    String DESC = "DESC";
+    String COLUMN_SORT = "column";
+    String CURRENT_PAGE = "current";
+    String PAGE_LIMIT = "limit";
+    String ORDER_COLUMN = "column";
+    String SORT_ORDER = "order";
 
     int PAGING = 10;
     int OFFSET = 0;

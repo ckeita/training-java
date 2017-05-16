@@ -33,11 +33,16 @@ public class ComputerService {
         ComputerDTO computerDTO = computerMapper.getById(computerDAO.findById(id));
         try {
             connection.commit();
-            connection.close();
-            Transaction.removeTransaction();
             return computerDTO;
         } catch (SQLException e) {
             throw new DAOException("[findComputerById] " + e.getMessage());
+        } finally {
+            try {
+                connection.close();
+                Transaction.removeTransaction();
+            } catch (SQLException e) {
+                throw new DAOException("[createComputer] " + e.getMessage());
+            }
         }
     }
 
@@ -51,11 +56,16 @@ public class ComputerService {
         int nbComputers = computerDAO.getNumberOfComputers();
         try {
             connection.commit();
-            connection.close();
-            Transaction.removeTransaction();
             return nbComputers;
         } catch (SQLException e) {
             throw new DAOException("[getNumberOfComputers] " + e.getMessage());
+        } finally {
+            try {
+                connection.close();
+                Transaction.removeTransaction();
+            } catch (SQLException e) {
+                throw new DAOException("[createComputer] " + e.getMessage());
+            }
         }
     }
 
@@ -70,11 +80,16 @@ public class ComputerService {
         int nbFoundComputers = computerDAO.getNumberOfSearchedComputers(name);
         try {
             connection.commit();
-            connection.close();
-            Transaction.removeTransaction();
             return nbFoundComputers;
         } catch (SQLException e) {
             throw new DAOException("[getNumberOfSearchedComputers] " + e.getMessage());
+        } finally {
+            try {
+                connection.close();
+                Transaction.removeTransaction();
+            } catch (SQLException e) {
+                throw new DAOException("[createComputer] " + e.getMessage());
+            }
         }
     }
 
@@ -91,11 +106,43 @@ public class ComputerService {
         List<ComputerDTO> computers = computerMapper.getByPage(computerDAO.findByLimit(offset, max));
         try {
             connection.commit();
-            connection.close();
-            Transaction.removeTransaction();
             return computers;
         } catch (SQLException e) {
             throw new DAOException("[findComputersByLimit] " + e.getMessage());
+        } finally {
+            try {
+                connection.close();
+                Transaction.removeTransaction();
+            } catch (SQLException e) {
+                throw new DAOException("[createComputer] " + e.getMessage());
+            }
+        }
+    }
+
+    /**
+     * @param orderBy for ordering
+     * @param order for ascendant or descendant
+     * @return the list of computers DTO
+     * @throws DAOException .
+     * @throws DateException .
+     */
+    public List<ComputerDTO> findComputersByOrder(String orderBy, String order) throws DateException, DAOException {
+        Connection connection = Persistence.getInstance().getConnection();
+        Transaction.setTransaction(connection);
+        System.out.println("orderby " + orderBy + " order " + order);
+        List<ComputerDTO> computers = computerMapper.getByPage(computerDAO.findByOrder(orderBy, order));
+        try {
+            connection.commit();
+            return computers;
+        } catch (SQLException e) {
+            throw new DAOException("[findComputersByOrder] " + e.getMessage());
+        } finally {
+            try {
+                connection.close();
+                Transaction.removeTransaction();
+            } catch (SQLException e) {
+                throw new DAOException("[createComputer] " + e.getMessage());
+            }
         }
     }
 
@@ -113,11 +160,16 @@ public class ComputerService {
         List<ComputerDTO> computers = computerMapper.getByPage(computerDAO.searchByLimit(name, offset, max));
         try {
             connection.commit();
-            connection.close();
-            Transaction.removeTransaction();
             return computers;
         } catch (SQLException e) {
             throw new DAOException("[findComputersByLimit] " + e.getMessage());
+        } finally {
+            try {
+                connection.close();
+                Transaction.removeTransaction();
+            } catch (SQLException e) {
+                throw new DAOException("[createComputer] " + e.getMessage());
+            }
         }
     }
 
