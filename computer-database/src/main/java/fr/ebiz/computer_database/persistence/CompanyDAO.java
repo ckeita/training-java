@@ -13,14 +13,16 @@ import org.slf4j.LoggerFactory;
 import fr.ebiz.computer_database.exceptions.DAOException;
 import fr.ebiz.computer_database.model.Company;
 
+import javax.sql.DataSource;
+
 /**
  * @author ckeita
  */
 public class CompanyDAO {
 
     private static Logger logger = LoggerFactory.getLogger(CompanyDAO.class);
-    private ConnectionManager conMng = ConnectionManager.getInstance();
-
+//    private ConnectionManager conMng = ConnectionManager.getInstance();
+    private static DataSource dataSource;
     /**
      * @param id of the Company
      * @return the ResultSet of the query
@@ -33,7 +35,8 @@ public class CompanyDAO {
         Connection connection = null;
         try {
            // Get one connection
-        	connection = conMng.getConnection();
+            //connection = conMng.getConnection();
+            connection = dataSource.getConnection();
             // Create the sql query to find Computer by id
             String query = "SELECT * FROM company WHERE id=?";
             // Initialize a preparedStatement
@@ -49,10 +52,10 @@ public class CompanyDAO {
         } catch (SQLException e) {
             throw new DAOException("[findById] Impossible to fetch data from database");
         } finally {
-        	if (!conMng.isTransactional()) {
+        	/*if (!conMng.isTransactional()) {
         		conMng.closeConnection();
         	}
-        	conMng.closeObjects(pstm, result);
+        	conMng.closeObjects(pstm, result);*/
         }
     }
 
@@ -69,8 +72,9 @@ public class CompanyDAO {
         Connection connection = null;
         try {
         	// Get one connection
-        	connection = conMng.getConnection();
-        	
+            //connection = conMng.getConnection();
+            connection = dataSource.getConnection();
+
             // Create the sql query to find companies
             String query = "SELECT * FROM company LIMIT ?,?";
             // Initialize a preparedStatement
@@ -88,10 +92,10 @@ public class CompanyDAO {
         } catch (SQLException e) {
             throw new DAOException("[findByLimit] Impossible to fetch data from database");
         } finally {
-        	if (!conMng.isTransactional()) {
+        	/*if (!conMng.isTransactional()) {
         		conMng.closeConnection();
         	}
-        	conMng.closeObjects(pstm, result);
+        	conMng.closeObjects(pstm, result);*/
         }
     }
 
@@ -109,5 +113,9 @@ public class CompanyDAO {
         } catch (SQLException e) {
             throw new DAOException("Impossible to fetch data from database");
         }
+    }
+
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 }

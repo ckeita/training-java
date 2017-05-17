@@ -16,11 +16,18 @@ import fr.ebiz.computer_database.persistence.ComputerDAO;
  * @author ckeita
  */
 public class ComputerService {
-
-//    private static ComputerDAO computerDAO = new ComputerDAO();
-//    private static (new computerMapper()) (new computerMapper()) = new (new computerMapper())();
-    
     private static Logger LOGGER = LoggerFactory.getLogger(ComputerService.class);
+
+    private static ComputerDAO computerDAO;
+    private static ComputerMapper computerMapper;
+
+    public void setComputerDAO(ComputerDAO computerDAO) {
+        this.computerDAO = computerDAO;
+    }
+
+    public void setComputerMapper(ComputerMapper computerMapper) {
+        this.computerMapper = computerMapper;
+    }
 
     /**
      * @param id of the computer
@@ -29,7 +36,7 @@ public class ComputerService {
      * @throws DAOException .
      */
     public ComputerDTO findComputerById(int id) throws DAOException, DateException  {
-        return (new ComputerMapper()).getById(new ComputerDAO().findById(id));
+        return computerMapper.getById(computerDAO.findById(id));
     }
 
     /**
@@ -37,7 +44,7 @@ public class ComputerService {
      * @throws DAOException .
      */
     public int getNumberOfComputers() throws DAOException {
-        return new ComputerDAO().getNumberOfComputers();
+        return computerDAO.getNumberOfComputers();
     }
 
     /**
@@ -46,7 +53,7 @@ public class ComputerService {
      * @throws DAOException .
      */
     public int getNumberOfSearchedComputers(String name) throws DAOException {
-        return new ComputerDAO().getNumberOfSearchedComputers(name);
+        return computerDAO.getNumberOfSearchedComputers(name);
     }
 
     /**
@@ -57,7 +64,7 @@ public class ComputerService {
      * @throws DateException .
      */
     public List<ComputerDTO> findComputersByLimit(int offset, int max) throws DateException, DAOException {
-        return (new ComputerMapper()).getByPage((new ComputerDAO()).findByLimit(offset, max));
+        return computerMapper.getByPage(computerDAO.findByLimit(offset, max));
     }
 
     /**
@@ -69,7 +76,7 @@ public class ComputerService {
      */
     public List<ComputerDTO> findComputersByOrder(String orderBy, String order) throws DateException, DAOException {
         LOGGER.info("orderby " + orderBy + " order " + order);
-        return (new ComputerMapper()).getByPage(new ComputerDAO().findByOrder(orderBy, order));
+        return computerMapper.getByPage(computerDAO.findByOrder(orderBy, order));
     }
 
     /**
@@ -81,7 +88,7 @@ public class ComputerService {
      * @throws DateException .
      */
     public List<ComputerDTO> searchComputers(String name, int offset, int max) throws DateException, DAOException {
-        return (new ComputerMapper()).getByPage(new ComputerDAO().searchByLimit(name, offset, max));
+        return computerMapper.getByPage(computerDAO.searchByLimit(name, offset, max));
     }
 
     /**
@@ -89,7 +96,7 @@ public class ComputerService {
      * @throws DAOException .
      */
     public void createComputer(Computer comp) throws DAOException {
-    	new ComputerDAO().create(comp);
+        computerDAO.create(comp);
     }
 
     /**
@@ -97,7 +104,7 @@ public class ComputerService {
      * @exception DAOException .
      */
     public void deleteComputer(int compId) throws DAOException {
-    	new ComputerDAO().delete(compId);
+        computerDAO.delete(compId);
     }
 
     /**
@@ -105,6 +112,6 @@ public class ComputerService {
      * @exception DAOException .
      */
     public void updateComputer(Computer comp) throws DAOException {
-    	new ComputerDAO().update(comp);
+        computerDAO.update(comp);
     }
 }

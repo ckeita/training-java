@@ -1,0 +1,38 @@
+<?xml  version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+        <property name="url" value="jdbc:mysql://localhost/computer-database-db?useSSL=false&amp;zeroDateTimeBehavior=convertToNull" />
+        <property name="username" value="admincdb" />
+        <property name="password" value="qwerty1234" />
+    </bean>
+
+    <bean id="computerDAO" class="fr.ebiz.computer_database.persistence.ComputerDAO">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+    <bean id="companyDAO" class="fr.ebiz.computer_database.persistence.CompanyDAO">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+    <bean id="computerService" class="fr.ebiz.computer_database.service.ComputerService">
+        <property name="computerDAO" ref="computerDAO" />
+        <property name="computerMapper" ref="computerMapper" />
+    </bean>
+
+    <bean id="companyService" class="fr.ebiz.computer_database.service.CompanyService">
+        <property name="companyDAO" ref="companyDAO" />
+        <property name="companyMapper" ref="companyMapper" />
+    </bean>
+
+    <bean id="computerMapper" class="fr.ebiz.computer_database.mapper.ComputerMapper">
+    </bean>
+
+    <bean id="companyMapper" class="fr.ebiz.computer_database.mapper.CompanyMapper">
+    </bean>
+</beans>

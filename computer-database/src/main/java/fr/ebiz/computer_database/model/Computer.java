@@ -21,7 +21,7 @@ public class Computer {
     private int i;
     private ComputerValidation computerValidation = new ComputerValidation();
     
-    private static Logger logger = LoggerFactory.getLogger(Computer.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(Computer.class);
 
     /**
      * @param computerBuilder to set
