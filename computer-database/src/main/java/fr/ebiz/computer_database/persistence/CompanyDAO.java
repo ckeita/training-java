@@ -19,6 +19,7 @@ import fr.ebiz.computer_database.model.Company;
 public class CompanyDAO {
 
     private static Logger logger = LoggerFactory.getLogger(CompanyDAO.class);
+    private ConnectionManager conMng = ConnectionManager.getInstance();
 
     /**
      * @param id of the Company
@@ -29,8 +30,10 @@ public class CompanyDAO {
         Company comp = new Company();
         ResultSet result = null;
         PreparedStatement pstm = null;
-        Connection connection = Persistence.getInstance().getConnection();
+        Connection connection = null;
         try {
+           // Get one connection
+        	connection = conMng.getConnection();
             // Create the sql query to find Computer by id
             String query = "SELECT * FROM company WHERE id=?";
             // Initialize a preparedStatement
@@ -44,22 +47,12 @@ public class CompanyDAO {
             }
             return comp;
         } catch (SQLException e) {
-            throw new DAOException("Impossible to fetch data from database");
+            throw new DAOException("[findById] Impossible to fetch data from database");
         } finally {
-            try {
-                if (result != null) {
-                    result.close();
-                }
-                if (pstm != null) {
-                    pstm.close();
-                }
-                if (connection != null) {
-                    connection.close();
-                }
-
-            } catch (SQLException e) {
-                throw new DAOException("Impossible to close connection");
-            }
+        	if (!conMng.isTransactional()) {
+        		conMng.closeConnection();
+        	}
+        	conMng.closeObjects(pstm, result);
         }
     }
 
@@ -73,8 +66,11 @@ public class CompanyDAO {
         List<Company> list = new ArrayList<>();
         ResultSet result = null;
         PreparedStatement pstm = null;
-        Connection connection = Persistence.getInstance().getConnection();
+        Connection connection = null;
         try {
+        	// Get one connection
+        	connection = conMng.getConnection();
+        	
             // Create the sql query to find companies
             String query = "SELECT * FROM company LIMIT ?,?";
             // Initialize a preparedStatement
@@ -90,22 +86,12 @@ public class CompanyDAO {
             logger.info("Selected: " + result.getFetchSize() + " elements from database");
             return list;
         } catch (SQLException e) {
-            throw new DAOException("Impossible to fetch data from database");
+            throw new DAOException("[findByLimit] Impossible to fetch data from database");
         } finally {
-            try {
-                if (result != null) {
-                    result.close();
-                }
-                if (pstm != null) {
-                    pstm.close();
-                }
-                if (connection != null) {
-                    connection.close();
-                }
-
-            } catch (SQLException e) {
-                throw new DAOException("Impossible to close connection");
-            }
+        	if (!conMng.isTransactional()) {
+        		conMng.closeConnection();
+        	}
+        	conMng.closeObjects(pstm, result);
         }
     }
 

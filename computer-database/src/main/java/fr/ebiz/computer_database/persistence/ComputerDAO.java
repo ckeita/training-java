@@ -22,12 +22,14 @@ import fr.ebiz.computer_database.model.Computer;
  * @author ckeita
  */
 public class ComputerDAO {
-    private static Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(ComputerDAO.class);
     private int id;
     private String name;
     private String introduced;
     private String discontinued;
     private int companyId;
+    
+    private ConnectionManager conMng = ConnectionManager.getInstance();
 
     /**
      * @param id of the computer
@@ -39,9 +41,11 @@ public class ComputerDAO {
         Computer comp = null;
         ResultSet result = null;
         PreparedStatement pstm = null;
-        // Connection connection = Persistence.getInstance().getConnection();
-        Connection connection = Transaction.getTransactionId();
+        Connection connection = null;
         try {
+        	// Get one connection
+        	connection = conMng.getConnection();
+        	
             // Create the sql query to find Computer by id
             String query = "SELECT * FROM computer WHERE id=?";
 
@@ -55,21 +59,15 @@ public class ComputerDAO {
             while (result.next()) {
                 comp = daoMapper(result);
             }
-            logger.info("[findById] Found element from database");
+            LOGGER.info("[findById] Found element from database");
             return comp;
         } catch (SQLException e) {
             throw new DAOException("Impossible to communicate with database findById");
         } finally {
-            try {
-                if (result != null) {
-                    result.close();
-                }
-                if (pstm != null) {
-                    pstm.close();
-                }
-            } catch (SQLException e) {
-                throw new DAOException("Impossible to close connection");
-            }
+        	if (!conMng.isTransactional()) {
+        		conMng.closeConnection();
+        	}
+        	conMng.closeObjects(pstm);
         }
     }
 
@@ -81,8 +79,11 @@ public class ComputerDAO {
         int number = 0;
         ResultSet result = null;
         PreparedStatement pstm = null;
-        Connection connection = Transaction.getTransactionId();
+        Connection connection = null;
         try {
+        	// Get one connection
+        	connection = conMng.getConnection();
+        	
             // Create the sql query to find Computer by id
             String query = "SELECT count(*) FROM computer";
 
@@ -93,21 +94,15 @@ public class ComputerDAO {
             while (result.next()) {
                 number = result.getInt(1);
             }
-            logger.info("[getNumberOfComputers] Found element from database");
+            LOGGER.info("[getNumberOfComputers] Found element from database");
             return number;
         } catch (SQLException e) {
             throw new DAOException("Impossible to communicate with database getNumberOfComputers");
         } finally {
-            try {
-                if (result != null) {
-                    result.close();
-                }
-                if (pstm != null) {
-                    pstm.close();
-                }
-            } catch (SQLException e) {
-                throw new DAOException("Impossible to close connection");
-            }
+        	if (!conMng.isTransactional()) {
+        		conMng.closeConnection();
+        	}
+        	conMng.closeObjects(pstm, result);
         }
     }
 
@@ -120,8 +115,11 @@ public class ComputerDAO {
         int number = 0;
         ResultSet result = null;
         PreparedStatement pstm = null;
-        Connection connection = Transaction.getTransactionId();
+        Connection connection = null;
         try {
+        	// Get one connection
+        	connection = conMng.getConnection();
+        	
             // Create the sql query to find Computer by id
             String query = Util.QUERY_NB_COMPUTER_SEARCH;
             // Initialize a preparedStatement
@@ -133,21 +131,15 @@ public class ComputerDAO {
             while (result.next()) {
                 number = result.getInt(1);
             }
-            logger.info("[getNumberOfSearchedComputers] Found elements from database");
+            LOGGER.info("[getNumberOfSearchedComputers] Found elements from database");
             return number;
         } catch (SQLException e) {
             throw new DAOException("Impossible to communicate with database getNumberOfSearchedComputers");
         } finally {
-            try {
-                if (result != null) {
-                    result.close();
-                }
-                if (pstm != null) {
-                    pstm.close();
-                }
-            } catch (SQLException e) {
-                throw new DAOException("Impossible to close connection");
-            }
+        	if (!conMng.isTransactional()) {
+        		conMng.closeConnection();
+        	}
+        	conMng.closeObjects(pstm, result);
         }
     }
 
@@ -163,8 +155,11 @@ public class ComputerDAO {
         List<Computer> list = new ArrayList<>();
         ResultSet result = null;
         PreparedStatement pstm = null;
-        Connection connection = Transaction.getTransactionId();
+        Connection connection = null;
         try {
+        	// Get one connection
+        	connection = conMng.getConnection();
+        	
             // Create the sql query to find computers
             String query = "SELECT * FROM computer LIMIT ?,?";
             // Initialize a preparedStatement
@@ -174,7 +169,7 @@ public class ComputerDAO {
             pstm.setInt(2, max);
             // Execute the query
             result = pstm.executeQuery();
-            logger.info("[findByLimit] Selected: " + result.getFetchSize() + " elements from database");
+            LOGGER.info("[findByLimit] Selected: " + result.getFetchSize() + " elements from database");
             while (result.next()) {
                 list.add(daoMapper(result));
             }
@@ -183,16 +178,10 @@ public class ComputerDAO {
         } catch (SQLException e) {
             throw new DAOException("Impossible to communicate with database findByLimit");
         } finally {
-            try {
-                if (result != null) {
-                    result.close();
-                }
-                if (pstm != null) {
-                    pstm.close();
-                }
-            } catch (SQLException e) {
-                throw new DAOException("Impossible to close connection");
-            }
+        	if (!conMng.isTransactional()) {
+        		conMng.closeConnection();
+        	}
+        	conMng.closeObjects(pstm, result);
         }
     }
 
@@ -208,14 +197,17 @@ public class ComputerDAO {
         List<Computer> list = new ArrayList<>();
         ResultSet result = null;
         PreparedStatement pstm = null;
-        Connection connection = Transaction.getTransactionId();
+        Connection connection = null;
         try {
+        	// Get one connection
+        	connection = conMng.getConnection();
+        	
             // Create the sql query to find computers
             String query = "SELECT * FROM computer ORDER BY " + orderBy + " " + order;
             // Initialize a preparedStatement
             pstm = connection.prepareStatement(query);
             result = pstm.executeQuery();
-            logger.info("[findByLimit] Selected: " + result.getFetchSize() + " elements from database");
+            LOGGER.info("[findByLimit] Selected: " + result.getFetchSize() + " elements from database");
             while (result.next()) {
                 list.add(daoMapper(result));
             }
@@ -224,16 +216,10 @@ public class ComputerDAO {
         } catch (SQLException e) {
             throw new DAOException("[findByLimit] Impossible to communicate with database");
         } finally {
-            try {
-                if (result != null) {
-                    result.close();
-                }
-                if (pstm != null) {
-                    pstm.close();
-                }
-            } catch (SQLException e) {
-                throw new DAOException("Impossible to close connection");
-            }
+        	if (!conMng.isTransactional()) {
+        		conMng.closeConnection();
+        	}
+        	conMng.closeObjects(pstm, result);
         }
     }
 
@@ -250,9 +236,11 @@ public class ComputerDAO {
         List<Computer> list = new ArrayList<>();
         ResultSet result = null;
         PreparedStatement pstm = null;
-        // Transaction.startTransaction();
-        Connection connection = Transaction.getTransactionId();
+        Connection connection = null;
         try {
+        	// Get one connection
+        	connection = conMng.getConnection();
+        	
             // Create the sql query to find computers
             String query = Util.QUERY_COMPUTER_SEARCH;
 
@@ -268,21 +256,15 @@ public class ComputerDAO {
             while (result.next()) {
                 list.add(daoMapper(result));
             }
-            logger.info("Selected: " + result.getFetchSize() + " elements from database");
+            LOGGER.info("Selected: " + result.getFetchSize() + " elements from database");
             return list;
         } catch (SQLException e) {
             throw new DAOException("Impossible to communicate with database searchByLimit");
         } finally {
-            try {
-                if (result != null) {
-                    result.close();
-                }
-                if (pstm != null) {
-                    pstm.close();
-                }
-            } catch (SQLException e) {
-                throw new DAOException("Impossible to close connection");
-            }
+        	if (!conMng.isTransactional()) {
+        		conMng.closeConnection();
+        	}
+        	conMng.closeObjects(pstm, result);
         }
     }
 
@@ -292,8 +274,11 @@ public class ComputerDAO {
      */
     public void create(Computer comp) throws DAOException {
         PreparedStatement pstm = null;
-        Connection connection = Transaction.getTransactionId();
+        Connection connection = null;
         try {
+        	// Get one connection
+        	connection = conMng.getConnection();
+        	
             String query = "INSERT INTO computer(name,introduced,discontinued,company_id) VALUES(?,?,?,?)";
             // Initialize a preparedStatement
             pstm = connection.prepareStatement(query);
@@ -316,23 +301,20 @@ public class ComputerDAO {
             }
             // Execute the query
             if (pstm.executeUpdate() == 0) {
-                logger.info("Computer Insert: Impossible to insert");
+                LOGGER.info("Computer Insert: Impossible to insert");
             } else {
                 // Transaction.endTransaction(true);
-                logger.info("Computer Insert: Inserted successfully");
+                LOGGER.info("Computer Insert: Inserted successfully");
             }
         } catch (MySQLIntegrityConstraintViolationException ex) {
-            logger.info("Impossible to insert: The company is not found in database");
+            LOGGER.info("Impossible to insert: The company is not found in database");
         } catch (SQLException e) {
             throw new DAOException("Impossible to communicate with database create");
         } finally {
-            try {
-                if (pstm != null) {
-                    pstm.close();
-                }
-            } catch (SQLException e) {
-                throw new DAOException("Impossible to close connection");
-            }
+        	if (!conMng.isTransactional()) {
+        		conMng.closeConnection();
+        	}
+        	conMng.closeObjects(pstm);
         }
     }
 
@@ -343,8 +325,11 @@ public class ComputerDAO {
      */
     public void delete(int compId) throws DAOException {
         PreparedStatement pstm = null;
-        Connection connection = Transaction.getTransactionId();
+        Connection connection = null;
         try {
+        	// Get one connection
+        	connection = conMng.getConnection();
+        	
             String query = "DELETE FROM computer WHERE id=?";
 
             // Initialize a preparedStatement
@@ -353,20 +338,17 @@ public class ComputerDAO {
             pstm.setInt(1, compId);
             // Execute the query
             if (pstm.executeUpdate() == 0) {
-                logger.info("Impossible to delete: The computer is not found");
+                LOGGER.info("Impossible to delete: The computer is not found");
             } else {
-                logger.info("Deleted succeDAOExceptionssfully");
+                LOGGER.info("Deleted succeDAOExceptionssfully");
             }
         } catch (SQLException e) {
             throw new DAOException("Impossible to delete computer delete");
         } finally {
-            try {
-                if (pstm != null) {
-                    pstm.close();
-                }
-            } catch (SQLException e) {
-                throw new DAOException("Impossible to close connection");
-            }
+        	if (!conMng.isTransactional()) {
+        		conMng.closeConnection();
+        	}
+        	conMng.closeObjects(pstm);
         }
     }
 
@@ -377,8 +359,11 @@ public class ComputerDAO {
      */
     public void update(Computer comp) throws DAOException {
         PreparedStatement pstm = null;
-        Connection connection = Transaction.getTransactionId();
+        Connection connection = null;
         try {
+        	// Get one connection
+        	connection = conMng.getConnection();
+        	
             String query = "UPDATE computer SET name=?, introduced=?, discontinued=?, company_id=? WHERE id=?";
 
             // Initialize a preparedStatement
@@ -403,23 +388,20 @@ public class ComputerDAO {
             pstm.setInt(5, comp.getId());
             // Execute the query
             if (pstm.executeUpdate() == 0) {
-                logger.info("Impossible to update: The computer is not found");
+                LOGGER.info("Impossible to update: The computer is not found");
             } else {
-                logger.info("Updated successfully");
+                LOGGER.info("Updated successfully");
             }
         } catch (MySQLIntegrityConstraintViolationException ex) {
-            logger.info("Impossible to update: The company is not found in the database");
+            LOGGER.info("Impossible to update: The company is not found in the database");
             throw new DAOException("Impossible to update: The company is not found in the database");
         } catch (SQLException e) {
             throw new DAOException("Impossible to update computer");
         } finally {
-            try {
-                if (pstm != null) {
-                    pstm.close();
-                }
-            } catch (SQLException e) {
-                throw new DAOException("Impossible to close connection");
-            }
+        	if (!conMng.isTransactional()) {
+        		conMng.closeConnection();
+        	}
+        	conMng.closeObjects(pstm);
         }
     }
 
@@ -434,11 +416,11 @@ public class ComputerDAO {
         List<Computer> list = new ArrayList<>();
         PreparedStatement pstm = null;
         ResultSet result = null;
-        // Connection connection = Persistence.getInstance().getConnection();
-        Connection connection = Transaction.getTransactionId();
-
-        // Initialize a preparedStatement
+        Connection connection = null;
         try {
+        	// Get one connection
+        	connection = conMng.getConnection();
+        	
             String query = "SELECT * FROM computer WHERE name LIKE ?";
             pstm = connection.prepareStatement(query);
             // Set the parameter name
@@ -452,16 +434,10 @@ public class ComputerDAO {
         } catch (SQLException e) {
             throw new DAOException("Impossible to communicate with database search");
         } finally {
-            try {
-                if (result != null) {
-                    result.close();
-                }
-                if (pstm != null) {
-                    pstm.close();
-                }
-            } catch (SQLException e) {
-                throw new DAOException("Impossible to close connection");
-            }
+        	if (!conMng.isTransactional()) {
+        		conMng.closeConnection();
+        	}
+        	conMng.closeObjects(pstm, result);
         }
     }
 

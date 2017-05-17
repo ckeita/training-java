@@ -12,8 +12,8 @@ import fr.ebiz.computer_database.persistence.CompanyDAO;
  */
 public class CompanyService {
 
-    private static CompanyMapper companyMapper = new CompanyMapper();
-    private static CompanyDAO companyDAO = new CompanyDAO();
+    private CompanyMapper companyMapper = new CompanyMapper();
+    private CompanyDAO companyDAO = new CompanyDAO();
 
     /**
      * @param id of the computer

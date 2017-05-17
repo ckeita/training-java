@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
  * @author ebiz
  */
 public interface Util {
+	String CONFIG_HIKARI = "/db.propreties";
     String DB_CLASS = "com.mysql.jdbc.Driver";
     String DATABASE = "jdbc:mysql://localhost/computer-database-db?useSSL=false&zeroDateTimeBehavior=convertToNull";
     String USERNAME = "admincdb";

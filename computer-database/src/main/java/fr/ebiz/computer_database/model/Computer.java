@@ -2,6 +2,9 @@ package fr.ebiz.computer_database.model;
 
 import java.time.LocalDate;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import fr.ebiz.computer_database.exceptions.DateException;
 import fr.ebiz.computer_database.validation.ComputerValidation;
 
@@ -17,6 +20,8 @@ public class Computer {
     private int companyId;
     private int i;
     private ComputerValidation computerValidation = new ComputerValidation();
+    
+    private static Logger logger = LoggerFactory.getLogger(Computer.class);
 
     /**
      * @param computerBuilder to set
@@ -28,6 +33,7 @@ public class Computer {
         computerValidation.checkName(this.name);
         this.introduced = computerValidation.dateValidation(computerBuilder.introduced);
         this.discontinued = computerValidation.dateValidation(computerBuilder.discontinued);
+        //LOGGER.info("intro "+this.introduced+" disc "+this.discontinued);
         computerValidation.checkDates(this.introduced, this.discontinued);
         this.companyId = computerBuilder.companyId;
     }

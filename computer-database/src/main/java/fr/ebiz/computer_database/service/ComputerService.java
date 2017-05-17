@@ -1,8 +1,9 @@
 package fr.ebiz.computer_database.service;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import fr.ebiz.computer_database.exceptions.DAOException;
 import fr.ebiz.computer_database.exceptions.DateException;
@@ -10,16 +11,16 @@ import fr.ebiz.computer_database.mapper.ComputerMapper;
 import fr.ebiz.computer_database.model.Computer;
 import fr.ebiz.computer_database.model.ComputerDTO;
 import fr.ebiz.computer_database.persistence.ComputerDAO;
-import fr.ebiz.computer_database.persistence.Persistence;
-import fr.ebiz.computer_database.persistence.Transaction;
 
 /**
  * @author ckeita
  */
 public class ComputerService {
 
-    private static ComputerDAO computerDAO = new ComputerDAO();
-    private static ComputerMapper computerMapper = new ComputerMapper();
+//    private static ComputerDAO computerDAO = new ComputerDAO();
+//    private static (new computerMapper()) (new computerMapper()) = new (new computerMapper())();
+    
+    private static Logger LOGGER = LoggerFactory.getLogger(ComputerService.class);
 
     /**
      * @param id of the computer
@@ -27,23 +28,8 @@ public class ComputerService {
      * @throws DateException .
      * @throws DAOException .
      */
-    public ComputerDTO findComputerById(int id) throws DateException, DAOException {
-        Connection connection = Persistence.getInstance().getConnection();
-        Transaction.setTransaction(connection);
-        ComputerDTO computerDTO = computerMapper.getById(computerDAO.findById(id));
-        try {
-            connection.commit();
-            return computerDTO;
-        } catch (SQLException e) {
-            throw new DAOException("[findComputerById] " + e.getMessage());
-        } finally {
-            try {
-                connection.close();
-                Transaction.removeTransaction();
-            } catch (SQLException e) {
-                throw new DAOException("[createComputer] " + e.getMessage());
-            }
-        }
+    public ComputerDTO findComputerById(int id) throws DAOException, DateException  {
+        return (new ComputerMapper()).getById(new ComputerDAO().findById(id));
     }
 
     /**
@@ -51,22 +37,7 @@ public class ComputerService {
      * @throws DAOException .
      */
     public int getNumberOfComputers() throws DAOException {
-        Connection connection = Persistence.getInstance().getConnection();
-        Transaction.setTransaction(connection);
-        int nbComputers = computerDAO.getNumberOfComputers();
-        try {
-            connection.commit();
-            return nbComputers;
-        } catch (SQLException e) {
-            throw new DAOException("[getNumberOfComputers] " + e.getMessage());
-        } finally {
-            try {
-                connection.close();
-                Transaction.removeTransaction();
-            } catch (SQLException e) {
-                throw new DAOException("[createComputer] " + e.getMessage());
-            }
-        }
+        return new ComputerDAO().getNumberOfComputers();
     }
 
     /**
@@ -75,22 +46,7 @@ public class ComputerService {
      * @throws DAOException .
      */
     public int getNumberOfSearchedComputers(String name) throws DAOException {
-        Connection connection = Persistence.getInstance().getConnection();
-        Transaction.setTransaction(connection);
-        int nbFoundComputers = computerDAO.getNumberOfSearchedComputers(name);
-        try {
-            connection.commit();
-            return nbFoundComputers;
-        } catch (SQLException e) {
-            throw new DAOException("[getNumberOfSearchedComputers] " + e.getMessage());
-        } finally {
-            try {
-                connection.close();
-                Transaction.removeTransaction();
-            } catch (SQLException e) {
-                throw new DAOException("[createComputer] " + e.getMessage());
-            }
-        }
+        return new ComputerDAO().getNumberOfSearchedComputers(name);
     }
 
     /**
@@ -101,22 +57,7 @@ public class ComputerService {
      * @throws DateException .
      */
     public List<ComputerDTO> findComputersByLimit(int offset, int max) throws DateException, DAOException {
-        Connection connection = Persistence.getInstance().getConnection();
-        Transaction.setTransaction(connection);
-        List<ComputerDTO> computers = computerMapper.getByPage(computerDAO.findByLimit(offset, max));
-        try {
-            connection.commit();
-            return computers;
-        } catch (SQLException e) {
-            throw new DAOException("[findComputersByLimit] " + e.getMessage());
-        } finally {
-            try {
-                connection.close();
-                Transaction.removeTransaction();
-            } catch (SQLException e) {
-                throw new DAOException("[createComputer] " + e.getMessage());
-            }
-        }
+        return (new ComputerMapper()).getByPage((new ComputerDAO()).findByLimit(offset, max));
     }
 
     /**
@@ -127,23 +68,8 @@ public class ComputerService {
      * @throws DateException .
      */
     public List<ComputerDTO> findComputersByOrder(String orderBy, String order) throws DateException, DAOException {
-        Connection connection = Persistence.getInstance().getConnection();
-        Transaction.setTransaction(connection);
-        System.out.println("orderby " + orderBy + " order " + order);
-        List<ComputerDTO> computers = computerMapper.getByPage(computerDAO.findByOrder(orderBy, order));
-        try {
-            connection.commit();
-            return computers;
-        } catch (SQLException e) {
-            throw new DAOException("[findComputersByOrder] " + e.getMessage());
-        } finally {
-            try {
-                connection.close();
-                Transaction.removeTransaction();
-            } catch (SQLException e) {
-                throw new DAOException("[createComputer] " + e.getMessage());
-            }
-        }
+        LOGGER.info("orderby " + orderBy + " order " + order);
+        return (new ComputerMapper()).getByPage(new ComputerDAO().findByOrder(orderBy, order));
     }
 
     /**
@@ -155,22 +81,7 @@ public class ComputerService {
      * @throws DateException .
      */
     public List<ComputerDTO> searchComputers(String name, int offset, int max) throws DateException, DAOException {
-        Connection connection = Persistence.getInstance().getConnection();
-        Transaction.setTransaction(connection);
-        List<ComputerDTO> computers = computerMapper.getByPage(computerDAO.searchByLimit(name, offset, max));
-        try {
-            connection.commit();
-            return computers;
-        } catch (SQLException e) {
-            throw new DAOException("[findComputersByLimit] " + e.getMessage());
-        } finally {
-            try {
-                connection.close();
-                Transaction.removeTransaction();
-            } catch (SQLException e) {
-                throw new DAOException("[createComputer] " + e.getMessage());
-            }
-        }
+        return (new ComputerMapper()).getByPage(new ComputerDAO().searchByLimit(name, offset, max));
     }
 
     /**
@@ -178,28 +89,7 @@ public class ComputerService {
      * @throws DAOException .
      */
     public void createComputer(Computer comp) throws DAOException {
-        Connection connection = Persistence.getInstance().getConnection();
-        Transaction.setTransaction(connection);
-        if (connection != null) {
-            try {
-                computerDAO.create(comp);
-                connection.commit();
-            } catch (SQLException e) {
-                try {
-                    connection.rollback();
-                } catch (SQLException e1) {
-                    throw new DAOException("[createComputer] " + e1.getMessage());
-                }
-                throw new DAOException("[createComputer] " + e.getMessage());
-            } finally {
-                try {
-                    connection.close();
-                    Transaction.removeTransaction();
-                } catch (SQLException e) {
-                    throw new DAOException("[createComputer] " + e.getMessage());
-                }
-            }
-        }
+    	new ComputerDAO().create(comp);
     }
 
     /**
@@ -207,28 +97,7 @@ public class ComputerService {
      * @exception DAOException .
      */
     public void deleteComputer(int compId) throws DAOException {
-        Connection connection = Persistence.getInstance().getConnection();
-        Transaction.setTransaction(connection);
-        if (connection != null) {
-            try {
-                computerDAO.delete(compId);
-                connection.commit();
-            } catch (SQLException e) {
-                try {
-                    connection.rollback();
-                } catch (SQLException e1) {
-                    throw new DAOException("[deleteComputer] " + e1.getMessage());
-                }
-                throw new DAOException("[deleteComputer] " + e.getMessage());
-            } finally {
-                try {
-                    connection.close();
-                    Transaction.removeTransaction();
-                } catch (SQLException e) {
-                    throw new DAOException("[deleteComputer] " + e.getMessage());
-                }
-            }
-        }
+    	new ComputerDAO().delete(compId);
     }
 
     /**
@@ -236,27 +105,6 @@ public class ComputerService {
      * @exception DAOException .
      */
     public void updateComputer(Computer comp) throws DAOException {
-        Connection connection = Persistence.getInstance().getConnection();
-        Transaction.setTransaction(connection);
-        if (connection != null) {
-            try {
-                computerDAO.update(comp);
-                connection.commit();
-            } catch (SQLException e) {
-                try {
-                    connection.rollback();
-                } catch (SQLException e1) {
-                    throw new DAOException("[updateComputer] " + e1.getMessage());
-                }
-                throw new DAOException("[updateComputer] " + e.getMessage());
-            } finally {
-                try {
-                    connection.close();
-                    Transaction.removeTransaction();
-                } catch (SQLException e) {
-                    throw new DAOException("[updateComputer] " + e.getMessage());
-                }
-            }
-        }
+    	new ComputerDAO().update(comp);
     }
 }
