@@ -11,8 +11,8 @@ import org.slf4j.Logger;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
-import fr.ebiz.computer_database.Utils.Util;
-import fr.ebiz.computer_database.exceptions.DAOException;
+import fr.ebiz.computer_database.util.Util;
+import fr.ebiz.computer_database.exception.DAOException;
 
 /**
  * @author ckeita

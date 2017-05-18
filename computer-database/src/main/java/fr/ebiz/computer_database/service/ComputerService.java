@@ -5,14 +5,13 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import fr.ebiz.computer_database.exceptions.DAOException;
-import fr.ebiz.computer_database.exceptions.DateException;
+import fr.ebiz.computer_database.exception.DAOException;
+import fr.ebiz.computer_database.exception.DateException;
 import fr.ebiz.computer_database.mapper.ComputerMapper;
 import fr.ebiz.computer_database.model.Computer;
 import fr.ebiz.computer_database.model.ComputerDTO;
 import fr.ebiz.computer_database.persistence.ComputerDAO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

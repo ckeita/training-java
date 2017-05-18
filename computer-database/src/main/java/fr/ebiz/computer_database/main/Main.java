@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 import fr.ebiz.computer_database.controller.CompanyController;
 import fr.ebiz.computer_database.controller.ComputerController;
-import fr.ebiz.computer_database.exceptions.DAOException;
+import fr.ebiz.computer_database.exception.DAOException;
 
 /**
  * @author ckeita

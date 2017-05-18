@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import fr.ebiz.computer_database.Utils.Page;
-import fr.ebiz.computer_database.exceptions.DAOException;
+import fr.ebiz.computer_database.util.Page;
+import fr.ebiz.computer_database.exception.DAOException;
 import fr.ebiz.computer_database.model.CompanyDTO;
 
 /**

@@ -3,8 +3,8 @@ package fr.ebiz.computer_database.validation;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
-import fr.ebiz.computer_database.Utils.Util;
-import fr.ebiz.computer_database.exceptions.DateException;
+import fr.ebiz.computer_database.util.Util;
+import fr.ebiz.computer_database.exception.DateException;
 
 /**
  * @author ebiz

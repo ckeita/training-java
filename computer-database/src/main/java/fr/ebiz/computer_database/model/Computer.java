@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import fr.ebiz.computer_database.exceptions.DateException;
+import fr.ebiz.computer_database.exception.DateException;
 import fr.ebiz.computer_database.validation.ComputerValidation;
 
 /**

@@ -3,21 +3,23 @@ package fr.ebiz.computer_database.controller;
 import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import fr.ebiz.computer_database.Utils.Util;
-import fr.ebiz.computer_database.exceptions.DAOException;
-import fr.ebiz.computer_database.exceptions.DateException;
+import fr.ebiz.computer_database.util.Util;
+import fr.ebiz.computer_database.exception.DAOException;
+import fr.ebiz.computer_database.exception.DateException;
 import fr.ebiz.computer_database.model.CompanyDTO;
 import fr.ebiz.computer_database.model.Computer;
 import fr.ebiz.computer_database.model.ComputerDTO;
 import fr.ebiz.computer_database.service.CompanyService;
 import fr.ebiz.computer_database.service.ComputerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 /**
  * Servlet implementation class EditComputerServlet.
@@ -36,6 +38,12 @@ public class EditComputerServlet extends HttpServlet {
     private ComputerService computerService;
     @Autowired
     private CompanyService companyService;
+
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this, config.getServletContext());
+    }
 
     /**
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse

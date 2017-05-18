@@ -13,9 +13,9 @@ import org.slf4j.LoggerFactory;
 
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 
-import fr.ebiz.computer_database.Utils.Util;
-import fr.ebiz.computer_database.exceptions.DAOException;
-import fr.ebiz.computer_database.exceptions.DateException;
+import fr.ebiz.computer_database.util.Util;
+import fr.ebiz.computer_database.exception.DAOException;
+import fr.ebiz.computer_database.exception.DateException;
 import fr.ebiz.computer_database.model.Computer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.DataSourceUtils;

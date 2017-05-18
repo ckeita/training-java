@@ -7,10 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import fr.ebiz.computer_database.Utils.Page;
-import fr.ebiz.computer_database.Utils.Util;
-import fr.ebiz.computer_database.exceptions.DAOException;
-import fr.ebiz.computer_database.exceptions.DateException;
+import fr.ebiz.computer_database.util.Page;
+import fr.ebiz.computer_database.util.Util;
+import fr.ebiz.computer_database.exception.DAOException;
+import fr.ebiz.computer_database.exception.DateException;
 import fr.ebiz.computer_database.model.Computer;
 import fr.ebiz.computer_database.model.ComputerDTO;
 import fr.ebiz.computer_database.service.ComputerService;

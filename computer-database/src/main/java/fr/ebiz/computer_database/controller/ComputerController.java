@@ -2,7 +2,7 @@ package fr.ebiz.computer_database.controller;
 
 import java.util.Scanner;
 
-import fr.ebiz.computer_database.exceptions.DAOException;
+import fr.ebiz.computer_database.exception.DAOException;
 import fr.ebiz.computer_database.ui.ComputerUI;
 
 /**

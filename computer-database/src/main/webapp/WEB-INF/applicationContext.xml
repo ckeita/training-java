@@ -5,34 +5,29 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
                            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 
-    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
-        <property name="url" value="jdbc:mysql://localhost/computer-database-db?useSSL=false&amp;zeroDateTimeBehavior=convertToNull" />
-        <property name="username" value="admincdb" />
-        <property name="password" value="qwerty1234" />
+    <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource"  destroy-method="close">
+        <property name="dataSourceClassName" value="com.mysql.jdbc.jdbc2.optional.MysqlDataSource"/>
+        <property name="maximumPoolSize" value="15" />
+        <property name="maxLifetime" value="30000" />
+        <property name="idleTimeout" value="30000" />
+        <property name="dataSourceProperties">
+            <props>
+                <prop key="url">jdbc:mysql://localhost/computer-database-db?useSSL=false&amp;zeroDateTimeBehavior=convertToNull</prop>
+                <prop key="user">admincdb</prop>
+                <prop key="password">qwerty1234</prop>
+                <prop key="prepStmtCacheSize">250</prop>
+                <prop key="prepStmtCacheSqlLimit">2048</prop>
+                <prop key="cachePrepStmts">true</prop>
+                <prop key="useServerPrepStmts">true</prop>
+            </props>
+        </property>
     </bean>
 
-    <bean id="computerDAO" class="fr.ebiz.computer_database.persistence.ComputerDAO">
-        <property name="dataSource" ref="dataSource" />
+    <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <bean id="companyDAO" class="fr.ebiz.computer_database.persistence.CompanyDAO">
-        <property name="dataSource" ref="dataSource" />
-    </bean>
-
-    <bean id="computerService" class="fr.ebiz.computer_database.service.ComputerService">
-        <property name="computerDAO" ref="computerDAO" />
-        <property name="computerMapper" ref="computerMapper" />
-    </bean>
-
-    <bean id="companyService" class="fr.ebiz.computer_database.service.CompanyService">
-        <property name="companyDAO" ref="companyDAO" />
-        <property name="companyMapper" ref="companyMapper" />
-    </bean>
-
-    <bean id="computerMapper" class="fr.ebiz.computer_database.mapper.ComputerMapper">
-    </bean>
-
-    <bean id="companyMapper" class="fr.ebiz.computer_database.mapper.CompanyMapper">
-    </bean>
+    <context:component-scan base-package="fr.ebiz.computer_database.service" />
+    <context:component-scan base-package="fr.ebiz.computer_database.mapper" />
+    <context:component-scan base-package="fr.ebiz.computer_database.persistence" />
 </beans>

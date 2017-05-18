@@ -1,7 +1,8 @@
 package fr.ebiz.computer_database.model;
 
-import fr.ebiz.computer_database.exceptions.DAOException;
+import fr.ebiz.computer_database.exception.DAOException;
 import fr.ebiz.computer_database.service.CompanyService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author ebiz
@@ -26,15 +27,18 @@ public class ComputerDTO {
             this.discontinued = comp.getDiscontinued().toString();
         }
         if (comp.getcompanyId() != 0) {
-            CompanyService compServ = new CompanyService();
+
+            //CompanyService compServ = new CompanyService();
             CompanyDTO compDTO;
-            try {
-                compDTO = compServ.findCompanyById(comp.getcompanyId());
-                this.company = compDTO.getName();
-            } catch (DAOException e) {
+            //try {
+                //compDTO = compServ.findCompanyById(comp.getcompanyId());
+                //compDTO = companyService.findCompanyById(comp.getcompanyId());
+                //this.company = compDTO.getName();
+                this.company = "not set";
+            /*} catch (DAOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
-            }
+            }*/
         }
     }
 
