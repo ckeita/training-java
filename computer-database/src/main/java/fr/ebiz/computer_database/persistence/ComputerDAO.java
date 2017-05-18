@@ -34,6 +34,7 @@ public class ComputerDAO {
     private String name;
     private String introduced;
     private String discontinued;
+    private String companyName;
     private int companyId;
 
     @Autowired
@@ -59,7 +60,7 @@ public class ComputerDAO {
 	        connection = DataSourceUtils.getConnection(dataSource);
             logger.info(connection.toString());
             // Create the sql query to find Computer by id
-            String query = "SELECT * FROM computer WHERE id=?";
+            String query = Util.COMPUTER_BY_ID;
 
             // Initialize a preparedStatement
             pstm = connection.prepareStatement(query);
@@ -74,7 +75,7 @@ public class ComputerDAO {
             logger.info("[findById] Found element from database");
             return comp;
         } catch (SQLException e) {
-            throw new DAOException("Impossible to communicate with database findById");
+            throw new DAOException("[findById] Impossible to communicate with database findById");
         } finally {
             try {
                 connection.close();
@@ -102,7 +103,7 @@ public class ComputerDAO {
 	        //connection = dataSource.getConnection();
 	        connection = DataSourceUtils.getConnection(dataSource);
             // Create the sql query to find Computer by id
-            String query = "SELECT count(*) FROM computer";
+            String query = Util.GET_NUMBER_OF_COMPUTERS;
 
             // Initialize a preparedStatement
             pstm = connection.prepareStatement(query);
@@ -114,7 +115,7 @@ public class ComputerDAO {
             logger.info("[getNumberOfComputers] Found element from database");
             return number;
         } catch (SQLException e) {
-            throw new DAOException("Impossible to communicate with database getNumberOfComputers");
+            throw new DAOException("[getNumberOfComputers] Impossible to communicate with database");
         } finally {
             try {
                 connection.close();
@@ -143,7 +144,7 @@ public class ComputerDAO {
 	        //connection = dataSource.getConnection();
 	        connection = DataSourceUtils.getConnection(dataSource);
             // Create the sql query to find Computer by id
-            String query = Util.QUERY_NB_COMPUTER_SEARCH;
+            String query = Util.GET_NUMBER_OF_SEARCHED_COMPUTERS;
             // Initialize a preparedStatement
             pstm = connection.prepareStatement(query);
             // Set the parameter name
@@ -156,7 +157,7 @@ public class ComputerDAO {
             logger.info("[getNumberOfSearchedComputers] Found elements from database");
             return number;
         } catch (SQLException e) {
-            throw new DAOException("Impossible to communicate with database getNumberOfSearchedComputers");
+            throw new DAOException("[getNumberOfSearchedComputers] Impossible to communicate with database");
         } finally {
             try {
                 connection.close();
@@ -188,7 +189,7 @@ public class ComputerDAO {
 	        //connection = dataSource.getConnection();
 	        connection = DataSourceUtils.getConnection(dataSource);
             // Create the sql query to find computers
-            String query = "SELECT * FROM computer LIMIT ?,?";
+            String query = Util.COMPUTERS_BY_LIMIT;
             // Initialize a preparedStatement
             pstm = connection.prepareStatement(query);
             // Set the parameters of preparedStatement
@@ -196,11 +197,10 @@ public class ComputerDAO {
             pstm.setInt(2, max);
             // Execute the query
             result = pstm.executeQuery();
-            logger.info("[findByLimit] Selected: " + result.getFetchSize() + " elements from database");
+            logger.info("[findByLimit] fetch elements from database");
             while (result.next()) {
                 list.add(daoMapper(result));
             }
-
             return list;
         } catch (SQLException e) {
             throw new DAOException("Impossible to communicate with database findByLimit");
@@ -235,11 +235,11 @@ public class ComputerDAO {
 	        //connection = dataSource.getConnection();
 	        connection = DataSourceUtils.getConnection(dataSource);
             // Create the sql query to find computers
-            String query = "SELECT * FROM computer ORDER BY " + orderBy + " " + order;
+            String query = Util.COMPUTERS_BY_ORDER + orderBy + " " + order;
             // Initialize a preparedStatement
             pstm = connection.prepareStatement(query);
             result = pstm.executeQuery();
-            logger.info("[findByLimit] Selected: " + result.getFetchSize() + " elements from database");
+            logger.info("[findByLimit] fetch elements from database");
             while (result.next()) {
                 list.add(daoMapper(result));
             }
@@ -279,7 +279,7 @@ public class ComputerDAO {
 	        //connection = dataSource.getConnection();
 	        connection = DataSourceUtils.getConnection(dataSource);
             // Create the sql query to find computers
-            String query = Util.QUERY_COMPUTER_SEARCH;
+            String query = Util.SEARCH_COMPUTERS;
 
             // Initialize a preparedStatement
             pstm = connection.prepareStatement(query);
@@ -293,10 +293,10 @@ public class ComputerDAO {
             while (result.next()) {
                 list.add(daoMapper(result));
             }
-            logger.info("Selected: " + result.getFetchSize() + " elements from database");
+            logger.info("[searchByLimit] fetch elements from database");
             return list;
         } catch (SQLException e) {
-            throw new DAOException("Impossible to communicate with database searchByLimit");
+            throw new DAOException("[searchByLimit] Impossible to communicate with database");
         } finally {
             try {
                 connection.close();
@@ -321,7 +321,7 @@ public class ComputerDAO {
         	// Get one connection
 	        //connection = dataSource.getConnection();
 	        connection = DataSourceUtils.getConnection(dataSource);
-            String query = "INSERT INTO computer(name,introduced,discontinued,company_id) VALUES(?,?,?,?)";
+            String query = Util.CREATE_COMPUTER;
             // Initialize a preparedStatement
             pstm = connection.prepareStatement(query);
             // Set the parameter name through the preparedStatement
@@ -336,17 +336,16 @@ public class ComputerDAO {
             } else {
                 pstm.setNull(3, Types.TIMESTAMP);
             }
-            if (comp.getcompanyId() == 0) {
+            if (comp.getCompanyId() == 0) {
                 pstm.setNull(4, Types.BIGINT);
             } else {
-                pstm.setInt(4, comp.getcompanyId());
+                pstm.setInt(4, comp.getCompanyId());
             }
             // Execute the query
             if (pstm.executeUpdate() == 0) {
-                logger.info("Computer Insert: Impossible to insert");
+                logger.info("[create] Impossible to insert");
             } else {
-                // Transaction.endTransaction(true);
-                logger.info("Computer Insert: Inserted successfully");
+                logger.info("[create] Inserted successfully");
             }
         } catch (MySQLIntegrityConstraintViolationException ex) {
             logger.info("Impossible to insert: The company is not found in database");
@@ -377,20 +376,19 @@ public class ComputerDAO {
         	// Get one connection
 	        //connection = dataSource.getConnection();
 	        connection = DataSourceUtils.getConnection(dataSource);
-            String query = "DELETE FROM computer WHERE id=?";
-
+            String query = Util.DELETE_COMPUTER;
             // Initialize a preparedStatement
             pstm = connection.prepareStatement(query);
             // Set the parameter name through the preparedStatement
             pstm.setInt(1, compId);
             // Execute the query
             if (pstm.executeUpdate() == 0) {
-                logger.info("Impossible to delete: The computer is not found");
+                logger.info("[delete] The computer is not found");
             } else {
-                logger.info("Deleted succeDAOExceptionssfully");
+                logger.info("[delete] Deleted successfully");
             }
         } catch (SQLException e) {
-            throw new DAOException("Impossible to delete computer delete");
+            throw new DAOException("[delete] Impossible to delete computer delete");
         } finally {
             /*try {
                 connection.close();
@@ -416,7 +414,7 @@ public class ComputerDAO {
         	// Get one connection
 	        //connection = dataSource.getConnection();
 	        connection = DataSourceUtils.getConnection(dataSource);
-            String query = "UPDATE computer SET name=?, introduced=?, discontinued=?, company_id=? WHERE id=?";
+            String query = Util.UPDATE_COMPUTER;
 
             // Initialize a preparedStatement
             pstm = connection.prepareStatement(query);
@@ -432,8 +430,8 @@ public class ComputerDAO {
             } else {
                 pstm.setNull(3, Types.TIMESTAMP);
             }
-            if (comp.getcompanyId() != 0) {
-                pstm.setInt(4, comp.getcompanyId());
+            if (comp.getCompanyId() != 0) {
+                pstm.setInt(4, comp.getCompanyId());
             } else {
                 pstm.setNull(4, Types.BIGINT);
             }
@@ -463,47 +461,6 @@ public class ComputerDAO {
     }
 
     /**
-     * @param name to search
-     * @exception DAOException .
-     * @exception DateException .
-     * @return the list of found computers
-     */
-    public List<Computer> search(String name) throws DAOException, DateException {
-        // create a list of computer
-        List<Computer> list = new ArrayList<>();
-        PreparedStatement pstm = null;
-        ResultSet result = null;
-        Connection connection = null;
-        try {
-        	// Get one connection
-	        //connection = dataSource.getConnection();
-	        connection = DataSourceUtils.getConnection(dataSource);
-            String query = "SELECT * FROM computer WHERE name LIKE ?";
-            pstm = connection.prepareStatement(query);
-            // Set the parameter name
-            pstm.setString(1, "%" + name + "%");
-            // Execute the query
-            result = pstm.executeQuery();
-            while (result.next()) {
-                list.add(daoMapper(result));
-            }
-            return list;
-        } catch (SQLException e) {
-            throw new DAOException("Impossible to communicate with database search");
-        } finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        	/*if (!conMng.isTransactional()) {
-        		conMng.closeConnection();
-        	}
-        	conMng.closeObjects(pstm, result);*/
-        }
-    }
-
-    /**
      * @param resultSet the data from database
      * @return the computer from database
      * @throws DateException .
@@ -515,8 +472,10 @@ public class ComputerDAO {
             name = resultSet.getString(2);
             introduced = resultSet.getString(3);
             discontinued = resultSet.getString(4);
-            companyId = resultSet.getInt(5);
-            return new Computer.ComputerBuilder(name).id(id).introduced(introduced).discontinued(discontinued)
+            companyName = resultSet.getString(5);
+            companyId = resultSet.getInt(6);
+            return new Computer.ComputerBuilder(name).id(id).introduced(introduced)
+                    .discontinued(discontinued).companyName(companyName)
                     .companyId(companyId).build();
         } catch (SQLException e) {
             throw new DAOException("Impossible to fetch data from database");

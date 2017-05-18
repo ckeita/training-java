@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.ebiz.computer_database.util.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,7 +45,7 @@ public class CompanyDAO {
 	        //connection = dataSource.getConnection();
 	        connection = DataSourceUtils.getConnection(dataSource);
             // Create the sql query to find Computer by id
-            String query = "SELECT * FROM company WHERE id=?";
+            String query = Util.COMPANIES_BY_ID;
             // Initialize a preparedStatement
             pstm = connection.prepareStatement(query);
             // Set the parameter id through the preparedStatement
@@ -87,7 +88,7 @@ public class CompanyDAO {
 	        connection = DataSourceUtils.getConnection(dataSource);
 
             // Create the sql query to find companies
-            String query = "SELECT * FROM company LIMIT ?,?";
+            String query = Util.COMPANIES_BY_LIMIT;
             // Initialize a preparedStatement
             pstm = connection.prepareStatement(query);
             // Set the parameters of preparedStatement

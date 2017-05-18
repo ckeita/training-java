@@ -1,9 +1,5 @@
 package fr.ebiz.computer_database.model;
 
-import fr.ebiz.computer_database.exception.DAOException;
-import fr.ebiz.computer_database.service.CompanyService;
-import org.springframework.beans.factory.annotation.Autowired;
-
 /**
  * @author ebiz
  */
@@ -26,19 +22,8 @@ public class ComputerDTO {
         if (comp.getDiscontinued() != null) {
             this.discontinued = comp.getDiscontinued().toString();
         }
-        if (comp.getcompanyId() != 0) {
-
-            //CompanyService compServ = new CompanyService();
-            CompanyDTO compDTO;
-            //try {
-                //compDTO = compServ.findCompanyById(comp.getcompanyId());
-                //compDTO = companyService.findCompanyById(comp.getcompanyId());
-                //this.company = compDTO.getName();
-                this.company = "not set";
-            /*} catch (DAOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }*/
+        if (comp.getCompanyName() != null) {
+            this.company = comp.getCompanyName();
         }
     }
 
@@ -119,65 +104,28 @@ public class ComputerDTO {
     }
 
     @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((company == null) ? 0 : company.hashCode());
-        result = prime * result + ((discontinued == null) ? 0 : discontinued.hashCode());
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
-        result = prime * result + ((introduced == null) ? 0 : introduced.hashCode());
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        return result;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ComputerDTO)) return false;
+
+        ComputerDTO that = (ComputerDTO) o;
+
+        if (getId() != null ? !getId().equals(that.getId()) : that.getId() != null) return false;
+        if (!getName().equals(that.getName())) return false;
+        if (getIntroduced() != null ? !getIntroduced().equals(that.getIntroduced()) : that.getIntroduced() != null)
+            return false;
+        if (getDiscontinued() != null ? !getDiscontinued().equals(that.getDiscontinued()) : that.getDiscontinued() != null)
+            return false;
+        return getCompany() != null ? getCompany().equals(that.getCompany()) : that.getCompany() == null;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        ComputerDTO other = (ComputerDTO) obj;
-        if (company == null) {
-            if (other.company != null) {
-                return false;
-            }
-        } else if (!company.equals(other.company)) {
-            return false;
-        }
-        if (discontinued == null) {
-            if (other.discontinued != null) {
-                return false;
-            }
-        } else if (!discontinued.equals(other.discontinued)) {
-            return false;
-        }
-        if (id == null) {
-            if (other.id != null) {
-                return false;
-            }
-        } else if (!id.equals(other.id)) {
-            return false;
-        }
-        if (introduced == null) {
-            if (other.introduced != null) {
-                return false;
-            }
-        } else if (!introduced.equals(other.introduced)) {
-            return false;
-        }
-        if (name == null) {
-            if (other.name != null) {
-                return false;
-            }
-        } else if (!name.equals(other.name)) {
-            return false;
-        }
-        return true;
+    public int hashCode() {
+        int result = getId() != null ? getId().hashCode() : 0;
+        result = 31 * result + getName().hashCode();
+        result = 31 * result + (getIntroduced() != null ? getIntroduced().hashCode() : 0);
+        result = 31 * result + (getDiscontinued() != null ? getDiscontinued().hashCode() : 0);
+        result = 31 * result + (getCompany() != null ? getCompany().hashCode() : 0);
+        return result;
     }
-
 }

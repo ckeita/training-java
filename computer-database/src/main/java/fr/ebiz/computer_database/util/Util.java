@@ -29,6 +29,7 @@ public interface Util {
     String ADD_COMPUTER_VIEW = "/WEB-INF/views/add_computer.jsp";
     String EDIT_COMPUTER_VIEW = "/WEB-INF/views/edit_computer.jsp";
 
+    //PARAM
     String PARAM_ID = "id";
     String PARAM_NAME = "name";
     String PARAM_INTRODUCED = "introduced";
@@ -37,11 +38,20 @@ public interface Util {
     String PARAM_COMPANY_NAME = "company";
     String PARAM_SEARCH = "search";
 
-    String QUERY_COMPUTER_LIMIT = "SELECT * FROM computer LIMIT ?,?";
-    String QUERY_COMPUTER_SEARCH = "SELECT * FROM computer WHERE name LIKE ? LIMIT ?,?";
-    String QUERY_NB_COMPUTER = "SELECT count(*) FROM computer";
-    String QUERY_NB_COMPUTER_SEARCH = "SELECT count(*) FROM computer WHERE name LIKE ?";
-
+    //QUERIES
+    String BASE_QUERY = "SELECT cpt.id, cpt.name, cpt.introduced, cpt.discontinued, cpy.name, cpy.id FROM computer cpt LEFT JOIN company cpy ON cpt.company_id = cpy.id ";
+    String COMPUTER_BY_ID = BASE_QUERY+"WHERE cpt.id=?";
+    String GET_NUMBER_OF_COMPUTERS = "SELECT count(*) FROM computer";
+    String GET_NUMBER_OF_SEARCHED_COMPUTERS ="SELECT count(*) FROM computer WHERE name LIKE ?";
+    String COMPUTERS_BY_LIMIT = BASE_QUERY+"LIMIT ?,?";
+    String COMPUTERS_BY_ORDER = BASE_QUERY+"ORDER BY cpt.";
+    String SEARCH_COMPUTERS = BASE_QUERY+"WHERE cpt.name LIKE ? LIMIT ?,?";
+    String CREATE_COMPUTER = "INSERT INTO computer(name,introduced,discontinued,company_id) VALUES(?,?,?,?)";
+    String DELETE_COMPUTER = "DELETE FROM computer WHERE id=?";
+    String UPDATE_COMPUTER = "UPDATE computer SET name=?, introduced=?, discontinued=?, company_id=? WHERE id=?";
+    String COMPANIES_BY_ID = "SELECT * FROM company WHERE id=?";
+    String COMPANIES_BY_LIMIT = "SELECT * FROM company LIMIT ?,?";
+    //ERROR PAGE
     int ERROR_500 = 500;
     int ERROR_404 = 404;
     int ERROR_403 = 403;
