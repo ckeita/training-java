@@ -14,6 +14,7 @@ import fr.ebiz.computer_database.exceptions.DAOException;
 import fr.ebiz.computer_database.exceptions.DateException;
 import fr.ebiz.computer_database.model.ComputerDTO;
 import fr.ebiz.computer_database.service.ComputerService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Servlet implementation class DashboardServlet.
@@ -22,7 +23,9 @@ import fr.ebiz.computer_database.service.ComputerService;
 public class DashboardServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    private ComputerService computerService = new ComputerService();
+    @Autowired
+    private ComputerService computerService;
+
     private int nbComputers;
     private int nbPages;
     private int nbLinks;

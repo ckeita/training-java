@@ -15,6 +15,7 @@ import fr.ebiz.computer_database.model.CompanyDTO;
 import fr.ebiz.computer_database.model.Computer;
 import fr.ebiz.computer_database.service.CompanyService;
 import fr.ebiz.computer_database.service.ComputerService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Servlet implementation class AddComputerServlet.
@@ -28,8 +29,10 @@ public class AddComputerServlet extends HttpServlet {
     private String discontinued;
     private String company;
 
-    private ComputerService computerService = new ComputerService();
-    private CompanyService companyService = new CompanyService();
+    @Autowired
+    private ComputerService computerService;
+    @Autowired
+    private CompanyService companyService;
 
     /**
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse

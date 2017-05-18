@@ -5,10 +5,12 @@ import java.util.List;
 
 import fr.ebiz.computer_database.model.Company;
 import fr.ebiz.computer_database.model.CompanyDTO;
+import org.springframework.stereotype.Component;
 
 /**
  * @author ckeita
  */
+@Component
 public class CompanyMapper {
     /**
      * @param comp to translate

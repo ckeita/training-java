@@ -5,10 +5,12 @@ import java.util.List;
 
 import fr.ebiz.computer_database.model.Computer;
 import fr.ebiz.computer_database.model.ComputerDTO;
+import org.springframework.stereotype.Component;
 
 /**
  * @author ckeita
  */
+@Component
 public class ComputerMapper {
 
     /**

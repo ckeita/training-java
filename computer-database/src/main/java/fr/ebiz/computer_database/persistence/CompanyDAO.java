@@ -12,17 +12,24 @@ import org.slf4j.LoggerFactory;
 
 import fr.ebiz.computer_database.exceptions.DAOException;
 import fr.ebiz.computer_database.model.Company;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.DataSourceUtils;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 
 /**
  * @author ckeita
  */
+@Repository
 public class CompanyDAO {
 
     private static Logger logger = LoggerFactory.getLogger(CompanyDAO.class);
 //    private ConnectionManager conMng = ConnectionManager.getInstance();
-    private static DataSource dataSource;
+
+	@Autowired
+    private DataSource dataSource;
     /**
      * @param id of the Company
      * @return the ResultSet of the query
@@ -35,8 +42,8 @@ public class CompanyDAO {
         Connection connection = null;
         try {
            // Get one connection
-            //connection = conMng.getConnection();
-            connection = dataSource.getConnection();
+	        //connection = dataSource.getConnection();
+	        connection = DataSourceUtils.getConnection(dataSource);
             // Create the sql query to find Computer by id
             String query = "SELECT * FROM company WHERE id=?";
             // Initialize a preparedStatement
@@ -52,6 +59,11 @@ public class CompanyDAO {
         } catch (SQLException e) {
             throw new DAOException("[findById] Impossible to fetch data from database");
         } finally {
+            /*try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         	/*if (!conMng.isTransactional()) {
         		conMng.closeConnection();
         	}
@@ -72,8 +84,8 @@ public class CompanyDAO {
         Connection connection = null;
         try {
         	// Get one connection
-            //connection = conMng.getConnection();
-            connection = dataSource.getConnection();
+	        //connection = dataSource.getConnection();
+	        connection = DataSourceUtils.getConnection(dataSource);
 
             // Create the sql query to find companies
             String query = "SELECT * FROM company LIMIT ?,?";
@@ -92,6 +104,11 @@ public class CompanyDAO {
         } catch (SQLException e) {
             throw new DAOException("[findByLimit] Impossible to fetch data from database");
         } finally {
+            /*try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         	/*if (!conMng.isTransactional()) {
         		conMng.closeConnection();
         	}
@@ -113,9 +130,5 @@ public class CompanyDAO {
         } catch (SQLException e) {
             throw new DAOException("Impossible to fetch data from database");
         }
-    }
-
-    public void setDataSource(DataSource dataSource) {
-        this.dataSource = dataSource;
     }
 }

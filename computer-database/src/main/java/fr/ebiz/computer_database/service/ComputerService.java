@@ -11,23 +11,22 @@ import fr.ebiz.computer_database.mapper.ComputerMapper;
 import fr.ebiz.computer_database.model.Computer;
 import fr.ebiz.computer_database.model.ComputerDTO;
 import fr.ebiz.computer_database.persistence.ComputerDAO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author ckeita
  */
+@Service
 public class ComputerService {
     private static Logger LOGGER = LoggerFactory.getLogger(ComputerService.class);
 
-    private static ComputerDAO computerDAO;
-    private static ComputerMapper computerMapper;
-
-    public void setComputerDAO(ComputerDAO computerDAO) {
-        this.computerDAO = computerDAO;
-    }
-
-    public void setComputerMapper(ComputerMapper computerMapper) {
-        this.computerMapper = computerMapper;
-    }
+    @Autowired
+    private ComputerDAO computerDAO;
+    @Autowired
+    private ComputerMapper computerMapper;
 
     /**
      * @param id of the computer
@@ -95,6 +94,7 @@ public class ComputerService {
      * @param comp the computer to put on database
      * @throws DAOException .
      */
+    @Transactional
     public void createComputer(Computer comp) throws DAOException {
         computerDAO.create(comp);
     }
@@ -103,6 +103,7 @@ public class ComputerService {
      * @param compId the ID of computer to delete from database
      * @exception DAOException .
      */
+    @Transactional
     public void deleteComputer(int compId) throws DAOException {
         computerDAO.delete(compId);
     }
@@ -111,6 +112,7 @@ public class ComputerService {
      * @param comp the computer to update
      * @exception DAOException .
      */
+    @Transactional
     public void updateComputer(Computer comp) throws DAOException {
         computerDAO.update(comp);
     }
