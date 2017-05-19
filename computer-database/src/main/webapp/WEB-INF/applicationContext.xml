@@ -7,6 +7,7 @@
                            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
                            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 
+    <!-- Hikari datasource -->
     <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource"  destroy-method="close">
         <property name="dataSourceClassName" value="com.mysql.jdbc.jdbc2.optional.MysqlDataSource"/>
         <property name="maximumPoolSize" value="15" />
@@ -25,11 +26,18 @@
         </property>
     </bean>
 
-   <tx:annotation-driven proxy-target-class="true" transaction-manager="txManager" />
+    <!-- JDBC Template -->
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+
+    <!-- Transaction manager -->
+    <tx:annotation-driven proxy-target-class="true" transaction-manager="txManager" />
     <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
+    <!-- Spring beans -->
     <context:annotation-config />
     <context:component-scan base-package="fr.ebiz.computer_database.service" />
     <context:component-scan base-package="fr.ebiz.computer_database.mapper" />
