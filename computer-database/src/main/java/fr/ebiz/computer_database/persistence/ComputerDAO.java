@@ -77,15 +77,7 @@ public class ComputerDAO {
         } catch (SQLException e) {
             throw new DAOException("[findById] Impossible to communicate with database findById");
         } finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        	/*if (!conMng.isTransactional()) {
-        		conMng.closeConnection();
-        	}
-        	conMng.closeObjects(pstm);*/
+            DataSourceUtils.releaseConnection(connection, dataSource);
         }
     }
 
@@ -117,11 +109,7 @@ public class ComputerDAO {
         } catch (SQLException e) {
             throw new DAOException("[getNumberOfComputers] Impossible to communicate with database");
         } finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            DataSourceUtils.releaseConnection(connection, dataSource);
         	/*if (!conMng.isTransactional()) {
         		conMng.closeConnection();
         	}
@@ -159,11 +147,7 @@ public class ComputerDAO {
         } catch (SQLException e) {
             throw new DAOException("[getNumberOfSearchedComputers] Impossible to communicate with database");
         } finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            DataSourceUtils.releaseConnection(connection, dataSource);
         	/*if (!conMng.isTransactional()) {
         		conMng.closeConnection();
         	}
@@ -205,11 +189,7 @@ public class ComputerDAO {
         } catch (SQLException e) {
             throw new DAOException("Impossible to communicate with database findByLimit");
         } finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            DataSourceUtils.releaseConnection(connection, dataSource);
         	/*if (!conMng.isTransactional()) {
         		conMng.closeConnection();
         	}
@@ -248,11 +228,7 @@ public class ComputerDAO {
         } catch (SQLException e) {
             throw new DAOException("[findByLimit] Impossible to communicate with database");
         } finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            DataSourceUtils.releaseConnection(connection, dataSource);
         	/*if (!conMng.isTransactional()) {
         		conMng.closeConnection();
         	}
@@ -298,11 +274,7 @@ public class ComputerDAO {
         } catch (SQLException e) {
             throw new DAOException("[searchByLimit] Impossible to communicate with database");
         } finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            DataSourceUtils.releaseConnection(connection, dataSource);
         	/*if (!conMng.isTransactional()) {
         		conMng.closeConnection();
         	}

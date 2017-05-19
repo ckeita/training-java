@@ -57,6 +57,12 @@
 			<artifactId>spring-jdbc</artifactId>
 			<version>4.3.8.RELEASE</version>
 		</dependency>
+		<!-- spring-tx -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+			<version>4.3.8.RELEASE</version>
+		</dependency>
 		<!-- JUnit -->
 		<dependency>
 			<groupId>junit</groupId>

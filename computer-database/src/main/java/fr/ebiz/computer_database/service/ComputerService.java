@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 public class ComputerService {
-    private static Logger LOGGER = LoggerFactory.getLogger(ComputerService.class);
+    private static Logger logger = LoggerFactory.getLogger(ComputerService.class);
 
     @Autowired
     private ComputerDAO computerDAO;
@@ -73,7 +73,7 @@ public class ComputerService {
      * @throws DateException .
      */
     public List<ComputerDTO> findComputersByOrder(String orderBy, String order) throws DateException, DAOException {
-        LOGGER.info("orderby " + orderBy + " order " + order);
+        logger.info("orderby " + orderBy + " order " + order);
         return computerMapper.getByPage(computerDAO.findByOrder(orderBy, order));
     }
 
@@ -93,26 +93,38 @@ public class ComputerService {
      * @param comp the computer to put on database
      * @throws DAOException .
      */
-    @Transactional
-    public void createComputer(Computer comp) throws DAOException {
-        computerDAO.create(comp);
+    @Transactional(rollbackFor = DAOException.class)
+    public void createComputer(Computer comp) {
+        try {
+            computerDAO.create(comp);
+        } catch (DAOException e) {
+            logger.info(e.getMessage());
+        }
     }
 
     /**
      * @param compId the ID of computer to delete from database
      * @exception DAOException .
      */
-    @Transactional
-    public void deleteComputer(int compId) throws DAOException {
-        computerDAO.delete(compId);
+    @Transactional(rollbackFor = DAOException.class)
+    public void deleteComputer(int compId) {
+        try {
+            computerDAO.delete(compId);
+        } catch (DAOException e) {
+            logger.info(e.getMessage());
+        }
     }
 
     /**
      * @param comp the computer to update
      * @exception DAOException .
      */
-    @Transactional
-    public void updateComputer(Computer comp) throws DAOException {
-        computerDAO.update(comp);
+    @Transactional(rollbackFor = DAOException.class)
+    public void updateComputer(Computer comp) {
+        try {
+            computerDAO.update(comp);
+        } catch (DAOException e) {
+            logger.info(e.getMessage());
+        }
     }
 }

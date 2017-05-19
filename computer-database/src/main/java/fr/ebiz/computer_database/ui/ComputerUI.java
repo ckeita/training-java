@@ -187,12 +187,12 @@ public class ComputerUI {
         this.id = Integer.parseInt(computId);
 
         // Process delete
-        try {
+        //try {
             computerService.deleteComputer(id);
-        } catch (DAOException e) {
+        /*} catch (DAOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        }
+        }*/
     }
 
     /**

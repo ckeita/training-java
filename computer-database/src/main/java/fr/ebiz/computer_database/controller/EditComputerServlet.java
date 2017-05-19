@@ -84,7 +84,7 @@ public class EditComputerServlet extends HttpServlet {
         try {
             computerService.updateComputer(new Computer.ComputerBuilder(name).id(Integer.parseInt(id))
                     .introduced(introduced).discontinued(discontinued).companyId(Integer.parseInt(company)).build());
-        } catch (DateException | DAOException | NumberFormatException e) {
+        } catch (DateException | NumberFormatException e) {
             e.getMessage();
             response.sendError(Util.ERROR_500);
         }

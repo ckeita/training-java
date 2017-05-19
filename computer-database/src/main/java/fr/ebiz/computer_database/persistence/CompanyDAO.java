@@ -26,7 +26,6 @@ import javax.sql.DataSource;
 public class CompanyDAO {
 
     private static Logger logger = LoggerFactory.getLogger(CompanyDAO.class);
-//    private ConnectionManager conMng = ConnectionManager.getInstance();
 
 	@Autowired
     private DataSource dataSource;
@@ -59,6 +58,7 @@ public class CompanyDAO {
         } catch (SQLException e) {
             throw new DAOException("[findById] Impossible to fetch data from database");
         } finally {
+            DataSourceUtils.releaseConnection(connection, dataSource);
             /*try {
                 connection.close();
             } catch (SQLException e) {
@@ -104,6 +104,7 @@ public class CompanyDAO {
         } catch (SQLException e) {
             throw new DAOException("[findByLimit] Impossible to fetch data from database");
         } finally {
+            DataSourceUtils.releaseConnection(connection, dataSource);
             /*try {
                 connection.close();
             } catch (SQLException e) {

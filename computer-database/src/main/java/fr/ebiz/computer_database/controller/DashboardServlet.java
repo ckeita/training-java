@@ -149,7 +149,7 @@ public class DashboardServlet extends HttpServlet {
             }
             // computerService.deleteComputer(Integer.parseInt(request.getParameter("selection")));
             response.sendRedirect(Util.DASH_REDIRECT);
-        } catch (DAOException | NumberFormatException e) {
+        } catch (NumberFormatException e) {
             System.out.println(e.getMessage());
             response.sendError(Util.ERROR_500);
         }
