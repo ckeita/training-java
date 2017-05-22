@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 /**
  * Created by ebiz on 22/05/17.
  */
-@Controller("addcomputer")
+@Controller()
 public class AddComputerController {
 	@Autowired
 	private CompanyService companyService;
@@ -30,8 +30,7 @@ public class AddComputerController {
 	private static final String  ADD_PAGE = "add_computer";
 	private static final String  DASHBOARD = "redirect:dashboard";
 
-	//@RequestMapping(name = "addcomputer", method = RequestMethod.GET)
-	@GetMapping
+	@RequestMapping(value = "addcomputer", method = RequestMethod.GET)
 	public String getAddPage(Model model) {
 		try {
 			model.addAttribute(COMPANIES, companyService.findAll());
@@ -41,8 +40,7 @@ public class AddComputerController {
 		return ADD_PAGE;
 	}
 
-	//@RequestMapping(name = "addcomputer", method = RequestMethod.POST)
-	@PostMapping
+	@RequestMapping(value = "addcomputer", method = RequestMethod.POST)
 	public String addComputer(@ModelAttribute("computerToAdd") ComputerDTO computerToAdd) {
 		try {
 			computerService.createComputer(new Computer.ComputerBuilder(computerToAdd.getName()).introduced(computerToAdd.getIntroduced())

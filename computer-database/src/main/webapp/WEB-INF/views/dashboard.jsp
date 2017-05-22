@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="mytags" tagdir="/WEB-INF/tags" %> 
 
@@ -6,12 +7,15 @@
 <html>
 <head>
 <title>Computer Database</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta charset="utf-8">
-<!-- Bootstrap -->
-<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-<link href="css/font-awesome.css" rel="stylesheet" media="screen">
-<link href="css/main.css" rel="stylesheet" media="screen">
+	<spring:url value="/resources/css/bootstrap.min.css" var="bootstrapMinCss"/>
+	<spring:url value="/resources/css/font-awesome.css" var="fontAwesomeCss"/>
+	<spring:url value="/resources/css/main.css" var="mainCss"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="utf-8">
+	<!-- Bootstrap -->
+	<link href="${bootstrapMinCss}" rel="stylesheet" media="screen">
+	<link href="${fontAwesomeCss}" rel="stylesheet" media="screen">
+	<link href="${mainCss}" rel="stylesheet" media="screen">
 </head>
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
@@ -34,7 +38,7 @@
 				</form>
 			</div>
 			<div class="pull-right">
-				<a class="btn btn-success" id="addComputer" href="${pageContext.request.contextPath}/add_computer">Add
+				<a class="btn btn-success" id="addComputer" href="${pageContext.request.contextPath}/addcomputer">Add
 					Computer</a> <a class="btn btn-default" id="editComputer" href="#"
 					onclick="$.fn.toggleEditMode();">Edit</a>
 			</div>
@@ -74,7 +78,7 @@
 					<tr>
 						<td style="display: none;" class="editMode"><input type="checkbox" name="cb"
 						class="cb" value="${computer.id}"></td>
-						<td><a href="edit_computer?id=${computer.id}" onclick="">${computer.name}</a></td>
+						<td><a href="editcomputer?id=${computer.id}" onclick="">${computer.name}</a></td>
 						<td>
 							<c:if test="${not empty computer.introduced}">
 								${computer.introduced}
@@ -127,9 +131,13 @@
 			</div>
 		</div>
 	</footer>
-	<script src="js/jquery.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script src="js/dashboard.js"></script>
+	<spring:url value="/resources/js/jquery-1.12.4.min.js" var="jqueryMinJs"/>
+	<spring:url value="/resources/js/bootstrap.min.js" var="bootstrapMinJs"/>
+	<spring:url value="/resources/js/dashboard.js" var="dashboardJs"/>
+
+	<script src="${jqueryMinJs}"></script>
+	<script src="${bootstrapMinJs}"></script>
+	<script src="${dashboardJs}"></script>
 
 </body>
 </html>

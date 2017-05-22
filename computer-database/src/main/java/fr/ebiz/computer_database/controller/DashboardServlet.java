@@ -144,9 +144,10 @@ public class DashboardServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             String[] listId = request.getParameterValues("selection");
-            for (String id : listId) {
-                computerService.deleteComputer(Integer.parseInt(id));
-            }
+            System.out.println(listId);
+            //for (String id : listId) {
+              //  computerService.deleteComputer(Integer.parseInt(id));
+            //}
             // computerService.deleteComputer(Integer.parseInt(request.getParameter("selection")));
             response.sendRedirect(Util.DASH_REDIRECT);
         } catch (NumberFormatException e) {

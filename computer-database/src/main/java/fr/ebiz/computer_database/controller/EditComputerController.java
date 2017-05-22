@@ -34,7 +34,7 @@ public class EditComputerController {
 	private static final String  EDIT_PAGE = "edit_computer";
 	private static final String  DASHBOARD = "redirect:dashboard";
 
-	@RequestMapping(path = "editcomputer", method = RequestMethod.GET)
+	@RequestMapping(value = "editcomputer", method = RequestMethod.GET)
 	public String getEditPage(@RequestParam(value = "id", required = true) int id, Model model) {
 		try {
 			model.addAttribute(COMPUTER, computerService.findComputerById(id));
@@ -46,7 +46,7 @@ public class EditComputerController {
 		return EDIT_PAGE;
 	}
 
-	@RequestMapping(name = "editcomputer", method = RequestMethod.POST)
+	@RequestMapping(value = "editcomputer", method = RequestMethod.POST)
 	public String editComputer(@ModelAttribute("computerToEdit") ComputerDTO computerToEdit) {
 		try {
 			computerService.updateComputer(new Computer.ComputerBuilder(computerToEdit.getName()).introduced(computerToEdit.getIntroduced())
