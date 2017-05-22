@@ -25,7 +25,7 @@
                     </div>
                     <h1>Edit Computer</h1>
 
-                    <form data-toggle="validator" role="form" action="edit_computer" id="form_id" method="POST">
+                    <form data-toggle="validator" role="form" action="editcomputer" id="form_id" name="computerToEdit" method="POST">
                         <input type="hidden" value="${computer.id}" id="id" name="id"/> <!-- TODO: Change this value with the computer id -->
                         <fieldset>
                             <div class="form-group">

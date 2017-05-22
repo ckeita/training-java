@@ -8,7 +8,7 @@ import fr.ebiz.computer_database.ui.ComputerUI;
 /**
  * @author ebiz
  */
-public class ComputerController {
+public class ComputerCliController {
 
     ComputerUI computerUI;
     private boolean back;
@@ -16,7 +16,7 @@ public class ComputerController {
     /**
      * the default controller.
      */
-    public ComputerController() {
+    public ComputerCliController() {
         computerUI = new ComputerUI();
         back = false;
     }

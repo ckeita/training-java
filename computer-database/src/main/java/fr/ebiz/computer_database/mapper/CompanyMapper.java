@@ -24,7 +24,7 @@ public class CompanyMapper {
      * @param companies to translate
      * @return the list of companies
      */
-    public List<CompanyDTO> getByPage(List<Company> companies) {
+    public List<CompanyDTO> getAll(List<Company> companies) {
         List<CompanyDTO> list = new ArrayList<>();
         for (Company company : companies) {
             list.add(new CompanyDTO(company));

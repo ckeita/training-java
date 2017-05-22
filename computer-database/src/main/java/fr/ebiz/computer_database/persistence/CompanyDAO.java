@@ -24,6 +24,8 @@ public class CompanyDAO {
 
     private static Logger logger = LoggerFactory.getLogger(CompanyDAO.class);
 
+    private static final String COMPANIES = "SELECT * FROM company";
+
 	@Autowired
     private DataSource dataSource;
 
@@ -63,6 +65,24 @@ public class CompanyDAO {
                 new Object[]{offset, max},
                 new CompanyDaoMapper());
             logger.info("[findByLimit] Found" + companies.size() + "elements from database");
+            return companies;
+        } catch (DataAccessException e) {
+            logger.info(e.getMessage());
+            throw new DAOException(e.getMessage());
+        }
+    }
+
+    /**
+     * @exception DAOException .
+     * @return resultSet
+     */
+    public List<Company> findAll() throws DAOException {
+        List<Company> companies = null;
+        try {
+            companies = this.jdbcTemplate.query(
+                    COMPANIES,
+                    new CompanyDaoMapper());
+            logger.info("[findAll] Found " + companies.size() + " elements from database");
             return companies;
         } catch (DataAccessException e) {
             logger.info(e.getMessage());

@@ -2,8 +2,8 @@ package fr.ebiz.computer_database.main;
 
 import java.util.Scanner;
 
-import fr.ebiz.computer_database.controller.CompanyController;
-import fr.ebiz.computer_database.controller.ComputerController;
+import fr.ebiz.computer_database.controller.CompanyCliController;
+import fr.ebiz.computer_database.controller.ComputerCliController;
 import fr.ebiz.computer_database.exception.DAOException;
 
 /**
@@ -31,7 +31,7 @@ public class Main {
             switch (choice) {
             case "0":
                 // Initialize the controller and dispatch
-                CompanyController cmpy = new CompanyController();
+                CompanyCliController cmpy = new CompanyCliController();
                 try {
                     cmpy.dispatchView();
                 } catch (DAOException e) {
@@ -40,7 +40,7 @@ public class Main {
                 }
                 break;
             case "1":
-                ComputerController cmpr = new ComputerController();
+                ComputerCliController cmpr = new ComputerCliController();
                 try {
                     cmpr.dispatchView();
                 } catch (DAOException e) {

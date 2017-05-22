@@ -26,7 +26,7 @@ public interface Util {
     String NAME_EXCEPTION = "The name must be set";
 
     String DASHBOARD_VIEW = "/WEB-INF/views/dashboard.jsp";
-    String ADD_COMPUTER_VIEW = "/WEB-INF/views/add_computer.jsp";
+    String ADD_COMPUTER_VIEW = "/WEB-INF/views/addcomputer.jsp";
     String EDIT_COMPUTER_VIEW = "/WEB-INF/views/edit_computer.jsp";
 
     //PARAM
@@ -55,6 +55,10 @@ public interface Util {
     int ERROR_500 = 500;
     int ERROR_404 = 404;
     int ERROR_403 = 403;
+
+    String PAGE_500 = "500";
+    String PAGE_404 = "404";
+    String PAGE_403 = "403";
 
     String DASH_REDIRECT = "dashboard";
 

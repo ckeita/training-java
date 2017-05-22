@@ -9,7 +9,13 @@ public class ComputerDTO {
     private String introduced;
     private String discontinued;
     private String company;
+    private int companyId;
 
+    /**
+     * the default controller
+     */
+    public ComputerDTO() {
+    }
     /**
      * @param comp to set
      */
@@ -25,6 +31,7 @@ public class ComputerDTO {
         if (comp.getCompanyName() != null) {
             this.company = comp.getCompanyName();
         }
+        this.companyId = comp.getCompanyId();
     }
 
     /**
@@ -95,6 +102,14 @@ public class ComputerDTO {
      */
     public void setCompany(String company) {
         this.company = company;
+    }
+
+    public int getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(int companyId) {
+        this.companyId = companyId;
     }
 
     @Override

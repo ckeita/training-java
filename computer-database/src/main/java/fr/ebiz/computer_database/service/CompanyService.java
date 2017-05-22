@@ -8,7 +8,6 @@ import fr.ebiz.computer_database.model.CompanyDTO;
 import fr.ebiz.computer_database.persistence.CompanyDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author ckeita
@@ -37,6 +36,14 @@ public class CompanyService {
      * @exception DAOException .
      */
     public List<CompanyDTO> findCompaniesByLimit(int offset, int max) throws DAOException {
-        return companyMapper.getByPage(companyDAO.findByLimit(offset, max));
+        return companyMapper.getAll(companyDAO.findByLimit(offset, max));
+    }
+
+    /**
+     * @return the list of computers
+     * @exception DAOException .
+     */
+    public List<CompanyDTO> findAll() throws DAOException {
+        return companyMapper.getAll(companyDAO.findAll());
     }
 }

@@ -8,8 +8,6 @@ import fr.ebiz.computer_database.mapper.ComputerDaoMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
-
 import fr.ebiz.computer_database.util.Util;
 import fr.ebiz.computer_database.exception.DAOException;
 import fr.ebiz.computer_database.exception.DateException;

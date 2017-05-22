@@ -26,7 +26,7 @@
             <div class="row">
                 <div class="col-xs-8 col-xs-offset-2 box">
                     <h1>Add Computer</h1>
-                    <form data-toggle="validator" role="form" action="add_computer" id="form_id"  method="POST">
+                    <form data-toggle="validator" role="form" action="addcomputer" id="form_id" name="computerToAdd" method="POST">
                         <fieldset>
                             <div class="form-group">
                                 <label for="name">Computer name</label>
