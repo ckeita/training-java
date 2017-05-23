@@ -159,10 +159,14 @@ public class ComputerDAO {
      * @throws DAOException .
      */
     public void create(Computer comp) throws DAOException {
+        String company = null;
+        if (comp.getCompanyId() != 0) {
+            company = String.valueOf(comp.getId());
+        }
         try{
             this.jdbcTemplate.update(Util.CREATE_COMPUTER, comp.getName(),
                     comp.getIntroduced(), comp.getDiscontinued(),
-                    comp.getCompanyId());
+                    company);
             logger.info("[create] Inserted successfully");
         } catch (DataAccessException e) {
             logger.info(e.getMessage());
@@ -191,10 +195,14 @@ public class ComputerDAO {
      * @exception DAOException .
      */
     public void update(Computer comp) throws DAOException {
+        String company = null;
+        if (comp.getCompanyId() != 0) {
+            company = String.valueOf(comp.getId());
+        }
         try{
             this.jdbcTemplate.update(Util.UPDATE_COMPUTER, comp.getName(),
                     comp.getIntroduced(), comp.getDiscontinued(),
-                    comp.getCompanyId(), comp.getId());
+                    company, comp.getId());
             logger.info("[update] Updated successfully");
         } catch (DataAccessException e) {
             logger.info(e.getMessage());

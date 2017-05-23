@@ -10,12 +10,15 @@
 	<spring:url value="/resources/css/bootstrap.min.css" var="bootstrapMinCss"/>
 	<spring:url value="/resources/css/font-awesome.css" var="fontAwesomeCss"/>
 	<spring:url value="/resources/css/main.css" var="mainCss"/>
+	<spring:url value="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/2.8.0/css/flag-icon.min.css" var="flagIconMinCss"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta charset="utf-8">
 	<!-- Bootstrap -->
 	<link href="${bootstrapMinCss}" rel="stylesheet" media="screen">
 	<link href="${fontAwesomeCss}" rel="stylesheet" media="screen">
 	<link href="${mainCss}" rel="stylesheet" media="screen">
+	<!-- flag-icon -->
+	<link href="${flagIconMinCss}" rel="stylesheet" media="screen">
 </head>
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
@@ -23,11 +26,19 @@
 		<a class="navbar-brand" href="${pageContext.request.contextPath}/dashboard"> Application -
 			Computer Database </a>
 	</div>
+	<div id="lang">
+		<a href="?lang=en">
+			<span class="flag-icon flag-icon-gr"></span>
+		</a>
+		<a href="?lang=fr">
+			<span class="flag-icon flag-icon-fr"></span>
+		</a>
+	</div>
 	</header>
 
 	<section id="main">
 	<div class="container">
-		<h1 id="homeTitle">${nbComputers} Computers found</h1>
+		<h1 id="homeTitle">${nbComputers} <spring:message code="found"/> </h1>
 		<div id="actions" class="form-horizontal">
 			<div class="pull-left">
 				<form id="searchForm" action="dashboard" method="GET" class="form-inline">
@@ -38,8 +49,7 @@
 				</form>
 			</div>
 			<div class="pull-right">
-				<a class="btn btn-success" id="addComputer" href="${pageContext.request.contextPath}/addcomputer">Add
-					Computer</a> <a class="btn btn-default" id="editComputer" href="#"
+				<a class="btn btn-success" id="addComputer" href="${pageContext.request.contextPath}/addcomputer"><spring:message code="addTitle"/></a> <a class="btn btn-default" id="editComputer" href="#"
 					onclick="$.fn.toggleEditMode();">Edit</a>
 			</div>
 		</div>
@@ -63,13 +73,13 @@
 								class="fa fa-trash-o fa-lg"></i>
 						</a>
 					</span></th>
-					<mytags:orderby target="dashboard?column=name&order=${order}" column="Computer name" ></mytags:orderby>
+					<mytags:orderby target="dashboard?column=name&order=${order}" column="<spring:message code=\"name\"/>" ></mytags:orderby>
 					<!-- Table header for Introduced Date -->
-					<mytags:orderby target="dashboard?column=introduced&order=${order}" column="Introduced date" ></mytags:orderby>
+					<mytags:orderby target="dashboard?column=introduced&order=${order}" column="<spring:message code=\"introduced\"/>" ></mytags:orderby>
 					<!-- Table header for Discontinued Date -->
-					<mytags:orderby target="dashboard?column=discontinued&order=${order}" column="Discontinued date" ></mytags:orderby>
+					<mytags:orderby target="dashboard?column=discontinued&order=${order}" column="<spring:message code=\"discontinued\"/>" ></mytags:orderby>
 					<!-- Table header for Company -->
-					<mytags:orderby target="dashboard?column=company&order=${order}" column="Company" ></mytags:orderby>
+					<mytags:orderby target="dashboard?column=company&order=${order}" column="<spring:message code=\"Company\"/>" ></mytags:orderby>
 				</tr>
 			</thead>
 			<!-- Browse attribute computers -->
@@ -138,6 +148,5 @@
 	<script src="${jqueryMinJs}"></script>
 	<script src="${bootstrapMinJs}"></script>
 	<script src="${dashboardJs}"></script>
-
 </body>
 </html>

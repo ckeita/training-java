@@ -9,6 +9,7 @@
     <spring:url value="/resources/css/main.css" var="mainCss"/>
     <spring:url value="/resources/css/bootstrap-datepicker3.min.css" var="bootstrapDatepicker3MinCss"/>
     <spring:url value="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/css/bootstrapValidator.min.css" var="bootstrapValidatorMinCss"/>
+    <spring:url value="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/2.8.0/css/flag-icon.min.css" var="flagIconMinCss"/>
     <title>Computer Database</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap -->
@@ -18,12 +19,21 @@
     <!-- Bootstrap-datepicker -->
     <link href="${bootstrapDatepicker3MinCss}" rel="stylesheet" media="screen">
     <link href="${bootstrapValidatorMinCss}" rel="stylesheet" media="screen">
-
+    <!-- flag-icon -->
+    <link href="${flagIconMinCss}" rel="stylesheet" media="screen">
 </head>
 <body>
     <header class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <a class="navbar-brand" href="${pageContext.request.contextPath}/dashboard"> Application - Computer Database </a>
+        </div>
+        <div id="lang">
+            <a href="?lang=en">
+                <span class="flag-icon flag-icon-gr"></span>
+            </a>
+            <a href="?lang=fr">
+                <span class="flag-icon flag-icon-fr"></span>
+            </a>
         </div>
     </header>
 
@@ -31,27 +41,27 @@
         <div class="container">
             <div class="row">
                 <div class="col-xs-8 col-xs-offset-2 box">
-                    <h1>Add Computer</h1>
+                    <h1><spring:message code="addTitle"/></h1>
                     <form data-toggle="validator" role="form" action="addcomputer" id="form_id" name="computerToAdd" method="POST">
                         <fieldset>
                             <div class="form-group">
-                                <label for="name">Computer name</label>
-                                <input type="text" class="form-control" id="name" name="name" placeholder="Computer name" required>
+                                <label for="name"> <spring:message code="name"/> </label>
+                                <input type="text" class="form-control" id="name" name="name" placeholder="<spring:message code="name"/>" required>
                             </div>
                             <div class="form-group">
                                  <div class="input-append date" id="introduced_date">
-                                 <label for="introduced">Introduced date</label>
-                                 	<input type="date" class="form-control" id="introduced" name="introduced" placeholder="Introduced date">
+                                 <label for="introduced"><spring:message code="introduced"/></label>
+                                 	<input type="date" class="form-control" id="introduced" name="introduced" placeholder="<spring:message code="introduced"/>">
                                  </div>
                             </div>
                             <div class="form-group">
                                 <div class="input-append date" id="discontinued_date">
-                                	<label for="discontinued_date">Discontinued date</label>
-                                	<input type="date" class="form-control" id="discontinued" name="discontinued" placeholder="Discontinued date">
+                                	<label for="discontinued_date"><spring:message code="discontinued"/></label>
+                                	<input type="date" class="form-control" id="discontinued" name="discontinued" placeholder="<spring:message code="discontinued"/>">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="companyId">Company</label>
+                                <label for="companyId"><spring:message code="company"/></label>
                                 <select class="form-control" id="companyId" name="companyId" >
                           			<option value="0">--</option>
                                 	<c:forEach var="company" items="${companies}">
@@ -61,9 +71,9 @@
                             </div>                  
                         </fieldset>
                         <div class="actions pull-right">
-                            <input type="submit" value="Add" class="btn btn-primary">
+                            <input type="submit" value="<spring:message code="addSubmit" />" class="btn btn-primary">
                             or
-                            <a href="${pageContext.request.contextPath}/dashboard" class="btn btn-default">Cancel</a>
+                            <a href="${pageContext.request.contextPath}/dashboard" class="btn btn-default"><spring:message code="cancel"/></a>
                         </div>
                     </form>
                 </div>

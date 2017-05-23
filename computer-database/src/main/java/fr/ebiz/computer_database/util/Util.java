@@ -60,17 +60,6 @@ public interface Util {
     String PAGE_404 = "404";
     String PAGE_403 = "403";
 
-    String DASH_REDIRECT = "dashboard";
-
     String ASC = "ASC";
     String DESC = "DESC";
-    String COLUMN_SORT = "column";
-    String CURRENT_PAGE = "current";
-    String PAGE_LIMIT = "limit";
-    String ORDER_COLUMN = "column";
-    String SORT_ORDER = "order";
-
-    int PAGING = 10;
-    int OFFSET = 0;
-    int ALL_COMPANIES = 43;
 }
