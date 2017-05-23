@@ -45,6 +45,7 @@
     <context:component-scan base-package="fr.ebiz.computer_database.service" />
     <context:component-scan base-package="fr.ebiz.computer_database.mapper" />
     <context:component-scan base-package="fr.ebiz.computer_database.persistence" />
+    <context:component-scan base-package="fr.ebiz.computer_database.handler" />
 
     <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
         <property name="defaultLocale" value="en" />

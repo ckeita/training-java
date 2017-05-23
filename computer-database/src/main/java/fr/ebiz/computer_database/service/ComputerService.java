@@ -55,14 +55,14 @@ public class ComputerService {
     }
 
     /**
-     * @param offset of the first row
-     * @param max number of rows
+     * @param current of the first row
+     * @param limit number of rows
      * @return the list of computers DTO
      * @throws DAOException .
      * @throws DateException .
      */
-    public List<ComputerDTO> findComputersByLimit(int offset, int max) throws DateException, DAOException {
-        return computerMapper.getByPage(computerDAO.findByLimit(offset, max));
+    public List<ComputerDTO> findComputersByLimit(int current, int limit) throws DateException, DAOException {
+        return computerMapper.getByPage(computerDAO.findByLimit(current, limit));
     }
 
     /**
@@ -79,14 +79,14 @@ public class ComputerService {
 
     /**
      * @param name of computer to search
-     * @param offset of the first row
-     * @param max number of rows
+     * @param current of the first row
+     * @param limit number of rows
      * @return the list of computers DTO
      * @throws DAOException .
      * @throws DateException .
      */
-    public List<ComputerDTO> searchComputers(String name, int offset, int max) throws DateException, DAOException {
-        return computerMapper.getByPage(computerDAO.searchByLimit(name, offset, max));
+    public List<ComputerDTO> searchComputers(String name, int current, int limit) throws DateException, DAOException {
+        return computerMapper.getByPage(computerDAO.searchByLimit(name, current, limit));
     }
 
     /**

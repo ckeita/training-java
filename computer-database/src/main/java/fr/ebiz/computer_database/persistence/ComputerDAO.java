@@ -89,18 +89,18 @@ public class ComputerDAO {
     }
 
     /**
-     * @param offset of the first row
-     * @param max number of rows
+     * @param current of the first row
+     * @param limit number of rows
      * @return resultSet
      * @throws DateException .
      * @throws DAOException .
      */
-    public List<Computer> findByLimit(int offset, int max) throws DAOException, DateException {
+    public List<Computer> findByLimit(int current, int limit) throws DAOException, DateException {
         List<Computer> computers = null;
         try {
             computers = this.jdbcTemplate.query(
                     Util.COMPUTERS_BY_LIMIT,
-                    new Object[]{offset, max},
+                    new Object[]{current, limit},
                     new ComputerDaoMapper());
             logger.info("[findByLimit] Found " + computers.size() + " elements from database");
             return computers;
@@ -133,18 +133,18 @@ public class ComputerDAO {
 
     /**
      * @param name of computer to search
-     * @param offset of the first row
-     * @param max number of rows
+     * @param current of the first row
+     * @param limit number of rows
      * @return resultSet
      * @throws DateException .
      * @throws DAOException .
      */
-    public List<Computer> searchByLimit(String name, int offset, int max) throws DAOException, DateException {
+    public List<Computer> searchByLimit(String name, int current, int limit) throws DAOException, DateException {
         List<Computer> computers = null;
         try {
         computers = this.jdbcTemplate.query(
             Util.SEARCH_COMPUTERS,
-            new Object[]{"%"+ name + "%", offset, max},
+            new Object[]{"%"+ name + "%", current, limit},
             new ComputerDaoMapper());
             logger.info("[searchByLimit] Found " + computers.size() + " elements from database");
             return computers;

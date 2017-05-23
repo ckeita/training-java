@@ -2,6 +2,7 @@ package fr.ebiz.computer_database.controller;
 
 import fr.ebiz.computer_database.exception.DAOException;
 import fr.ebiz.computer_database.exception.DateException;
+import fr.ebiz.computer_database.handler.PageHandler;
 import fr.ebiz.computer_database.model.ComputerDTO;
 import fr.ebiz.computer_database.service.ComputerService;
 import fr.ebiz.computer_database.util.Util;
@@ -57,11 +58,14 @@ public class DashboardController {
 	@Autowired
 	ComputerService computerService;
 
+	@Autowired
+	PageHandler pageHandler;
+
 	@RequestMapping(value = "dashboard", method = RequestMethod.GET)
 	public String dashboard(@RequestParam(value = CURRENT_PAGE, required = false) String current, @RequestParam(value = PAGE_LIMIT, required = false) String limit,
 	                        @RequestParam(value = ORDER_COLUMN, required = false) String column, @RequestParam(value = SORT_ORDER, required = false) String order,
 	                        @RequestParam(value = PARAM_SEARCH, required = false) String search, Model model) {
-		List<ComputerDTO> computers = null;
+		/*List<ComputerDTO> computers = null;
 		List<ComputerDTO> computersOrdered = null;
 		int offset = 1;
 		int curPage = 1;
@@ -136,7 +140,12 @@ public class DashboardController {
 		} catch (DateException | DAOException | NumberFormatException e) {
 			logger.info(e.getMessage());
 			return Util.PAGE_500;
-		}
+		}*/
+		pageHandler.setCurrent(0);
+		pageHandler.setLimit(10);
+		model.addAttribute(COMPUTERS, pageHandler.getPage());
+
+		return DASHBOARD_VIEW;
 	}
 
 	@RequestMapping(value = "dashboard", method = RequestMethod.POST)
