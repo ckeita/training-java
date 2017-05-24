@@ -7,12 +7,15 @@ import fr.ebiz.computer_database.model.ComputerDTO;
 import fr.ebiz.computer_database.service.CompanyService;
 import fr.ebiz.computer_database.service.ComputerService;
 import fr.ebiz.computer_database.util.Util;
+import fr.ebiz.computer_database.validation.ComputerDTOValidation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -21,10 +24,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Controller()
 public class AddComputerController {
+
 	@Autowired
 	private CompanyService companyService;
 	@Autowired
-	ComputerService computerService;
+	private ComputerService computerService;
+	@Autowired
+	private ComputerDTOValidation computerDTOValidation;
 
 	private static Logger logger = LoggerFactory.getLogger(AddComputerController.class);
 
@@ -32,6 +38,19 @@ public class AddComputerController {
 	private static final String  ADD_PAGE = "add_computer";
 	private static final String  DASHBOARD = "redirect:dashboard";
 
+	/**
+	 * @param binder
+	 */
+	@InitBinder
+	public  void initBinder(WebDataBinder binder) {
+		binder.addValidators(computerDTOValidation);
+	}
+
+	/**
+	 *
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "addcomputer", method = RequestMethod.GET)
 	public String getAddPage(Model model) {
 		try {
@@ -42,9 +61,15 @@ public class AddComputerController {
 		return ADD_PAGE;
 	}
 
+	/**
+	 *
+	 * @param computerToAdd
+	 * @return
+	 */
 	@RequestMapping(value = "addcomputer", method = RequestMethod.POST)
-	public String addComputer(@ModelAttribute("computerToAdd") ComputerDTO computerToAdd) {
+	public String addComputer(@Validated ComputerDTO computerToAdd) {
 		try {
+			logger.info("[CREATE] computerDTO " + computerToAdd);
 			computerService.createComputer(new Computer.ComputerBuilder(computerToAdd.getName()).introduced(computerToAdd.getIntroduced())
 					.discontinued(computerToAdd.getDiscontinued()).companyId(computerToAdd.getCompanyId()).build());
 		} catch (DateException | NumberFormatException e) {

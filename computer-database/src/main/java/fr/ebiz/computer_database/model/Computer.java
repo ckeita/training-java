@@ -22,7 +22,7 @@ public class Computer {
 
     private ComputerValidation computerValidation = new ComputerValidation();
     
-    private static Logger LOGGER = LoggerFactory.getLogger(Computer.class);
+    private static Logger logger = LoggerFactory.getLogger(Computer.class);
 
     /**
      * @param computerBuilder to set
@@ -84,8 +84,14 @@ public class Computer {
 
     @Override
     public String toString() {
-        return "Computer [id=" + id + ", name=" + name + ", introduced=" + introduced + ", discontinued=" + discontinued
-                + ", companyName=" + companyName + "]";
+        return "Computer{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", introduced=" + introduced +
+                ", discontinued=" + discontinued +
+                ", companyId=" + companyId +
+                ", companyName='" + companyName + '\'' +
+                '}';
     }
 
     public static class ComputerBuilder {

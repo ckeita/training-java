@@ -114,18 +114,25 @@ public class ComputerDTO {
 
     @Override
     public String toString() {
-        return "ComputerDTO [name=" + name + ", introduced=" + introduced + ", discontinued=" + discontinued
-                + ", company=" + company + "]";
+        return "ComputerDTO{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", introduced='" + introduced + '\'' +
+                ", discontinued='" + discontinued + '\'' +
+                ", company='" + company + '\'' +
+                ", companyId=" + companyId +
+                '}';
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ComputerDTO)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
 
         ComputerDTO that = (ComputerDTO) o;
 
-        if (getId() != null ? !getId().equals(that.getId()) : that.getId() != null) return false;
+        if (getCompanyId() != that.getCompanyId()) return false;
+        if (!getId().equals(that.getId())) return false;
         if (!getName().equals(that.getName())) return false;
         if (getIntroduced() != null ? !getIntroduced().equals(that.getIntroduced()) : that.getIntroduced() != null)
             return false;
@@ -136,11 +143,12 @@ public class ComputerDTO {
 
     @Override
     public int hashCode() {
-        int result = getId() != null ? getId().hashCode() : 0;
+        int result = getId().hashCode();
         result = 31 * result + getName().hashCode();
         result = 31 * result + (getIntroduced() != null ? getIntroduced().hashCode() : 0);
         result = 31 * result + (getDiscontinued() != null ? getDiscontinued().hashCode() : 0);
         result = 31 * result + (getCompany() != null ? getCompany().hashCode() : 0);
+        result = 31 * result + getCompanyId();
         return result;
     }
 }

@@ -42,8 +42,6 @@ public class ComputerValidation {
 
         if (intrDate != null && discDate != null) {
             if (!intrDate.isBefore(discDate) && !intrDate.isEqual(discDate)) {
-                System.out.println("Discontinued " + discDate);
-                System.out.println("Introduced " + intrDate);
                 throw new DateException(Util.GREATER_THAN);
             }
         }
@@ -55,7 +53,7 @@ public class ComputerValidation {
     public void checkName(String name) {
         if (name != null) {
             if (name.length() == 0) {
-                throw new IllegalArgumentException(Util.NAME_EXCEPTION);
+                throw new IllegalArgumentException(Util.NAME_ERROR);
             }
         }
     }

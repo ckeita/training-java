@@ -23,7 +23,7 @@ public interface Util {
     String STR_HOUR = " 00:00:00";
     String DATE_FORMAT_EXCEPTION = "Date Fomat not valid";
     String GREATER_THAN = "The discontinued date must be greater than the introduced date";
-    String NAME_EXCEPTION = "The name must be set";
+    String NAME_ERROR = "The name must be set";
 
     String DASHBOARD_VIEW = "/WEB-INF/views/dashboard.jsp";
     String ADD_COMPUTER_VIEW = "/WEB-INF/views/addcomputer.jsp";
@@ -40,6 +40,7 @@ public interface Util {
 
     //QUERIES
     String BASE_QUERY = "SELECT cpt.id, cpt.name, cpt.introduced, cpt.discontinued, cpy.name as companyName, cpy.id as companyId FROM computer cpt LEFT JOIN company cpy ON cpt.company_id = cpy.id ";
+    String ALL_COMPUTERS = BASE_QUERY;
     String COMPUTER_BY_ID = BASE_QUERY+ "WHERE cpt.id=?";
     String GET_NUMBER_OF_COMPUTERS = "SELECT count(*) FROM computer";
     String GET_NUMBER_OF_SEARCHED_COMPUTERS = "SELECT count(*) FROM computer WHERE name LIKE ?";

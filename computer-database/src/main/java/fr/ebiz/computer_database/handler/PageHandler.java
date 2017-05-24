@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by chegoujk on 23/05/17.
@@ -19,58 +20,88 @@ public class PageHandler {
 
     private static Logger logger = LoggerFactory.getLogger(PageHandler.class);
 
-    private int current;
-    private int limit;
-    private String search;
-    private String order;
-    private String orderBy;
+    private static final String CURRENT_PAGE = "current";
+    private static final String PAGE_LIMIT = "limit";
+    private static final String ORDER_COLUMN = "column";
+    private static final String SORT_ORDER = "order";
+    private static final String SEARCH = "search";
+
+    private static final int DEFAULT_PAGE = 0;
+    private static final int DEFAULT_LIMIT = 10;
+
+    private static int nbComputers;
+    private static int nbPages;
+    private static int nbLinks;
+    private static int curPage;
+
+    private static String sortPage;
 
     @Autowired
     private ComputerService computerService;
 
-    public PageHandler() {}
-
-    public PageHandler(int current, int limit, String search, String orderBy, String order) {
-        this.current = current;
-        this.limit = limit;
-        this.search = search;
-        this.orderBy = orderBy;
-        this.order = order;
-    }
-
-    public void setCurrent(int current) {
-        this.current = current;
-    }
-
-    public void setLimit(int limit) {
-        this.limit = limit;
-    }
-
-    public void setSearch(String search) {
-        this.search = search;
-    }
-
-    public void setOrder(String order) {
-        this.order = order;
-    }
-
-    public void setOrderBy(String orderBy) {
-        this.orderBy = orderBy;
-    }
-
-    public List<ComputerDTO> getPage()  {
+    /**
+     * @param params to retrieve
+     * @return the computers to print
+     */
+    public List<ComputerDTO> getPage(Map<String, String> params)  {
+        int currentPage = DEFAULT_PAGE;
+        int pageLimit = DEFAULT_LIMIT;
+        List<ComputerDTO> computers;
         try {
-            if(this.search != null) {
-
-                return computerService.searchComputers(this.search, this.current, this.limit);
-            } else if(this.orderBy != null){
-                return computerService.findComputersByOrder(this.orderBy, this.order);
+            nbComputers = computerService.getNumberOfComputers();
+            nbPages = nbComputers / pageLimit;
+            nbLinks = nbPages / pageLimit;
+            if (params.size() != 0) {
+                if (params.get(CURRENT_PAGE) != null) {
+                    currentPage = Integer.parseInt(params.get(CURRENT_PAGE));
+                }
+                if (params.get(PAGE_LIMIT) != null) {
+                    pageLimit = Integer.parseInt(params.get(PAGE_LIMIT));
+                }
+                curPage = currentPage;
+                if (params.get(SEARCH) != null) {
+                    logger.info("[SEARCH] searching computers");
+                    nbComputers = computerService.getNumberOfSearchedComputers(params.get(SEARCH));
+                    logger.info("[SEARCH] limit " + pageLimit);
+                    computers = computerService.searchComputers(params.get(SEARCH), currentPage * pageLimit, pageLimit);
+                } else if (params.get(ORDER_COLUMN) != null) {
+                    sortPage = params.get(SORT_ORDER);
+                    logger.info("[SORT] limit " + pageLimit);
+                    computers = computerService.findComputersByOrder(params.get(ORDER_COLUMN), params.get(SORT_ORDER));
+                } else {
+                    computers = computerService.findComputersByLimit(currentPage * pageLimit, pageLimit);
+                }
+                nbPages = nbComputers / pageLimit;
+                nbLinks = nbPages / pageLimit;
+                return computers;
             } else {
-                return computerService.findComputersByLimit(this.current, this.limit);
+                curPage = currentPage + 1;
+                logger.info("[COMPUTERS] ", computerService.findComputersByLimit(currentPage * pageLimit, pageLimit));
+                return computerService.findComputersByLimit(currentPage * pageLimit, pageLimit);
             }
-        } catch (DateException | DAOException e) {
+        } catch (DateException | DAOException | NumberFormatException e) {
             logger.info(e.getMessage());
         }
         return null;
+    }
+
+    public int getNbComputers() {
+        return nbComputers;
+    }
+
+    public int getNbPages() {
+        return nbPages;
+    }
+
+    public int getNbLinks() {
+        return nbLinks;
+    }
+
+    public int getCurPage() {
+        return curPage;
+    }
+
+    public String getSortPage() {
+        return sortPage;
     }
 }

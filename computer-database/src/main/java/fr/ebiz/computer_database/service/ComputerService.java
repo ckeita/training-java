@@ -38,6 +38,15 @@ public class ComputerService {
     }
 
     /**
+     * @return the list of computers DTO
+     * @throws DAOException .
+     * @throws DateException .
+     */
+    public List<ComputerDTO> findAll() throws DateException, DAOException {
+        return computerMapper.getAll(computerDAO.findAll());
+    }
+
+    /**
      * @return the number of computers
      * @throws DAOException .
      */
@@ -62,7 +71,7 @@ public class ComputerService {
      * @throws DateException .
      */
     public List<ComputerDTO> findComputersByLimit(int current, int limit) throws DateException, DAOException {
-        return computerMapper.getByPage(computerDAO.findByLimit(current, limit));
+        return computerMapper.getAll(computerDAO.findByLimit(current, limit));
     }
 
     /**
@@ -74,7 +83,7 @@ public class ComputerService {
      */
     public List<ComputerDTO> findComputersByOrder(String orderBy, String order) throws DateException, DAOException {
         logger.info("orderby " + orderBy + " order " + order);
-        return computerMapper.getByPage(computerDAO.findByOrder(orderBy, order));
+        return computerMapper.getAll(computerDAO.findByOrder(orderBy, order));
     }
 
     /**
@@ -86,14 +95,14 @@ public class ComputerService {
      * @throws DateException .
      */
     public List<ComputerDTO> searchComputers(String name, int current, int limit) throws DateException, DAOException {
-        return computerMapper.getByPage(computerDAO.searchByLimit(name, current, limit));
+        return computerMapper.getAll(computerDAO.searchByLimit(name, current, limit));
     }
 
     /**
      * @param comp the computer to put on database
      * @throws DAOException .
      */
-    @Transactional(rollbackFor = DAOException.class)
+   // @Transactional(rollbackFor = DAOException.class)
     public void createComputer(Computer comp) {
         try {
             computerDAO.create(comp);
@@ -106,7 +115,7 @@ public class ComputerService {
      * @param compId the ID of computer to delete from database
      * @exception DAOException .
      */
-    @Transactional(rollbackFor = DAOException.class)
+    //@Transactional(rollbackFor = DAOException.class)
     public void deleteComputer(int compId) {
         try {
             computerDAO.delete(compId);
@@ -119,7 +128,7 @@ public class ComputerService {
      * @param comp the computer to update
      * @exception DAOException .
      */
-    @Transactional(rollbackFor = DAOException.class)
+   // @Transactional(rollbackFor = DAOException.class)
     public void updateComputer(Computer comp) {
         try {
             computerDAO.update(comp);

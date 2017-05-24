@@ -24,12 +24,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class ComputerDAO {
     private static Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
-    private int id;
-    private String name;
-    private String introduced;
-    private String discontinued;
-    private String companyName;
-    private int companyId;
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -49,6 +43,25 @@ public class ComputerDAO {
                 new ComputerDaoMapper());
             logger.info("[findById] Found element from database");
             return computer;
+        } catch (DataAccessException e) {
+            logger.info(e.getMessage());
+            throw new DAOException(e.getMessage());
+        }
+    }
+
+    /**
+     * @return resultSet
+     * @throws DateException .
+     * @throws DAOException .
+     */
+    public List<Computer> findAll() throws DAOException, DateException {
+        List<Computer> computers = null;
+        try {
+            computers = this.jdbcTemplate.query(
+                    Util.ALL_COMPUTERS,
+                    new ComputerDaoMapper());
+            logger.info("[findAll] Found " + computers.size() + " elements from database");
+            return computers;
         } catch (DataAccessException e) {
             logger.info(e.getMessage());
             throw new DAOException(e.getMessage());
@@ -161,7 +174,7 @@ public class ComputerDAO {
     public void create(Computer comp) throws DAOException {
         String company = null;
         if (comp.getCompanyId() != 0) {
-            company = String.valueOf(comp.getId());
+            company = String.valueOf(comp.getCompanyId());
         }
         try{
             this.jdbcTemplate.update(Util.CREATE_COMPUTER, comp.getName(),
@@ -197,8 +210,9 @@ public class ComputerDAO {
     public void update(Computer comp) throws DAOException {
         String company = null;
         if (comp.getCompanyId() != 0) {
-            company = String.valueOf(comp.getId());
+            company = String.valueOf(comp.getCompanyId());
         }
+        logger.info("[update] computer " + comp);
         try{
             this.jdbcTemplate.update(Util.UPDATE_COMPUTER, comp.getName(),
                     comp.getIntroduced(), comp.getDiscontinued(),
@@ -207,28 +221,6 @@ public class ComputerDAO {
         } catch (DataAccessException e) {
             logger.info(e.getMessage());
             throw new DAOException(e.getMessage());
-        }
-    }
-
-    /**
-     * @param resultSet the data from database
-     * @return the computer from database
-     * @throws DateException .
-     * @exception DAOException .
-     */
-    private Computer daoMapper(ResultSet resultSet) throws DAOException, DateException {
-        try {
-            id = resultSet.getInt(1);
-            name = resultSet.getString(2);
-            introduced = resultSet.getString(3);
-            discontinued = resultSet.getString(4);
-            companyName = resultSet.getString(5);
-            companyId = resultSet.getInt(6);
-            return new Computer.ComputerBuilder(name).id(id).introduced(introduced)
-                    .discontinued(discontinued).companyName(companyName)
-                    .companyId(companyId).build();
-        } catch (SQLException e) {
-            throw new DAOException("Impossible to fetch data from database");
         }
     }
 }

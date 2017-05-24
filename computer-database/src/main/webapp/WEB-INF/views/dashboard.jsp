@@ -28,7 +28,7 @@
 	</div>
 	<div id="lang">
 		<a href="?lang=en">
-			<span class="flag-icon flag-icon-gr"></span>
+			<span class="flag-icon flag-icon-gb"></span>
 		</a>
 		<a href="?lang=fr">
 			<span class="flag-icon flag-icon-fr"></span>
@@ -73,13 +73,18 @@
 								class="fa fa-trash-o fa-lg"></i>
 						</a>
 					</span></th>
-					<mytags:orderby target="dashboard?column=name&order=${order}" column="<spring:message code=\"name\"/>" ></mytags:orderby>
+					<!-- Table header for Computer Name -->
+					<spring:message code="name" var="name"/>
+					<mytags:orderby target="dashboard?column=name&order=" column="${name}"/>
 					<!-- Table header for Introduced Date -->
-					<mytags:orderby target="dashboard?column=introduced&order=${order}" column="<spring:message code=\"introduced\"/>" ></mytags:orderby>
+					<spring:message code="introduced" var="introduced"/>
+					<mytags:orderby target="dashboard?column=introduced&order=" column="${introduced}" />
 					<!-- Table header for Discontinued Date -->
-					<mytags:orderby target="dashboard?column=discontinued&order=${order}" column="<spring:message code=\"discontinued\"/>" ></mytags:orderby>
+					<spring:message code="discontinued" var="discontinued"/>
+					<mytags:orderby target="dashboard?column=discontinued&order=" column="${discontinued}" />
 					<!-- Table header for Company -->
-					<mytags:orderby target="dashboard?column=company&order=${order}" column="<spring:message code=\"Company\"/>" ></mytags:orderby>
+					<spring:message code="company" var="company"/>
+					<mytags:orderby target="dashboard?column=company&order=" column="${company}" />
 				</tr>
 			</thead>
 			<!-- Browse attribute computers -->
