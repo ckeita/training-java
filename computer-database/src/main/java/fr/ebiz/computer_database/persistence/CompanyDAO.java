@@ -4,6 +4,8 @@ import java.util.List;
 
 import fr.ebiz.computer_database.mapper.CompanyDaoMapper;
 import fr.ebiz.computer_database.util.Util;
+import org.hibernate.Criteria;
+import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,6 +33,9 @@ public class CompanyDAO {
 
 	@Autowired
     private JdbcTemplate jdbcTemplate;
+
+	@Autowired
+    private SessionFactory sessionFactory;
     /**
      * @param id of the Company
      * @return the ResultSet of the query
@@ -38,17 +43,19 @@ public class CompanyDAO {
      */
     public Company findById(int id) throws DAOException {
         Company company = null;
-        try {
-            company = this.jdbcTemplate.queryForObject(
-                Util.COMPANIES_BY_ID,
-                new Object[]{id},
-                new CompanyDaoMapper());
-            logger.info("[findById] Found element from database");
-            return company;
-        } catch (DataAccessException e) {
-            logger.info(e.getMessage());
-            throw new DAOException(e.getMessage());
-        }
+//        try {
+//            company = this.jdbcTemplate.queryForObject(
+//                Util.COMPANIES_BY_ID,
+//                new Object[]{id},
+//                new CompanyDaoMapper());
+//            logger.info("[findById] Found element from database");
+//            return company;
+//        } catch (DataAccessException e) {
+//            logger.info(e.getMessage());
+//            throw new DAOException(e.getMessage());
+//        }
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Company.class);
+        return (Company) criteria.uniqueResult();
     }
 
     /**
@@ -78,15 +85,19 @@ public class CompanyDAO {
      */
     public List<Company> findAll() throws DAOException {
         List<Company> companies = null;
-        try {
-            companies = this.jdbcTemplate.query(
-                    COMPANIES,
-                    new CompanyDaoMapper());
-            logger.info("[findAll] Found " + companies.size() + " elements from database");
-            return companies;
-        } catch (DataAccessException e) {
-            logger.info(e.getMessage());
-            throw new DAOException(e.getMessage());
-        }
+//        try {
+//            companies = this.jdbcTemplate.query(
+//                    COMPANIES,
+//                    new CompanyDaoMapper());
+//            logger.info("[findAll] Found " + companies.size() + " elements from database");
+//            return companies;
+//        } catch (DataAccessException e) {
+//            logger.info(e.getMessage());
+//            throw new DAOException(e.getMessage());
+//        }
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Company.class);
+        companies = criteria.list();
+        logger.info("[COMPANIES] " + companies);
+        return companies;
     }
 }

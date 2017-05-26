@@ -126,15 +126,18 @@ public class ComputerDAO {
     /**
      * @param order for ordering
      * @param orderBy for ordering
+     * @param current for ordering
+     * @param limit for ordering
      * @return resultSet
      * @throws DateException .
      * @throws DAOException .
      */
-    public List<Computer> findByOrder(String orderBy, String order) throws DAOException, DateException {
+    public List<Computer> findByOrder(String orderBy, String order, int current, int limit) throws DAOException, DateException {
         List<Computer> computers = null;
         try {
             computers = this.jdbcTemplate.query(
-                Util.COMPUTERS_BY_ORDER+ orderBy + " " + order,
+                Util.COMPUTERS_BY_ORDER+ orderBy + " " + order + Util.LIMIT,
+                    new Object[]{current, limit},
                 new ComputerDaoMapper());
             logger.info("[findByLimit] Found " + computers.size() + " elements from database");
             return computers;

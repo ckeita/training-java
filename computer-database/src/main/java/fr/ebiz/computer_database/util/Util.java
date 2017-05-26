@@ -40,6 +40,7 @@ public interface Util {
 
     //QUERIES
     String BASE_QUERY = "SELECT cpt.id, cpt.name, cpt.introduced, cpt.discontinued, cpy.name as companyName, cpy.id as companyId FROM computer cpt LEFT JOIN company cpy ON cpt.company_id = cpy.id ";
+    String LIMIT = " LIMIT ?,?";
     String ALL_COMPUTERS = BASE_QUERY;
     String COMPUTER_BY_ID = BASE_QUERY+ "WHERE cpt.id=?";
     String GET_NUMBER_OF_COMPUTERS = "SELECT count(*) FROM computer";

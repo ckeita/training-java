@@ -77,13 +77,15 @@ public class ComputerService {
     /**
      * @param orderBy for ordering
      * @param order for ascendant or descendant
+     * @param current
+     * @param limit
      * @return the list of computers DTO
      * @throws DAOException .
      * @throws DateException .
      */
-    public List<ComputerDTO> findComputersByOrder(String orderBy, String order) throws DateException, DAOException {
+    public List<ComputerDTO> findComputersByOrder(String orderBy, String order, int current, int limit) throws DateException, DAOException {
         logger.info("orderby " + orderBy + " order " + order);
-        return computerMapper.getAll(computerDAO.findByOrder(orderBy, order));
+        return computerMapper.getAll(computerDAO.findByOrder(orderBy, order, current, limit));
     }
 
     /**

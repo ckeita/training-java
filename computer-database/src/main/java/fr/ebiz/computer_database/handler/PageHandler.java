@@ -29,6 +29,11 @@ public class PageHandler {
     private static final int DEFAULT_PAGE = 0;
     private static final int DEFAULT_LIMIT = 10;
 
+    private static boolean orderState = false;
+    private static boolean searchState = false;
+    private static String searchParam = null;
+    private static String orderParam = null;
+
     private static int nbComputers;
     private static int nbPages;
     private static int nbLinks;
@@ -46,7 +51,7 @@ public class PageHandler {
     public List<ComputerDTO> getPage(Map<String, String> params)  {
         int currentPage = DEFAULT_PAGE;
         int pageLimit = DEFAULT_LIMIT;
-        List<ComputerDTO> computers;
+        List<ComputerDTO> computers = null;
         try {
             nbComputers = computerService.getNumberOfComputers();
             nbPages = nbComputers / pageLimit;
@@ -54,29 +59,36 @@ public class PageHandler {
             if (params.size() != 0) {
                 if (params.get(CURRENT_PAGE) != null) {
                     currentPage = Integer.parseInt(params.get(CURRENT_PAGE));
+                    curPage = currentPage;
                 }
                 if (params.get(PAGE_LIMIT) != null) {
                     pageLimit = Integer.parseInt(params.get(PAGE_LIMIT));
                 }
-                curPage = currentPage;
                 if (params.get(SEARCH) != null) {
-                    logger.info("[SEARCH] searching computers");
-                    nbComputers = computerService.getNumberOfSearchedComputers(params.get(SEARCH));
-                    logger.info("[SEARCH] limit " + pageLimit);
-                    computers = computerService.searchComputers(params.get(SEARCH), currentPage * pageLimit, pageLimit);
-                } else if (params.get(ORDER_COLUMN) != null) {
+                    searchParam = params.get(SEARCH);
+                    searchState = true;
+                }
+                if (params.get(ORDER_COLUMN) != null) {
+                    orderParam = params.get(ORDER_COLUMN);
                     sortPage = params.get(SORT_ORDER);
-                    logger.info("[SORT] limit " + pageLimit);
-                    computers = computerService.findComputersByOrder(params.get(ORDER_COLUMN), params.get(SORT_ORDER));
-                } else {
+                    orderState = true;
+                }
+                if (!searchState && !orderState) {
                     computers = computerService.findComputersByLimit(currentPage * pageLimit, pageLimit);
+                } else if (searchState) {
+                    nbComputers = computerService.getNumberOfSearchedComputers(searchParam);
+                    computers = computerService.searchComputers(searchParam, currentPage * pageLimit, pageLimit);
+                } else if (orderState) {
+                    logger.info("[SORT] limit " + pageLimit);
+                    computers = computerService.findComputersByOrder(orderParam, sortPage, currentPage * pageLimit, pageLimit);
                 }
                 nbPages = nbComputers / pageLimit;
                 nbLinks = nbPages / pageLimit;
                 return computers;
             } else {
+                orderState = false;
+                searchState = false;
                 curPage = currentPage + 1;
-                logger.info("[COMPUTERS] ", computerService.findComputersByLimit(currentPage * pageLimit, pageLimit));
                 return computerService.findComputersByLimit(currentPage * pageLimit, pageLimit);
             }
         } catch (DateException | DAOException | NumberFormatException e) {

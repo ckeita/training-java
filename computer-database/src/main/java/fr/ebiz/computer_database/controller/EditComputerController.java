@@ -14,7 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * Created by ebiz on 22/05/17.
@@ -58,7 +61,7 @@ public class EditComputerController {
 	@RequestMapping(value = "editcomputer", method = RequestMethod.POST)
 	public String editComputer(ComputerDTO computerToEdit) {
 		try {
-			computerService.updateComputer(new Computer.ComputerBuilder(computerToEdit.getName()).introduced(computerToEdit.getIntroduced())
+			computerService.updateComputer(new Computer.ComputerBuilder(computerToEdit.getName()).id(Integer.parseInt(computerToEdit.getId())).introduced(computerToEdit.getIntroduced())
 					.discontinued(computerToEdit.getDiscontinued()).companyId(computerToEdit.getCompanyId()).build());
 		} catch (DateException | NumberFormatException e) {
 			logger.info(e.getMessage());
