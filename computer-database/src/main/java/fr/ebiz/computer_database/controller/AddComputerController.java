@@ -75,9 +75,15 @@ public class AddComputerController {
 	public String addComputer(@Validated ComputerDTO computerToAdd) {
 		try {
 			logger.info("[CREATE] computerDTO " + computerToAdd);
-			CompanyDTO companyDTO = companyService.findCompanyById(Integer.parseInt(computerToAdd.getCompanyDTO().getId()));
-			computerService.createComputer(new Computer.ComputerBuilder(computerToAdd.getName()).introduced(computerToAdd.getIntroduced())
-					.discontinued(computerToAdd.getDiscontinued()).company(companyMapper.mapToObject(companyDTO)).build());
+			if (computerToAdd.getCompanyDTO() != null) {
+				CompanyDTO companyDTO = companyService.findCompanyById(Integer.parseInt(computerToAdd.getCompanyDTO().getId()));
+				computerService.createComputer(new Computer.ComputerBuilder(computerToAdd.getName()).introduced(computerToAdd.getIntroduced())
+						.discontinued(computerToAdd.getDiscontinued()).company(companyMapper.mapToObject(companyDTO)).build());
+			} else {
+				computerService.createComputer(new Computer.ComputerBuilder(computerToAdd.getName()).introduced(computerToAdd.getIntroduced())
+						.discontinued(computerToAdd.getDiscontinued()).company(null).build());
+			}
+
 		} catch (DAOException | DateException | NumberFormatException e) {
 			logger.info(e.getMessage());
 			return Util.PAGE_500;

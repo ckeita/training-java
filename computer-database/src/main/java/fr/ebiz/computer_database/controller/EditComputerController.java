@@ -65,9 +65,14 @@ public class EditComputerController {
 	@RequestMapping(value = "editcomputer", method = RequestMethod.POST)
 	public String editComputer(ComputerDTO computerToEdit) {
 		try {
-			CompanyDTO companyDTO = companyService.findCompanyById(Integer.parseInt(computerToEdit.getCompanyDTO().getId()));
-			computerService.updateComputer(new Computer.ComputerBuilder(computerToEdit.getName()).id(Integer.parseInt(computerToEdit.getId())).introduced(computerToEdit.getIntroduced())
-					.discontinued(computerToEdit.getDiscontinued()).company(companyMapper.mapToObject(companyDTO)).build());
+			if (computerToEdit.getCompanyDTO() != null) {
+				CompanyDTO companyDTO = companyService.findCompanyById(Integer.parseInt(computerToEdit.getCompanyDTO().getId()));
+				computerService.updateComputer(new Computer.ComputerBuilder(computerToEdit.getName()).id(Integer.parseInt(computerToEdit.getId())).introduced(computerToEdit.getIntroduced())
+						.discontinued(computerToEdit.getDiscontinued()).company(companyMapper.mapToObject(companyDTO)).build());
+			} else {
+				computerService.updateComputer(new Computer.ComputerBuilder(computerToEdit.getName()).id(Integer.parseInt(computerToEdit.getId())).introduced(computerToEdit.getIntroduced())
+						.discontinued(computerToEdit.getDiscontinued()).company(null).build());
+			}
 		} catch (DAOException | DateException | NumberFormatException e) {
 			logger.info(e.getMessage());
 			return Util.PAGE_500;

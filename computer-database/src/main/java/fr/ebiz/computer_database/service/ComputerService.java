@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author ckeita
  */
 @Service
+@Transactional
 public class ComputerService {
     private static Logger logger = LoggerFactory.getLogger(ComputerService.class);
 
@@ -50,7 +51,7 @@ public class ComputerService {
      * @return the number of computers
      * @throws DAOException .
      */
-    @Transactional
+    //@Transactional
     public long getNumberOfComputers() throws DAOException {
         return computerDAO.getNumberOfComputers();
     }
@@ -60,7 +61,7 @@ public class ComputerService {
      * @return the number of searched computers
      * @throws DAOException .
      */
-    @Transactional
+    //@Transactional
     public long getNumberOfSearchedComputers(String name) throws DAOException {
         return computerDAO.getNumberOfSearchedComputers(name);
     }
@@ -72,7 +73,7 @@ public class ComputerService {
      * @throws DAOException .
      * @throws DateException .
      */
-    @Transactional
+   // @Transactional
     public List<ComputerDTO> findComputersByLimit(int current, int limit) throws DateException, DAOException {
         return computerMapper.getAll(computerDAO.findByLimit(current, limit));
     }
@@ -86,7 +87,6 @@ public class ComputerService {
      * @throws DAOException .
      * @throws DateException .
      */
-    @Transactional
     public List<ComputerDTO> findComputersByOrder(String orderBy, String order, int current, int limit) throws DateException, DAOException {
         logger.info("orderby " + orderBy + " order " + order);
         return computerMapper.getAll(computerDAO.findByOrder(orderBy, order, current, limit));

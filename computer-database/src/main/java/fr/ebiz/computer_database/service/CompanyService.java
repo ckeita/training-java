@@ -8,11 +8,13 @@ import fr.ebiz.computer_database.model.CompanyDTO;
 import fr.ebiz.computer_database.persistence.CompanyDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author ckeita
  */
 @Service
+@Transactional
 public class CompanyService {
 
     @Autowired
@@ -43,6 +45,7 @@ public class CompanyService {
      * @return the list of computers
      * @exception DAOException .
      */
+    //@Transactional
     public List<CompanyDTO> findAll() throws DAOException {
         return companyMapper.getAll(companyDAO.findAll());
     }

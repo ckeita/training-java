@@ -1,9 +1,6 @@
 package fr.ebiz.computer_database.controller;
 
-import fr.ebiz.computer_database.exception.DAOException;
-import fr.ebiz.computer_database.exception.DateException;
 import fr.ebiz.computer_database.handler.PageHandler;
-import fr.ebiz.computer_database.model.ComputerDTO;
 import fr.ebiz.computer_database.service.ComputerService;
 import fr.ebiz.computer_database.util.Util;
 import org.slf4j.Logger;
@@ -15,8 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.ServletContext;
-import java.util.List;
 import java.util.Map;
 
 /**
