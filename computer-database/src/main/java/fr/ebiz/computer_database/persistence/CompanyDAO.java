@@ -5,7 +5,9 @@ import java.util.List;
 import fr.ebiz.computer_database.mapper.CompanyDaoMapper;
 import fr.ebiz.computer_database.util.Util;
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,14 +28,6 @@ public class CompanyDAO {
 
     private static Logger logger = LoggerFactory.getLogger(CompanyDAO.class);
 
-    private static final String COMPANIES = "SELECT * FROM company";
-
-	@Autowired
-    private DataSource dataSource;
-
-	@Autowired
-    private JdbcTemplate jdbcTemplate;
-
 	@Autowired
     private SessionFactory sessionFactory;
     /**
@@ -43,19 +37,14 @@ public class CompanyDAO {
      */
     public Company findById(int id) throws DAOException {
         Company company = null;
-//        try {
-//            company = this.jdbcTemplate.queryForObject(
-//                Util.COMPANIES_BY_ID,
-//                new Object[]{id},
-//                new CompanyDaoMapper());
-//            logger.info("[findById] Found element from database");
-//            return company;
-//        } catch (DataAccessException e) {
-//            logger.info(e.getMessage());
-//            throw new DAOException(e.getMessage());
-//        }
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Company.class);
-        return (Company) criteria.uniqueResult();
+        try {
+            Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Company.class);
+            criteria.add(Restrictions.eq("id", id));
+            company =  (Company) criteria.uniqueResult();
+        } catch (HibernateException e) {
+            logger.info("[findById] " + e.getMessage());
+        }
+        return company;
     }
 
     /**
@@ -67,16 +56,16 @@ public class CompanyDAO {
     public List<Company> findByLimit(int offset, int max) throws DAOException {
         List<Company> companies = null;
         try {
-            companies = this.jdbcTemplate.query(
-                Util.COMPANIES_BY_LIMIT,
-                new Object[]{offset, max},
-                new CompanyDaoMapper());
+            Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Company.class);
+            criteria.setFirstResult(offset);
+            criteria.setMaxResults(max);
+            companies = criteria.list();
             logger.info("[findByLimit] Found" + companies.size() + "elements from database");
-            return companies;
-        } catch (DataAccessException e) {
-            logger.info(e.getMessage());
+        } catch (HibernateException e) {
+            logger.info("[findByLimit] " + e.getMessage());
             throw new DAOException(e.getMessage());
         }
+        return companies;
     }
 
     /**
@@ -85,19 +74,13 @@ public class CompanyDAO {
      */
     public List<Company> findAll() throws DAOException {
         List<Company> companies = null;
-//        try {
-//            companies = this.jdbcTemplate.query(
-//                    COMPANIES,
-//                    new CompanyDaoMapper());
-//            logger.info("[findAll] Found " + companies.size() + " elements from database");
-//            return companies;
-//        } catch (DataAccessException e) {
-//            logger.info(e.getMessage());
-//            throw new DAOException(e.getMessage());
-//        }
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Company.class);
-        companies = criteria.list();
-        logger.info("[COMPANIES] " + companies);
+        try {
+            Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Company.class);
+            companies = criteria.list();
+        } catch (HibernateException e) {
+            logger.info("[findAll] " + e.getMessage());
+            throw new DAOException(e.getMessage());
+        }
         return companies;
     }
 }

@@ -50,7 +50,8 @@ public class ComputerService {
      * @return the number of computers
      * @throws DAOException .
      */
-    public int getNumberOfComputers() throws DAOException {
+    @Transactional
+    public long getNumberOfComputers() throws DAOException {
         return computerDAO.getNumberOfComputers();
     }
 
@@ -59,17 +60,19 @@ public class ComputerService {
      * @return the number of searched computers
      * @throws DAOException .
      */
-    public int getNumberOfSearchedComputers(String name) throws DAOException {
+    @Transactional
+    public long getNumberOfSearchedComputers(String name) throws DAOException {
         return computerDAO.getNumberOfSearchedComputers(name);
     }
 
     /**
-     * @param current of the first row
+     * @param current for the first row
      * @param limit number of rows
      * @return the list of computers DTO
      * @throws DAOException .
      * @throws DateException .
      */
+    @Transactional
     public List<ComputerDTO> findComputersByLimit(int current, int limit) throws DateException, DAOException {
         return computerMapper.getAll(computerDAO.findByLimit(current, limit));
     }
@@ -77,12 +80,13 @@ public class ComputerService {
     /**
      * @param orderBy for ordering
      * @param order for ascendant or descendant
-     * @param current
-     * @param limit
+     * @param current for the first row
+     * @param limit number of rows
      * @return the list of computers DTO
      * @throws DAOException .
      * @throws DateException .
      */
+    @Transactional
     public List<ComputerDTO> findComputersByOrder(String orderBy, String order, int current, int limit) throws DateException, DAOException {
         logger.info("orderby " + orderBy + " order " + order);
         return computerMapper.getAll(computerDAO.findByOrder(orderBy, order, current, limit));
@@ -118,6 +122,7 @@ public class ComputerService {
      * @exception DAOException .
      */
     //@Transactional(rollbackFor = DAOException.class)
+    @Transactional
     public void deleteComputer(int compId) {
         try {
             computerDAO.delete(compId);

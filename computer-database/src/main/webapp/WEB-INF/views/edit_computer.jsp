@@ -69,7 +69,7 @@
                             <div class="form-group">
                                 <label for="companyId"><spring:message code="company"/></label>
                                 <select class="form-control" id="companyId" name="companyId" >
-                                    <option value="0">${computer.company}</option>
+                                    <option value="0">${computer.companyDTO.name}</option>
                                     <c:forEach var="company" items="${companies}">
                                 		<option value="${company.id}">${company.name}</option>
                                 	</c:forEach>

@@ -105,8 +105,8 @@
 							</c:if>
 						</td>
 						<td>
-							<c:if test="${not empty computer.company}">
-	    						${computer.company}
+							<c:if test="${not empty computer.companyDTO.name}">
+	    						${computer.companyDTO.name}
 							</c:if>
 						</td>
 					</tr>

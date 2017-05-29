@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import fr.ebiz.computer_database.mapper.CompanyMapper;
+import fr.ebiz.computer_database.model.Company;
+import fr.ebiz.computer_database.service.CompanyService;
 import fr.ebiz.computer_database.util.Page;
 import fr.ebiz.computer_database.util.Util;
 import fr.ebiz.computer_database.exception.DAOException;
@@ -25,7 +28,7 @@ public class ComputerUI {
     private String name;
     private String introduced;
     private String discontinued;
-    private int companyId;
+    private Company company;
 
     /**
      * @throws DAOException .
@@ -147,14 +150,16 @@ public class ComputerUI {
         System.out.println("Set company ID");
         cmpId = input.nextLine();
         if (cmpId.length() != 0) {
-            companyId = Integer.parseInt(cmpId);
+            CompanyService companyService = new CompanyService();
+            CompanyMapper companyMapper = new CompanyMapper();
+            company = companyMapper.mapToObject(companyService.findCompanyById(Integer.parseInt(cmpId)));
         }
 
         // Process Update or Delete
         if (update) {
             try {
                 computerService.updateComputer(new Computer.ComputerBuilder(name).introduced(introduced)
-                        .discontinued(discontinued).companyId(companyId).id(id).build());
+                        .discontinued(discontinued).company(company).id(id).build());
             } catch (DateException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -162,7 +167,7 @@ public class ComputerUI {
         } else {
             try {
                 computerService.createComputer(new Computer.ComputerBuilder(name).introduced(introduced)
-                        .discontinued(discontinued).companyId(companyId).build());
+                        .discontinued(discontinued).company(company).build());
             } catch (DateException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();

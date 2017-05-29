@@ -8,8 +8,7 @@ public class ComputerDTO {
     private String name;
     private String introduced;
     private String discontinued;
-    private String company;
-    private int companyId;
+    private CompanyDTO companyDTO;
 
     /**
      * the default controller
@@ -28,10 +27,11 @@ public class ComputerDTO {
         if (comp.getDiscontinued() != null) {
             this.discontinued = comp.getDiscontinued().toString();
         }
-        if (comp.getCompanyName() != null) {
-            this.company = comp.getCompanyName();
+        if (comp.getCompany() != null) {
+            this.companyDTO = new CompanyDTO(comp.getCompany());
+            this.companyDTO.setName(comp.getCompany().getName());
+            this.companyDTO.setId(String.valueOf(comp.getCompany().getId()));
         }
-        this.companyId = comp.getCompanyId();
     }
 
     /**
@@ -90,26 +90,12 @@ public class ComputerDTO {
         this.discontinued = discontinued;
     }
 
-    /**
-     * @return the company
-     */
-    public String getCompany() {
-        return company;
+    public CompanyDTO getCompanyDTO() {
+        return companyDTO;
     }
 
-    /**
-     * @param company the company to set
-     */
-    public void setCompany(String company) {
-        this.company = company;
-    }
-
-    public int getCompanyId() {
-        return companyId;
-    }
-
-    public void setCompanyId(int companyId) {
-        this.companyId = companyId;
+    public void setCompanyDTO(CompanyDTO companyDTO) {
+        this.companyDTO = companyDTO;
     }
 
     @Override
@@ -119,8 +105,7 @@ public class ComputerDTO {
                 ", name='" + name + '\'' +
                 ", introduced='" + introduced + '\'' +
                 ", discontinued='" + discontinued + '\'' +
-                ", company='" + company + '\'' +
-                ", companyId=" + companyId +
+                ", companyDTO=" + companyDTO +
                 '}';
     }
 
@@ -131,24 +116,22 @@ public class ComputerDTO {
 
         ComputerDTO that = (ComputerDTO) o;
 
-        if (getCompanyId() != that.getCompanyId()) return false;
-        if (!getId().equals(that.getId())) return false;
+        if (getId() != null ? !getId().equals(that.getId()) : that.getId() != null) return false;
         if (!getName().equals(that.getName())) return false;
         if (getIntroduced() != null ? !getIntroduced().equals(that.getIntroduced()) : that.getIntroduced() != null)
             return false;
         if (getDiscontinued() != null ? !getDiscontinued().equals(that.getDiscontinued()) : that.getDiscontinued() != null)
             return false;
-        return getCompany() != null ? getCompany().equals(that.getCompany()) : that.getCompany() == null;
+        return getCompanyDTO() != null ? getCompanyDTO().equals(that.getCompanyDTO()) : that.getCompanyDTO() == null;
     }
 
     @Override
     public int hashCode() {
-        int result = getId().hashCode();
+        int result = getId() != null ? getId().hashCode() : 0;
         result = 31 * result + getName().hashCode();
         result = 31 * result + (getIntroduced() != null ? getIntroduced().hashCode() : 0);
         result = 31 * result + (getDiscontinued() != null ? getDiscontinued().hashCode() : 0);
-        result = 31 * result + (getCompany() != null ? getCompany().hashCode() : 0);
-        result = 31 * result + getCompanyId();
+        result = 31 * result + (getCompanyDTO() != null ? getCompanyDTO().hashCode() : 0);
         return result;
     }
 }

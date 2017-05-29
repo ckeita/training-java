@@ -2,6 +2,9 @@ package fr.ebiz.computer_database.controller;
 
 import fr.ebiz.computer_database.exception.DAOException;
 import fr.ebiz.computer_database.exception.DateException;
+import fr.ebiz.computer_database.mapper.CompanyMapper;
+import fr.ebiz.computer_database.model.Company;
+import fr.ebiz.computer_database.model.CompanyDTO;
 import fr.ebiz.computer_database.model.Computer;
 import fr.ebiz.computer_database.model.ComputerDTO;
 import fr.ebiz.computer_database.service.CompanyService;
@@ -31,6 +34,8 @@ public class AddComputerController {
 	private ComputerService computerService;
 	@Autowired
 	private ComputerDTOValidation computerDTOValidation;
+	@Autowired
+	CompanyMapper companyMapper;
 
 	private static Logger logger = LoggerFactory.getLogger(AddComputerController.class);
 
@@ -70,9 +75,10 @@ public class AddComputerController {
 	public String addComputer(@Validated ComputerDTO computerToAdd) {
 		try {
 			logger.info("[CREATE] computerDTO " + computerToAdd);
+			CompanyDTO companyDTO = companyService.findCompanyById(Integer.parseInt(computerToAdd.getCompanyDTO().getId()));
 			computerService.createComputer(new Computer.ComputerBuilder(computerToAdd.getName()).introduced(computerToAdd.getIntroduced())
-					.discontinued(computerToAdd.getDiscontinued()).companyId(computerToAdd.getCompanyId()).build());
-		} catch (DateException | NumberFormatException e) {
+					.discontinued(computerToAdd.getDiscontinued()).company(companyMapper.mapToObject(companyDTO)).build());
+		} catch (DAOException | DateException | NumberFormatException e) {
 			logger.info(e.getMessage());
 			return Util.PAGE_500;
 		}

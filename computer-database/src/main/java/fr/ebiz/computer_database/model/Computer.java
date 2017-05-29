@@ -1,5 +1,6 @@
 package fr.ebiz.computer_database.model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 import org.slf4j.Logger;
@@ -8,19 +9,26 @@ import org.slf4j.LoggerFactory;
 import fr.ebiz.computer_database.exception.DateException;
 import fr.ebiz.computer_database.validation.ComputerValidation;
 
+import javax.persistence.*;
+
 /**
  * @author ckeita
  */
-public class Computer {
+@Entity
+@Table(name = "computer")
+public class Computer implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private final String name;
+    private String name;
     private LocalDate introduced;
     private LocalDate discontinued;
-    private int companyId;
-    private String companyName;
 
-    private ComputerValidation computerValidation = new ComputerValidation();
+    @ManyToOne(targetEntity = Company.class)
+    private Company company;
+
+    private static ComputerValidation computerValidation = new ComputerValidation();
     
     private static Logger logger = LoggerFactory.getLogger(Computer.class);
 
@@ -36,8 +44,10 @@ public class Computer {
         this.discontinued = computerValidation.dateValidation(computerBuilder.discontinued);
         //LOGGER.info("intro "+this.introduced+" disc "+this.discontinued);
         computerValidation.checkDates(this.introduced, this.discontinued);
-        this.companyId = computerBuilder.companyId;
-        this.companyName = computerBuilder.companyName;
+        this.company = computerBuilder.company;
+    }
+
+    public Computer() {
     }
 
     /**
@@ -68,18 +78,30 @@ public class Computer {
         return discontinued;
     }
 
-    /**
-     * @return companyName
-     */
-    public String getCompanyName() {
-        return companyName;
+
+    public Company getCompany() {
+        return company;
     }
 
-    /**
-     * @return companyId
-     */
-    public int getCompanyId() {
-        return companyId;
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setIntroduced(LocalDate introduced) {
+        this.introduced = introduced;
+    }
+
+    public void setDiscontinued(LocalDate discontinued) {
+        this.discontinued = discontinued;
+    }
+
+
+    public void setCompany(Company company) {
+        this.company = company;
     }
 
     @Override
@@ -89,8 +111,7 @@ public class Computer {
                 ", name='" + name + '\'' +
                 ", introduced=" + introduced +
                 ", discontinued=" + discontinued +
-                ", companyId=" + companyId +
-                ", companyName='" + companyName + '\'' +
+                ", company=" + company +
                 '}';
     }
 
@@ -99,8 +120,7 @@ public class Computer {
         private String name;
         private String introduced;
         private String discontinued;
-        private int companyId;
-        private String companyName;
+        private Company company;
 
         /**
          * the default constructor.
@@ -134,22 +154,14 @@ public class Computer {
         }
 
         /**
-         * @param companyName to set
+         * @param company to set
          * @return the builder
          */
-        public ComputerBuilder companyName(String companyName) {
-            this.companyName = companyName;
+        public ComputerBuilder company(Company company) {
+            this.company = company;
             return this;
         }
 
-        /**
-         * @param companyId to set
-         * @return the builder
-         */
-        public ComputerBuilder companyId(int companyId) {
-            this.companyId = companyId;
-            return this;
-        }
 
         /**
          * @param id to set

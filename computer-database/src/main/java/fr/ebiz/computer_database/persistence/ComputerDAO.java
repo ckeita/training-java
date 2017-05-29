@@ -1,10 +1,14 @@
 package fr.ebiz.computer_database.persistence;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import fr.ebiz.computer_database.mapper.ComputerDaoMapper;
+import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
+import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,6 +32,9 @@ public class ComputerDAO {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    private SessionFactory sessionFactory;
+
     /**
      * @param id of the computer
      * @return the string of the object
@@ -37,13 +44,12 @@ public class ComputerDAO {
     public Computer findById(int id) throws DAOException, DateException {
         Computer computer = null;
         try {
-            computer = this.jdbcTemplate.queryForObject(
-                Util.COMPUTER_BY_ID,
-                new Object[]{id},
-                new ComputerDaoMapper());
+            Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Computer.class);
+            criteria.add(Restrictions.eq("id", id));
+            computer =  (Computer) criteria.uniqueResult();
             logger.info("[findById] Found element from database");
             return computer;
-        } catch (DataAccessException e) {
+        } catch (HibernateException e) {
             logger.info(e.getMessage());
             throw new DAOException(e.getMessage());
         }
@@ -57,13 +63,12 @@ public class ComputerDAO {
     public List<Computer> findAll() throws DAOException, DateException {
         List<Computer> computers = null;
         try {
-            computers = this.jdbcTemplate.query(
-                    Util.ALL_COMPUTERS,
-                    new ComputerDaoMapper());
+            Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Computer.class);
+            computers = criteria.list();
             logger.info("[findAll] Found " + computers.size() + " elements from database");
             return computers;
-        } catch (DataAccessException e) {
-            logger.info(e.getMessage());
+        } catch (HibernateException e) {
+            logger.info("[findAll] " + e.getMessage());
             throw new DAOException(e.getMessage());
         }
     }
@@ -72,13 +77,15 @@ public class ComputerDAO {
      * @return number of computers in database
      * @throws DAOException .
      */
-    public int getNumberOfComputers() throws DAOException {
-        int number = 0;
+    public long getNumberOfComputers() throws DAOException {
+        long number = 0;
         try {
-            number = this.jdbcTemplate.queryForObject(Util.GET_NUMBER_OF_COMPUTERS, Integer.class);
+            Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Computer.class);
+            criteria.setProjection(Projections.rowCount());
+            number = (long) criteria.uniqueResult();
             logger.info("[getNumberOfComputers] get number of computers");
             return number;
-        } catch (DataAccessException e) {
+        } catch (HibernateException e) {
             logger.info(e.getMessage());
             throw new DAOException(e.getMessage());
         }
@@ -89,13 +96,16 @@ public class ComputerDAO {
      * @return number of searched computers in database
      * @throws DAOException .
      */
-    public int getNumberOfSearchedComputers(String name) throws DAOException {
-        int number = 0;
+    public long getNumberOfSearchedComputers(String name) throws DAOException {
+        long number = 0;
         try {
-            number = this.jdbcTemplate.queryForObject(Util.GET_NUMBER_OF_SEARCHED_COMPUTERS, new Object[]{"%" + name + "%"}, Integer.class);
+            Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Computer.class);
+            criteria.add(Restrictions.like(Util.PARAM_NAME, "%" + name + "%"));
+            criteria.setProjection(Projections.rowCount());
+            number = (long) criteria.uniqueResult();
             logger.info("[getNumberOfComputers] get number of searched computers");
             return number;
-        } catch (DataAccessException e) {
+        } catch (HibernateException e) {
             logger.info(e.getMessage());
             throw new DAOException(e.getMessage());
         }
@@ -111,13 +121,14 @@ public class ComputerDAO {
     public List<Computer> findByLimit(int current, int limit) throws DAOException, DateException {
         List<Computer> computers = null;
         try {
-            computers = this.jdbcTemplate.query(
-                    Util.COMPUTERS_BY_LIMIT,
-                    new Object[]{current, limit},
-                    new ComputerDaoMapper());
+            Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Computer.class);
+            criteria.setFirstResult(current);
+            criteria.setMaxResults(limit);
+            computers = criteria.list();
+            logger.info("------------------------------------------" + computers);
             logger.info("[findByLimit] Found " + computers.size() + " elements from database");
             return computers;
-        } catch (DataAccessException e) {
+        } catch (HibernateException e) {
             logger.info(e.getMessage());
             throw new DAOException(e.getMessage());
         }
@@ -135,13 +146,18 @@ public class ComputerDAO {
     public List<Computer> findByOrder(String orderBy, String order, int current, int limit) throws DAOException, DateException {
         List<Computer> computers = null;
         try {
-            computers = this.jdbcTemplate.query(
-                Util.COMPUTERS_BY_ORDER+ orderBy + " " + order + Util.LIMIT,
-                    new Object[]{current, limit},
-                new ComputerDaoMapper());
-            logger.info("[findByLimit] Found " + computers.size() + " elements from database");
+            Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Computer.class);
+            criteria.setFirstResult(current);
+            criteria.setMaxResults(limit);
+            if (order.equals(Util.ASC)) {
+                criteria.addOrder(Order.asc(orderBy));
+            } else {
+                criteria.addOrder(Order.desc(orderBy));
+            }
+            computers = criteria.list();
+            logger.info("[findByOrder] Found " + computers.size() + " elements from database");
             return computers;
-        } catch (DataAccessException e) {
+        } catch (HibernateException e) {
             logger.info(e.getMessage());
             throw new DAOException(e.getMessage());
         }
@@ -157,17 +173,18 @@ public class ComputerDAO {
      */
     public List<Computer> searchByLimit(String name, int current, int limit) throws DAOException, DateException {
         List<Computer> computers = null;
-        try {
-        computers = this.jdbcTemplate.query(
-            Util.SEARCH_COMPUTERS,
-            new Object[]{"%"+ name + "%", current, limit},
-            new ComputerDaoMapper());
-            logger.info("[searchByLimit] Found " + computers.size() + " elements from database");
-            return computers;
-        } catch (DataAccessException e) {
-            logger.info(e.getMessage());
-            throw new DAOException(e.getMessage());
-        }
+//        try {
+//        computers = this.jdbcTemplate.query(
+//            Util.SEARCH_COMPUTERS,
+//            new Object[]{"%"+ name + "%", current, limit},
+//            new ComputerDaoMapper());
+//            logger.info("[searchByLimit] Found " + computers.size() + " elements from database");
+//            return computers;
+//        } catch (DataAccessException e) {
+//            logger.info(e.getMessage());
+//            throw new DAOException(e.getMessage());
+//        }
+        return null;
     }
 
     /**
@@ -176,8 +193,8 @@ public class ComputerDAO {
      */
     public void create(Computer comp) throws DAOException {
         String company = null;
-        if (comp.getCompanyId() != 0) {
-            company = String.valueOf(comp.getCompanyId());
+        if (comp.getCompany().getId() != 0) {
+            company = String.valueOf(comp.getCompany().getId());
         }
         try{
             this.jdbcTemplate.update(Util.CREATE_COMPUTER, comp.getName(),
@@ -212,8 +229,8 @@ public class ComputerDAO {
      */
     public void update(Computer comp) throws DAOException {
         String company = null;
-        if (comp.getCompanyId() != 0) {
-            company = String.valueOf(comp.getCompanyId());
+        if (comp.getCompany().getId() != 0) {
+            company = String.valueOf(comp.getCompany().getId());
         }
         logger.info("[update] computer " + comp);
         try{

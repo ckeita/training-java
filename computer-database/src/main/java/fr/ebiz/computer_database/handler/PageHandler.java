@@ -34,7 +34,7 @@ public class PageHandler {
     private static String searchParam = null;
     private static String orderParam = null;
 
-    private static int nbComputers;
+    private static long nbComputers;
     private static int nbPages;
     private static int nbLinks;
     private static int curPage;
@@ -54,7 +54,7 @@ public class PageHandler {
         List<ComputerDTO> computers = null;
         try {
             nbComputers = computerService.getNumberOfComputers();
-            nbPages = nbComputers / pageLimit;
+            nbPages = (int) nbComputers / pageLimit;
             nbLinks = nbPages / pageLimit;
             if (params.size() != 0) {
                 if (params.get(CURRENT_PAGE) != null) {
@@ -82,7 +82,7 @@ public class PageHandler {
                     logger.info("[SORT] limit " + pageLimit);
                     computers = computerService.findComputersByOrder(orderParam, sortPage, currentPage * pageLimit, pageLimit);
                 }
-                nbPages = nbComputers / pageLimit;
+                nbPages = (int) nbComputers / pageLimit;
                 nbLinks = nbPages / pageLimit;
                 return computers;
             } else {
@@ -97,7 +97,7 @@ public class PageHandler {
         return null;
     }
 
-    public int getNbComputers() {
+    public long getNbComputers() {
         return nbComputers;
     }
 
