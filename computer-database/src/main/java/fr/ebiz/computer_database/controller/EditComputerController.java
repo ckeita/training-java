@@ -65,8 +65,8 @@ public class EditComputerController {
 	@RequestMapping(value = "editcomputer", method = RequestMethod.POST)
 	public String editComputer(ComputerDTO computerToEdit) {
 		try {
-			if (computerToEdit.getCompanyDTO() != null) {
-				CompanyDTO companyDTO = companyService.findCompanyById(Integer.parseInt(computerToEdit.getCompanyDTO().getId()));
+			if (computerToEdit.getCompanyId() != 0) {
+				CompanyDTO companyDTO = companyService.findCompanyById(computerToEdit.getCompanyId());
 				computerService.updateComputer(new Computer.ComputerBuilder(computerToEdit.getName()).id(Integer.parseInt(computerToEdit.getId())).introduced(computerToEdit.getIntroduced())
 						.discontinued(computerToEdit.getDiscontinued()).company(companyMapper.mapToObject(companyDTO)).build());
 			} else {

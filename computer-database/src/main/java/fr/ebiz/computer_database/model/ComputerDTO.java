@@ -9,6 +9,7 @@ public class ComputerDTO {
     private String introduced;
     private String discontinued;
     private CompanyDTO companyDTO;
+    private int companyId;
 
     /**
      * the default controller
@@ -96,6 +97,14 @@ public class ComputerDTO {
 
     public void setCompanyDTO(CompanyDTO companyDTO) {
         this.companyDTO = companyDTO;
+    }
+
+    public int getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(int companyId) {
+        this.companyId = companyId;
     }
 
     @Override

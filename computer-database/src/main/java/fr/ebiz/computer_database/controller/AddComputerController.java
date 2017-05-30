@@ -3,7 +3,6 @@ package fr.ebiz.computer_database.controller;
 import fr.ebiz.computer_database.exception.DAOException;
 import fr.ebiz.computer_database.exception.DateException;
 import fr.ebiz.computer_database.mapper.CompanyMapper;
-import fr.ebiz.computer_database.model.Company;
 import fr.ebiz.computer_database.model.CompanyDTO;
 import fr.ebiz.computer_database.model.Computer;
 import fr.ebiz.computer_database.model.ComputerDTO;
@@ -75,8 +74,9 @@ public class AddComputerController {
 	public String addComputer(@Validated ComputerDTO computerToAdd) {
 		try {
 			logger.info("[CREATE] computerDTO " + computerToAdd);
-			if (computerToAdd.getCompanyDTO() != null) {
-				CompanyDTO companyDTO = companyService.findCompanyById(Integer.parseInt(computerToAdd.getCompanyDTO().getId()));
+			logger.info("-------------------------computerDTO----------------------- " + computerToAdd.getCompanyId());
+			if (computerToAdd.getCompanyId() != 0) {
+				CompanyDTO companyDTO = companyService.findCompanyById(computerToAdd.getCompanyId());
 				computerService.createComputer(new Computer.ComputerBuilder(computerToAdd.getName()).introduced(computerToAdd.getIntroduced())
 						.discontinued(computerToAdd.getDiscontinued()).company(companyMapper.mapToObject(companyDTO)).build());
 			} else {

@@ -17,7 +17,6 @@ import fr.ebiz.computer_database.exception.DAOException;
 import fr.ebiz.computer_database.exception.DateException;
 import fr.ebiz.computer_database.model.Computer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -192,19 +191,6 @@ public class ComputerDAO {
      * @throws DAOException .
      */
     public void create(Computer comp) throws DAOException {
-        String company = null;
-       /*if (comp.getCompany().getId() != 0) {
-            company = String.valueOf(comp.getCompany().getId());
-        }
-        try{
-            this.jdbcTemplate.update(Util.CREATE_COMPUTER, comp.getName(),
-                    comp.getIntroduced(), comp.getDiscontinued(),
-                    company);
-            logger.info("[create] Inserted successfully");
-        } catch (DataAccessException e) {
-            logger.info(e.getMessage());
-            throw new DAOException(e.getMessage());
-        }*/
         sessionFactory.getCurrentSession().persist(comp);
     }
 
@@ -214,12 +200,11 @@ public class ComputerDAO {
      * @exception DAOException .
      */
     public void delete(int compId) throws DAOException {
-        try{
-            this.jdbcTemplate.update(Util.DELETE_COMPUTER, compId);
-            logger.info("[delete] Deleted successfully");
-        } catch (DataAccessException e) {
-            logger.info(e.getMessage());
-            throw new DAOException(e.getMessage());
+        try {
+            Computer computer = findById(compId);
+            sessionFactory.getCurrentSession().delete(computer);
+        } catch (DateException e) {
+            e.printStackTrace();
         }
     }
 
@@ -229,19 +214,6 @@ public class ComputerDAO {
      * @exception DAOException .
      */
     public void update(Computer comp) throws DAOException {
-        String company = null;
-        if (comp.getCompany().getId() != 0) {
-            company = String.valueOf(comp.getCompany().getId());
-        }
-        logger.info("[update] computer " + comp);
-        try{
-            this.jdbcTemplate.update(Util.UPDATE_COMPUTER, comp.getName(),
-                    comp.getIntroduced(), comp.getDiscontinued(),
-                    company, comp.getId());
-            logger.info("[update] Updated successfully");
-        } catch (DataAccessException e) {
-            logger.info(e.getMessage());
-            throw new DAOException(e.getMessage());
-        }
+        sessionFactory.getCurrentSession().merge(comp);
     }
 }
