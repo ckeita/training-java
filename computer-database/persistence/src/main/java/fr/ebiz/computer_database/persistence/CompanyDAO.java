@@ -2,8 +2,6 @@ package fr.ebiz.computer_database.persistence;
 
 import java.util.List;
 
-import fr.ebiz.computer_database.mapper.CompanyDaoMapper;
-import fr.ebiz.computer_database.util.Util;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
@@ -14,11 +12,7 @@ import org.slf4j.LoggerFactory;
 import fr.ebiz.computer_database.exception.DAOException;
 import fr.ebiz.computer_database.model.Company;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-
-import javax.sql.DataSource;
 
 /**
  * @author ckeita
