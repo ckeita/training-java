@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author ckeita
  */
 @Service
+@Transactional
 public class CompanyService {
 
     @Autowired
@@ -27,7 +28,7 @@ public class CompanyService {
      * @exception DAOException .
      */
     public CompanyDTO findCompanyById(int id) throws DAOException {
-        return companyMapper.getById(companyDAO.findById(id));
+        return companyMapper.mapToDTO(companyDAO.findById(id));
     }
 
     /**
@@ -37,6 +38,15 @@ public class CompanyService {
      * @exception DAOException .
      */
     public List<CompanyDTO> findCompaniesByLimit(int offset, int max) throws DAOException {
-        return companyMapper.getByPage(companyDAO.findByLimit(offset, max));
+        return companyMapper.getAll(companyDAO.findByLimit(offset, max));
+    }
+
+    /**
+     * @return the list of computers
+     * @exception DAOException .
+     */
+    //@Transactional
+    public List<CompanyDTO> findAll() throws DAOException {
+        return companyMapper.getAll(companyDAO.findAll());
     }
 }

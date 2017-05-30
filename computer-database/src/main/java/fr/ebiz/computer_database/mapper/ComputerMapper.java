@@ -25,7 +25,7 @@ public class ComputerMapper {
      * @param computers the list
      * @return the list of DTOs
      */
-    public List<ComputerDTO> getByPage(List<Computer> computers) {
+    public List<ComputerDTO> getAll(List<Computer> computers) {
         List<ComputerDTO> list = new ArrayList<>();
 
         for (Computer computer : computers) {

@@ -1,20 +1,21 @@
 package fr.ebiz.computer_database.persistence;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
+import fr.ebiz.computer_database.mapper.CompanyDaoMapper;
 import fr.ebiz.computer_database.util.Util;
+import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
+import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fr.ebiz.computer_database.exception.DAOException;
 import fr.ebiz.computer_database.model.Company;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.datasource.DataSourceUtils;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -28,47 +29,22 @@ public class CompanyDAO {
     private static Logger logger = LoggerFactory.getLogger(CompanyDAO.class);
 
 	@Autowired
-    private DataSource dataSource;
+    private SessionFactory sessionFactory;
     /**
      * @param id of the Company
      * @return the ResultSet of the query
      * @exception DAOException .
      */
     public Company findById(int id) throws DAOException {
-        Company comp = new Company();
-        ResultSet result = null;
-        PreparedStatement pstm = null;
-        Connection connection = null;
+        Company company = null;
         try {
-           // Get one connection
-	        //connection = dataSource.getConnection();
-	        connection = DataSourceUtils.getConnection(dataSource);
-            // Create the sql query to find Computer by id
-            String query = Util.COMPANIES_BY_ID;
-            // Initialize a preparedStatement
-            pstm = connection.prepareStatement(query);
-            // Set the parameter id through the preparedStatement
-            pstm.setInt(1, id);
-            // Execute the query
-            result = pstm.executeQuery();
-            while (result.next()) {
-                comp = daoMApper(result);
-            }
-            return comp;
-        } catch (SQLException e) {
-            throw new DAOException("[findById] Impossible to fetch data from database");
-        } finally {
-            DataSourceUtils.releaseConnection(connection, dataSource);
-            /*try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        	/*if (!conMng.isTransactional()) {
-        		conMng.closeConnection();
-        	}
-        	conMng.closeObjects(pstm, result);*/
+            Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Company.class);
+            criteria.add(Restrictions.eq("id", id));
+            company =  (Company) criteria.uniqueResult();
+        } catch (HibernateException e) {
+            logger.info("[findById] " + e.getMessage());
         }
+        return company;
     }
 
     /**
@@ -78,58 +54,33 @@ public class CompanyDAO {
      * @return resultSet
      */
     public List<Company> findByLimit(int offset, int max) throws DAOException {
-        List<Company> list = new ArrayList<>();
-        ResultSet result = null;
-        PreparedStatement pstm = null;
-        Connection connection = null;
+        List<Company> companies = null;
         try {
-        	// Get one connection
-	        //connection = dataSource.getConnection();
-	        connection = DataSourceUtils.getConnection(dataSource);
-
-            // Create the sql query to find companies
-            String query = Util.COMPANIES_BY_LIMIT;
-            // Initialize a preparedStatement
-            pstm = connection.prepareStatement(query);
-            // Set the parameters of preparedStatement
-            pstm.setInt(1, offset);
-            pstm.setInt(2, max);
-            // Execute the query
-            result = pstm.executeQuery();
-            while (result.next()) {
-                list.add(daoMApper(result));
-            }
-            logger.info("Selected: " + result.getFetchSize() + " elements from database");
-            return list;
-        } catch (SQLException e) {
-            throw new DAOException("[findByLimit] Impossible to fetch data from database");
-        } finally {
-            DataSourceUtils.releaseConnection(connection, dataSource);
-            /*try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        	/*if (!conMng.isTransactional()) {
-        		conMng.closeConnection();
-        	}
-        	conMng.closeObjects(pstm, result);*/
+            Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Company.class);
+            criteria.setFirstResult(offset);
+            criteria.setMaxResults(max);
+            companies = criteria.list();
+            logger.info("[findByLimit] Found" + companies.size() + "elements from database");
+        } catch (HibernateException e) {
+            logger.info("[findByLimit] " + e.getMessage());
+            throw new DAOException(e.getMessage());
         }
+        return companies;
     }
 
     /**
-     * @param resultSet to retrieve data
-     * @return the company from database
      * @exception DAOException .
+     * @return resultSet
      */
-    private Company daoMApper(ResultSet resultSet) throws DAOException {
-        Company comp = new Company();
+    public List<Company> findAll() throws DAOException {
+        List<Company> companies = null;
         try {
-            comp.setId(resultSet.getInt(1));
-            comp.setName(resultSet.getString(2));
-            return comp;
-        } catch (SQLException e) {
-            throw new DAOException("Impossible to fetch data from database");
+            Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Company.class);
+            companies = criteria.list();
+        } catch (HibernateException e) {
+            logger.info("[findAll] " + e.getMessage());
+            throw new DAOException(e.getMessage());
         }
+        return companies;
     }
 }

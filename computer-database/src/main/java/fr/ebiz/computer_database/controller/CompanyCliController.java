@@ -8,7 +8,7 @@ import fr.ebiz.computer_database.ui.CompanyUI;
 /**
  * @author ebiz
  */
-public class CompanyController {
+public class CompanyCliController {
 
     CompanyUI companyUI;
     private boolean back;
@@ -16,7 +16,7 @@ public class CompanyController {
     /**
      * the default controller.
      */
-    public CompanyController() {
+    public CompanyCliController() {
         companyUI = new CompanyUI();
         back = false;
     }

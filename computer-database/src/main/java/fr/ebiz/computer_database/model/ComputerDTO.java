@@ -8,8 +8,14 @@ public class ComputerDTO {
     private String name;
     private String introduced;
     private String discontinued;
-    private String company;
+    private CompanyDTO companyDTO;
+    private int companyId;
 
+    /**
+     * the default controller
+     */
+    public ComputerDTO() {
+    }
     /**
      * @param comp to set
      */
@@ -22,8 +28,10 @@ public class ComputerDTO {
         if (comp.getDiscontinued() != null) {
             this.discontinued = comp.getDiscontinued().toString();
         }
-        if (comp.getCompanyName() != null) {
-            this.company = comp.getCompanyName();
+        if (comp.getCompany() != null) {
+            this.companyDTO = new CompanyDTO(comp.getCompany());
+            this.companyDTO.setName(comp.getCompany().getName());
+            this.companyDTO.setId(String.valueOf(comp.getCompany().getId()));
         }
     }
 
@@ -83,30 +91,37 @@ public class ComputerDTO {
         this.discontinued = discontinued;
     }
 
-    /**
-     * @return the company
-     */
-    public String getCompany() {
-        return company;
+    public CompanyDTO getCompanyDTO() {
+        return companyDTO;
     }
 
-    /**
-     * @param company the company to set
-     */
-    public void setCompany(String company) {
-        this.company = company;
+    public void setCompanyDTO(CompanyDTO companyDTO) {
+        this.companyDTO = companyDTO;
+    }
+
+    public int getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(int companyId) {
+        this.companyId = companyId;
     }
 
     @Override
     public String toString() {
-        return "ComputerDTO [name=" + name + ", introduced=" + introduced + ", discontinued=" + discontinued
-                + ", company=" + company + "]";
+        return "ComputerDTO{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", introduced='" + introduced + '\'' +
+                ", discontinued='" + discontinued + '\'' +
+                ", companyDTO=" + companyDTO +
+                '}';
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ComputerDTO)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
 
         ComputerDTO that = (ComputerDTO) o;
 
@@ -116,7 +131,7 @@ public class ComputerDTO {
             return false;
         if (getDiscontinued() != null ? !getDiscontinued().equals(that.getDiscontinued()) : that.getDiscontinued() != null)
             return false;
-        return getCompany() != null ? getCompany().equals(that.getCompany()) : that.getCompany() == null;
+        return getCompanyDTO() != null ? getCompanyDTO().equals(that.getCompanyDTO()) : that.getCompanyDTO() == null;
     }
 
     @Override
@@ -125,7 +140,7 @@ public class ComputerDTO {
         result = 31 * result + getName().hashCode();
         result = 31 * result + (getIntroduced() != null ? getIntroduced().hashCode() : 0);
         result = 31 * result + (getDiscontinued() != null ? getDiscontinued().hashCode() : 0);
-        result = 31 * result + (getCompany() != null ? getCompany().hashCode() : 0);
+        result = 31 * result + (getCompanyDTO() != null ? getCompanyDTO().hashCode() : 0);
         return result;
     }
 }

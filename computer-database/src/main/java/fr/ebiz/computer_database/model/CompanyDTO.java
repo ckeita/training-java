@@ -11,7 +11,7 @@ public class CompanyDTO {
      * @param comp the company to translate
      */
     public CompanyDTO(Company comp) {
-        id = Integer.toString(comp.getId());
+        id = String.valueOf(comp.getId());
         name = comp.getName();
     }
 

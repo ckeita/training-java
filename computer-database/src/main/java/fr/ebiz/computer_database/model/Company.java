@@ -1,10 +1,16 @@
 package fr.ebiz.computer_database.model;
 
+import javax.persistence.*;
+
 /**
  * @author ckeita
  */
+@Entity
+@Table(name = "company")
 public class Company {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
 
