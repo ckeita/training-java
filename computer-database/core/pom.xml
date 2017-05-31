@@ -59,6 +59,18 @@
             <artifactId>hibernate-core</artifactId>
             <version>${org.hibernate-version}</version>
         </dependency>
+        <!-- spring-security-web -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>${org.springframework.security-version}</version>
+        </dependency>
+        <!-- spring-security-config -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>${org.springframework.security-version}</version>
+        </dependency>
     </dependencies>
     <!--<build>
         <plugins>
