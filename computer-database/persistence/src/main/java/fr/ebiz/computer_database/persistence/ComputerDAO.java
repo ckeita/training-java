@@ -17,7 +17,6 @@ import fr.ebiz.computer_database.exception.DAOException;
 import fr.ebiz.computer_database.exception.DateException;
 import fr.ebiz.computer_database.model.Computer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 
@@ -27,9 +26,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class ComputerDAO {
     private static Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
-
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
 
     @Autowired
     private SessionFactory sessionFactory;

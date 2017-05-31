@@ -11,6 +11,7 @@
 
     <artifactId>binding</artifactId>
     <dependencies>
+        <!-- core-module -->
         <dependency>
             <groupId>fr.ebiz.computer_database</groupId>
             <artifactId>core</artifactId>

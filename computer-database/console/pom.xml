@@ -10,11 +10,13 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>console</artifactId>
     <dependencies>
+        <!-- core-module -->
         <dependency>
             <groupId>fr.ebiz.computer_database</groupId>
             <artifactId>core</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <!-- service-module -->
         <dependency>
             <groupId>fr.ebiz.computer_database</groupId>
             <artifactId>service</artifactId>
