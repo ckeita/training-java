@@ -2,6 +2,7 @@ package fr.ebiz.computer_database.service;
 
 import java.util.List;
 
+import fr.ebiz.computer_database.exception.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,8 +35,12 @@ public class ComputerService {
      * @throws DateException .
      * @throws DAOException .
      */
-    public ComputerDTO findComputerById(int id) throws DAOException, DateException  {
-        return computerMapper.getById(computerDAO.findById(id));
+    public ComputerDTO findComputerById(int id) throws ServiceException {
+        try {
+            return computerMapper.getById(computerDAO.findById(id));
+        } catch (DAOException e) {
+            throw new ServiceException(e.getMessage());
+        }
     }
 
     /**
@@ -43,8 +48,12 @@ public class ComputerService {
      * @throws DAOException .
      * @throws DateException .
      */
-    public List<ComputerDTO> findAll() throws DateException, DAOException {
-        return computerMapper.getAll(computerDAO.findAll());
+    public List<ComputerDTO> findAll() throws ServiceException {
+        try {
+            return computerMapper.getAll(computerDAO.findAll());
+        } catch (DAOException e) {
+            throw new ServiceException(e.getMessage());
+        }
     }
 
     /**
@@ -121,13 +130,12 @@ public class ComputerService {
      * @param compId the ID of computer to delete from database
      * @exception DAOException .
      */
-    //@Transactional(rollbackFor = DAOException.class)
-    @Transactional
-    public void deleteComputer(int compId) {
+    public void deleteComputer(int compId) throws ServiceException {
         try {
             computerDAO.delete(compId);
         } catch (DAOException e) {
             logger.info(e.getMessage());
+            throw new ServiceException(e.getMessage());
         }
     }
 

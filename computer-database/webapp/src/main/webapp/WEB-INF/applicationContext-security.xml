@@ -13,6 +13,7 @@
         <intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>
         <form-login login-page="/login" default-target-url="/dashboard" authentication-failure-url="/login?error"/>
         <logout logout-success-url="/login?logout" />
+        <csrf disabled="true"/>
     </http>
     <authentication-manager>
         <authentication-provider user-service-ref="cdbUserDetailsService"/>

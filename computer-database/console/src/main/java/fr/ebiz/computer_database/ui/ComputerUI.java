@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import fr.ebiz.computer_database.exception.ServiceException;
 import fr.ebiz.computer_database.mapper.CompanyMapper;
 import fr.ebiz.computer_database.model.Company;
 import fr.ebiz.computer_database.service.CompanyService;
@@ -217,7 +218,7 @@ public class ComputerUI {
 
         try {
             System.out.println(computerService.findComputerById(Integer.parseInt(computId)));
-        } catch (DateException e) {
+        } catch (ServiceException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }

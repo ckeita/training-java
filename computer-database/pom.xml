@@ -15,6 +15,8 @@
 	<packaging>pom</packaging>
 	<properties>
         <!-- <skipTests>true</skipTests>  -->
+		<com.fasterxml.jackson.core-version>2.8.8</com.fasterxml.jackson.core-version>
+		<org.jvnet.jax-ws-commons.spring-version>1.9</org.jvnet.jax-ws-commons.spring-version>
 		<org.springframework-version>4.3.8.RELEASE</org.springframework-version>
 		<org.springframework.security-version>4.2.2.RELEASE</org.springframework.security-version>
 		<ch.qos.logback-version>1.0.13</ch.qos.logback-version>
