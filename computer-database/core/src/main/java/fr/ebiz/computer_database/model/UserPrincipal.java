@@ -3,8 +3,8 @@ package fr.ebiz.computer_database.model;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -20,7 +20,7 @@ public class UserPrincipal implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		List<SimpleGrantedAuthority> auths = new java.util.ArrayList();
+		List<SimpleGrantedAuthority> auths = new ArrayList();
 		auths.add(new SimpleGrantedAuthority("ROLE_USER"));
 		return auths;
 	}

@@ -34,6 +34,10 @@
             <a href="?lang=fr">
                 <span class="flag-icon flag-icon-fr"></span>
             </a>
+            <form action="logout" method="post" class="pull-right">
+                <input type="submit" class="btn btn-info btn-sm" value="<spring:message code="logout"/>">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            </form>
         </div>
     </header>
 
@@ -75,6 +79,7 @@
                             or
                             <a href="${pageContext.request.contextPath}/dashboard" class="btn btn-default"><spring:message code="cancel"/></a>
                         </div>
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     </form>
                 </div>
             </div>

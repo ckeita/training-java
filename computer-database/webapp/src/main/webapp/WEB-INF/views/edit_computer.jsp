@@ -30,12 +30,16 @@
             <a class="navbar-brand" href="${pageContext.request.contextPath}/dashboard"> Application - Computer Database </a>
         </div>
         <div id="lang">
-        <a href="?lang=en">
-            <span class="flag-icon flag-icon-gr"></span>
-        </a>
-        <a href="?lang=fr">
-            <span class="flag-icon flag-icon-fr"></span>
-        </a>
+            <a href="?lang=en">
+                <span class="flag-icon flag-icon-gr"></span>
+            </a>
+            <a href="?lang=fr">
+                <span class="flag-icon flag-icon-fr"></span>
+            </a>
+            <form action="logout" method="post" class="pull-right">
+                <input type="submit" class="btn btn-info btn-sm" value="<spring:message code="logout"/>">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            </form>
         </div>
     </header>
     <section id="main">
@@ -81,6 +85,7 @@
                             or
                             <a href="${pageContext.request.contextPath}/dashboard" class="btn btn-default"><spring:message code="cancel"/></a>
                         </div>
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     </form>
                 </div>
             </div>

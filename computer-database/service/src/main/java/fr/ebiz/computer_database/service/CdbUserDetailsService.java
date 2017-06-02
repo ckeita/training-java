@@ -19,6 +19,7 @@ public class CdbUserDetailsService implements UserDetailsService {
 	@Autowired
 	private UserDAO userDAO;
 
+	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = userDAO.findByUsername(username);
 		if (user == null) {

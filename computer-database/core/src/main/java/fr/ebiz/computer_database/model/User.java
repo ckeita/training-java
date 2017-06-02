@@ -1,24 +1,22 @@
 package fr.ebiz.computer_database.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Created by ebiz on 31/05/17.
  */
 @Entity
-@Table(name = "usercdb")
-public class User {
+@Table(name = "user")
+public class User implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
+	@Column(nullable = false, unique = true)
 	private String username;
 	private String password;
-	private String userRole;
+	private String authorities;
 
 	public long getId() {
 		return id;
@@ -44,11 +42,11 @@ public class User {
 		this.password = password;
 	}
 
-	public String getUserRole() {
-		return userRole;
+	public String getAuthorities() {
+		return authorities;
 	}
 
-	public void setUserRole(String userRole) {
-		this.userRole = userRole;
+	public void setAuthorities(String authorities) {
+		this.authorities = authorities;
 	}
 }
