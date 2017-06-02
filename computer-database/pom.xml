@@ -4,15 +4,23 @@
 	<groupId>fr.ebiz.computer_database</groupId>
 	<artifactId>computer-database</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<modules>
+		<module>core</module>
+		<module>persistence</module>
+		<module>webapp</module>
+		<module>service</module>
+		<module>binding</module>
+		<module>console</module>
+	</modules>
+	<packaging>pom</packaging>
 	<properties>
         <!-- <skipTests>true</skipTests>  -->
-		<mysql-version>5.1.41</mysql-version>
 		<org.springframework-version>4.3.8.RELEASE</org.springframework-version>
+		<org.springframework.security-version>4.2.2.RELEASE</org.springframework.security-version>
 		<ch.qos.logback-version>1.0.13</ch.qos.logback-version>
 		<org.slf4j-version>1.7.25</org.slf4j-version>
 		<junit-version>4.11</junit-version>
-		<org.hibernate-version>5.2.9.Final</org.hibernate-version>
+		<org.hibernate-version>5.2.10.Final</org.hibernate-version>
 		<org.mockito-version>1.9.5</org.mockito-version>
 		<javax.servlet-version>3.0.1</javax.servlet-version>
 		<javax.servlet.jsp-version>2.2</javax.servlet.jsp-version>
@@ -22,74 +30,11 @@
 		<maven-war-plugin-version>3.0.0</maven-war-plugin-version>
 		<org.apache.tomcat.maven-version>2.2</org.apache.tomcat.maven-version>
 		<org.apache.maven.plugins.checkstyle>2.17</org.apache.maven.plugins.checkstyle>
+		<org.hibernate-version>5.2.9.Final</org.hibernate-version>
+		<commons-logging-version>99-empty</commons-logging-version>
     </properties>
 	<name>computer-database</name>
 	<dependencies>
-		<!-- MySQL -->
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>${mysql-version}</version>
-		</dependency>
-		<!-- SLF4J for Logging -->
-		<dependency>
-		    <groupId>ch.qos.logback</groupId>
-		    <artifactId>logback-classic</artifactId>
-		    <version>${ch.qos.logback-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>jcl-over-slf4j</artifactId>
-			<version>${org.slf4j-version}</version>
-		</dependency>
-		<!-- spring-core -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-core</artifactId>
-			<version>${org.springframework-version}</version>
-		</dependency>
-		<!-- spring-context -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
-			<version>${org.springframework-version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>commons-logging</groupId>
-					<artifactId>commons-logging</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<!-- spring-web -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-web</artifactId>
-			<version>${org.springframework-version}</version>
-		</dependency>
-		<!-- spring-webmvc -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-webmvc</artifactId>
-			<version>${org.springframework-version}</version>
-		</dependency>
-		<!-- spring-jdbc -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-jdbc</artifactId>
-			<version>${org.springframework-version}</version>
-		</dependency>
-		<!-- spring-tx -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-tx</artifactId>
-			<version>${org.springframework-version}</version>
-		</dependency>
-		<!-- spring-orm -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-orm</artifactId>
-			<version>${org.springframework-version}</version>
-		</dependency>
 		<!-- JUnit -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -97,13 +42,6 @@
 			<version>${junit-version}</version>
 			<scope>test</scope>
 		</dependency>
-		<!-- hibernate -->
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-core</artifactId>
-			<version>${org.hibernate-version}</version>
-		</dependency>
-
 		<!-- Mockito -->
 		<dependency>
 			<groupId>org.mockito</groupId>
@@ -111,31 +49,6 @@
 			<version>${org.mockito-version}</version>
 			<scope>test</scope>
 		</dependency>
-		<!-- Servlet API -->
-		<dependency>
-		    <groupId>javax.servlet</groupId>
-		    <artifactId>javax.servlet-api</artifactId>
-		    <version>${javax.servlet-version}</version>
-		</dependency>
-		<!-- JSP API -->
-		<dependency>
-		    <groupId>javax.servlet.jsp</groupId>
-		    <artifactId>jsp-api</artifactId>
-		    <version>${javax.servlet.jsp-version}</version>
-		</dependency>
-		<!-- JSTL -->
-		<dependency>
-		    <groupId>javax.servlet</groupId>
-		    <artifactId>jstl</artifactId>
-		    <version>${javax.servlet.jstl-version}</version>
-		</dependency>
-		<!-- HikariCP -->
-		<dependency>
-		    <groupId>com.zaxxer</groupId>
-		    <artifactId>HikariCP</artifactId>
-		    <version>${com.zaxxer.hikari-version}</version>
-		</dependency>
-		
 	</dependencies>
 	<build>
 		<!-- Maven directories -->
@@ -163,8 +76,6 @@
 				<artifactId>maven-war-plugin</artifactId>
 				<version>${maven-war-plugin-version}</version>
 				<configuration>
-					<!--<webappDirectory>src/main/webapp</webappDirectory>-->
-					<!-- <outputDirectory>/home/cdb</outputDirectory> -->
 				</configuration>
 			</plugin>		
 			<!-- Tomcat plugin -->
@@ -181,19 +92,23 @@
 					<password>admin</password>
 				</configuration>
 			</plugin>
+		</plugins>
+	</build>
+	<reporting>
+		<plugins>
 			<!-- checkstyle -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
 				<version>${org.apache.maven.plugins.checkstyle}</version>
 				<configuration>
-					<propertyExpansion>config_loc=${basedir}/src/test/resources</propertyExpansion>
-					<configLocation>${basedir}/src/test/resources/checkstyle.xml</configLocation>
-					<suppressionsLocation>${basedir}/src/test/resources/suppressions.xml</suppressionsLocation>
+					<propertyExpansion>config_loc=${basedir}/src/test/resources/checkstyle</propertyExpansion>
+					<configLocation>${basedir}/src/test/resources/checkstyle/checkstyle.xml</configLocation>
+					<suppressionsLocation>${basedir}/src/test/resources/checkstyle/suppressions.xml</suppressionsLocation>
 					<includeTestSourceDirectory>true</includeTestSourceDirectory>
 					<consoleOutput>true</consoleOutput>
 				</configuration>
 			</plugin>
 		</plugins>
-	</build>
+	</reporting>
 </project>
