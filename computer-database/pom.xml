@@ -36,6 +36,7 @@
 		<commons-logging-version>99-empty</commons-logging-version>
 		<jersey-client-version>2.25.1</jersey-client-version>
 		<jersey-media-json-jackson-version>2.22</jersey-media-json-jackson-version>
+		<mysql-version>5.1.41</mysql-version>
     </properties>
 	<name>computer-database</name>
 	<repositories>
@@ -47,6 +48,28 @@
 		</repository>
 	</repositories>
 	<dependencies>
+		<!-- commons-logging -->
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>${commons-logging-version}</version>
+		</dependency>
+		<!-- SLF4J for Logging -->
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>${ch.qos.logback-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<version>${org.slf4j-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${org.slf4j-version}</version>
+		</dependency>
 		<!-- JUnit -->
 		<dependency>
 			<groupId>junit</groupId>
