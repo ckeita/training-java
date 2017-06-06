@@ -9,14 +9,6 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>core</artifactId>
-    <repositories>
-        <!-- 99-empty -->
-        <repository>
-            <id>version99</id>
-            <!-- highly available repository serving empty artifacts -->
-            <url>http://version99.qos.ch/</url>
-        </repository>
-    </repositories>
     <dependencies>
         <!-- commons-logging -->
         <dependency>
@@ -76,22 +68,17 @@
             <artifactId>spring-security-config</artifactId>
             <version>${org.springframework.security-version}</version>
         </dependency>
+        <!-- jersey-client -->
+        <dependency>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <artifactId>jersey-client</artifactId>
+            <version>${jersey-client-version}</version>
+        </dependency>
+        <!-- jersey-media -->
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-json-jackson</artifactId>
+            <version>${jersey-media-json-jackson-version}</version>
+        </dependency>
     </dependencies>
-    <!--<build>
-        <plugins>
-           // checkstyle
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>${org.apache.maven.plugins.checkstyle}</version>
-                <configuration>
-                    <propertyExpansion>config_loc=${basedir}/src/test/resources</propertyExpansion>
-                    <configLocation>${basedir}/src/test/resources/checkstyle.xml</configLocation>
-                    <suppressionsLocation>${basedir}/src/test/resources/suppressions.xml</suppressionsLocation>
-                    <includeTestSourceDirectory>true</includeTestSourceDirectory>
-                    <consoleOutput>true</consoleOutput>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>-->
 </project>

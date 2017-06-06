@@ -5,15 +5,11 @@ import java.util.Scanner;
 import fr.ebiz.computer_database.controller.CompanyCliController;
 import fr.ebiz.computer_database.controller.ComputerCliController;
 import fr.ebiz.computer_database.exception.DAOException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * @author ckeita
  */
 public class Main {
-
-    public static ApplicationContext applicationContext = new ClassPathXmlApplicationContext("/webapp/WEB-INF/applicationContext.xml");
     /**
      * @param args of the program
      */

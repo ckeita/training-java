@@ -1,14 +1,19 @@
 package fr.ebiz.computer_database.controller;
 
 import fr.ebiz.computer_database.exception.ServiceException;
+import fr.ebiz.computer_database.handler.PageHandler;
+import fr.ebiz.computer_database.mapper.ComputerMapper;
 import fr.ebiz.computer_database.model.CompanyDTO;
 import fr.ebiz.computer_database.model.ComputerDTO;
 import fr.ebiz.computer_database.service.CompanyService;
 import fr.ebiz.computer_database.service.ComputerService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by ebiz on 02/06/17.
@@ -21,6 +26,14 @@ public class CdbRESTController {
 
 	@Autowired
 	private CompanyService companyService;
+
+	@Autowired
+	private ComputerMapper computerMapper;
+
+	@Autowired
+	private PageHandler pageHandler;
+
+	private static Logger logger = LoggerFactory.getLogger(CdbRESTController.class);
 
 	@RequestMapping(value = "/api/companies", method = RequestMethod.GET)
 	public List<CompanyDTO> getCompanies () throws ServiceException {
@@ -42,4 +55,43 @@ public class CdbRESTController {
 		computerService.deleteComputer(id);
 	}
 
+	@RequestMapping(value = "/api/computer/add", method = RequestMethod.POST)
+	public void addComputer (@RequestBody ComputerDTO computerDTO) {
+		computerService.createComputer(computerMapper.mapToObject(computerDTO));
+	}
+
+	@RequestMapping(value = "/api/computer/edit", method = RequestMethod.PUT)
+	public void editComputer (@RequestBody ComputerDTO computerDTO) {
+		computerService.createComputer(computerMapper.mapToObject(computerDTO));
+	}
+
+	@RequestMapping(value = "/api/computers/paging", method = RequestMethod.GET)
+	public List<ComputerDTO> computersByPage (@RequestParam Map<String, String> params) {
+		try {
+			return pageHandler.getPage(params);
+		} catch (ServiceException  e) {
+			logger.info(e.getMessage());
+			return null;
+		}
+	}
+
+	@RequestMapping(value = "/api/computers/search", method = RequestMethod.GET)
+	public List<ComputerDTO> searchComputers (@RequestParam Map<String, String> params) {
+		try {
+			return pageHandler.getPage(params);
+		} catch (ServiceException  e) {
+			logger.info(e.getMessage());
+			return null;
+		}
+	}
+
+	@RequestMapping(value = "/api/computers/order", method = RequestMethod.GET)
+	public List<ComputerDTO> orderComputers (@RequestParam Map<String, String> params) {
+		try {
+			return pageHandler.getPage(params);
+		} catch (ServiceException  e) {
+			logger.info(e.getMessage());
+			return null;
+		}
+	}
 }

@@ -65,12 +65,6 @@
             <artifactId>jackson-databind</artifactId>
             <version>${com.fasterxml.jackson.core-version}</version>
         </dependency>
-        <!-- jaxws-spring -->
-        <dependency>
-            <groupId>org.jvnet.jax-ws-commons.spring</groupId>
-            <artifactId>jaxws-spring</artifactId>
-            <version>${org.jvnet.jax-ws-commons.spring-version}</version>
-        </dependency>
         <!-- HikariCP -->
         <dependency>
             <groupId>com.zaxxer</groupId>

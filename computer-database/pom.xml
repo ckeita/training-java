@@ -19,7 +19,7 @@
 		<org.jvnet.jax-ws-commons.spring-version>1.9</org.jvnet.jax-ws-commons.spring-version>
 		<org.springframework-version>4.3.8.RELEASE</org.springframework-version>
 		<org.springframework.security-version>4.2.2.RELEASE</org.springframework.security-version>
-		<ch.qos.logback-version>1.0.13</ch.qos.logback-version>
+		<ch.qos.logback-version>1.2.3</ch.qos.logback-version>
 		<org.slf4j-version>1.7.25</org.slf4j-version>
 		<junit-version>4.11</junit-version>
 		<org.hibernate-version>5.2.10.Final</org.hibernate-version>
@@ -34,8 +34,18 @@
 		<org.apache.maven.plugins.checkstyle>2.17</org.apache.maven.plugins.checkstyle>
 		<org.hibernate-version>5.2.9.Final</org.hibernate-version>
 		<commons-logging-version>99-empty</commons-logging-version>
+		<jersey-client-version>2.25.1</jersey-client-version>
+		<jersey-media-json-jackson-version>2.22</jersey-media-json-jackson-version>
     </properties>
 	<name>computer-database</name>
+	<repositories>
+		<!-- 99-empty -->
+		<repository>
+			<id>version99</id>
+			<!-- highly available repository serving empty artifacts -->
+			<url>http://version99.qos.ch/</url>
+		</repository>
+	</repositories>
 	<dependencies>
 		<!-- JUnit -->
 		<dependency>
@@ -50,6 +60,13 @@
 			<artifactId>mockito-core</artifactId>
 			<version>${org.mockito-version}</version>
 			<scope>test</scope>
+		</dependency>
+		<!-- CheckStyle -->
+		<dependency>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-checkstyle-plugin</artifactId>
+			<version>${org.apache.maven.plugins.checkstyle}</version>
+			<type>maven-plugin</type>
 		</dependency>
 	</dependencies>
 	<build>
@@ -104,9 +121,9 @@
 				<artifactId>maven-checkstyle-plugin</artifactId>
 				<version>${org.apache.maven.plugins.checkstyle}</version>
 				<configuration>
-					<propertyExpansion>config_loc=${basedir}/src/test/resources/checkstyle</propertyExpansion>
-					<configLocation>${basedir}/src/test/resources/checkstyle/checkstyle.xml</configLocation>
-					<suppressionsLocation>${basedir}/src/test/resources/checkstyle/suppressions.xml</suppressionsLocation>
+					<propertyExpansion>config_loc=config/checkstyle</propertyExpansion>
+					<configLocation>config/checkstyle/checkstyle.xml</configLocation>
+					<suppressionsLocation>config/checkstyle/suppressions.xml</suppressionsLocation>
 					<includeTestSourceDirectory>true</includeTestSourceDirectory>
 					<consoleOutput>true</consoleOutput>
 				</configuration>

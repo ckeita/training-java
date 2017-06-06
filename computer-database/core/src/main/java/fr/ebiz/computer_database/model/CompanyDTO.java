@@ -9,6 +9,8 @@ public class CompanyDTO {
     private String id;
     private String name;
 
+    public CompanyDTO() {
+    }
     /**
      * @param comp the company to translate
      */

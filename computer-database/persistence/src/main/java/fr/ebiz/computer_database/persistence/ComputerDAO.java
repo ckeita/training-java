@@ -113,7 +113,7 @@ public class ComputerDAO {
      * @throws DateException .
      * @throws DAOException .
      */
-    public List<Computer> findByLimit(int current, int limit) throws DAOException, DateException {
+    public List<Computer> findByLimit(int current, int limit) throws DAOException {
         List<Computer> computers = null;
         try {
             Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Computer.class);

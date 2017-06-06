@@ -30,8 +30,7 @@ public class CompanyUI {
                 // Need at least one element by page
                 if (Integer.parseInt(choice) > 0) {
                     // process the paging
-                    Page p = new Page(Integer.parseInt(choice), list, false);
-                    p.paging();
+                    new Page().paging(Integer.parseInt(choice), false);
                     finish = true;
                 } else {
                     System.out.println("Please choose a valid number");

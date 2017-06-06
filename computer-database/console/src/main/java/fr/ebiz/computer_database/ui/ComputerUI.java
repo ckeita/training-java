@@ -47,8 +47,7 @@ public class ComputerUI {
                 // Need at least one element by page
                 if (Integer.parseInt(choice) > 0) {
                     // process the paging
-                    Page p = new Page(Integer.parseInt(choice), list, true);
-                    p.paging();
+                    new Page().paging(Integer.parseInt(choice), true);
                     finish = true;
                 } else {
                     System.out.println("Please choose a valid number");

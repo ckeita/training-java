@@ -82,9 +82,12 @@ public class ComputerService {
      * @throws DAOException .
      * @throws DateException .
      */
-   // @Transactional
-    public List<ComputerDTO> findComputersByLimit(int current, int limit) throws DateException, DAOException {
-        return computerMapper.getAll(computerDAO.findByLimit(current, limit));
+    public List<ComputerDTO> findComputersByLimit(int current, int limit) throws ServiceException {
+        try {
+            return computerMapper.getAll(computerDAO.findByLimit(current, limit));
+        } catch (DAOException e) {
+            throw new ServiceException(e.getMessage());
+        }
     }
 
     /**
@@ -117,12 +120,12 @@ public class ComputerService {
      * @param comp the computer to put on database
      * @throws DAOException .
      */
-   // @Transactional(rollbackFor = DAOException.class)
-    public void createComputer(Computer comp) {
+    public void createComputer(Computer comp) throws ServiceException {
         try {
             computerDAO.create(comp);
         } catch (DAOException e) {
             logger.info(e.getMessage());
+            throw new ServiceException(e.getMessage());
         }
     }
 
@@ -143,7 +146,6 @@ public class ComputerService {
      * @param comp the computer to update
      * @exception DAOException .
      */
-   // @Transactional(rollbackFor = DAOException.class)
     public void updateComputer(Computer comp) {
         try {
             computerDAO.update(comp);
