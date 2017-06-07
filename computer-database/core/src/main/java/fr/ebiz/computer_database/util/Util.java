@@ -41,8 +41,13 @@ public interface Util {
     //WebService URI
     String REST_URI = "http://localhost:8080/computer-database/api/";
     String COMPUTERS_PATH = "computers";
+    String COMPUTER_PATH = "computer";
     String COMPUTERS_PAGING = "computers/paging";
     String COMPANIES_PAGING = "companies/paging";
+    String ONE_COMPANY = "company/id/";
+    String COMPUTER_ADD = "computer/add";
+    String COMPUTER_EDIT = "computer/edit";
+    String ONE_COMPUTER = "computer/id/";
 
     //QUERIES
     String BASE_QUERY = "SELECT cpt.id, cpt.name, cpt.introduced, cpt.discontinued, cpy.name as companyName, cpy.id as companyId FROM computer cpt LEFT JOIN company cpy ON cpt.company_id = cpy.id ";

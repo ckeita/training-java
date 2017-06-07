@@ -7,10 +7,12 @@ import java.util.Scanner;
 import fr.ebiz.computer_database.util.Page;
 import fr.ebiz.computer_database.exception.DAOException;
 import fr.ebiz.computer_database.model.CompanyDTO;
+import org.springframework.stereotype.Component;
 
 /**
  * @author ebiz
  */
+@Component
 public class CompanyUI {
 
     /**
@@ -18,8 +20,6 @@ public class CompanyUI {
      */
     public void viewCompany() throws DAOException {
         System.out.println("****List of Companies****");
-        // To check instance of list elements
-        List<CompanyDTO> list = new ArrayList<>();
         boolean finish = false;
         String choice;
         Scanner input = new Scanner(System.in);

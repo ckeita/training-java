@@ -11,6 +11,7 @@
     <context:annotation-config />
     <context:component-scan base-package="fr.ebiz.computer_database.controller" />
     <context:component-scan base-package="fr.ebiz.computer_database.handler" />
+    <context:component-scan base-package="fr.ebiz.computer_database.ui"/>
 
     <!-- LocalResolver -->
     <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver">

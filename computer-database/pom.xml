@@ -20,7 +20,7 @@
 		<org.springframework-version>4.3.8.RELEASE</org.springframework-version>
 		<org.springframework.security-version>4.2.2.RELEASE</org.springframework.security-version>
 		<ch.qos.logback-version>1.2.3</ch.qos.logback-version>
-		<org.slf4j-version>1.7.25</org.slf4j-version>
+		<org.slf4j-version>1.5.6</org.slf4j-version>
 		<junit-version>4.11</junit-version>
 		<org.hibernate-version>5.2.10.Final</org.hibernate-version>
 		<org.mockito-version>1.9.5</org.mockito-version>
@@ -48,28 +48,6 @@
 		</repository>
 	</repositories>
 	<dependencies>
-		<!-- commons-logging -->
-		<dependency>
-			<groupId>commons-logging</groupId>
-			<artifactId>commons-logging</artifactId>
-			<version>${commons-logging-version}</version>
-		</dependency>
-		<!-- SLF4J for Logging -->
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
-			<version>${ch.qos.logback-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>jcl-over-slf4j</artifactId>
-			<version>${org.slf4j-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>${org.slf4j-version}</version>
-		</dependency>
 		<!-- JUnit -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -89,7 +67,6 @@
 			<groupId>org.apache.maven.plugins</groupId>
 			<artifactId>maven-checkstyle-plugin</artifactId>
 			<version>${org.apache.maven.plugins.checkstyle}</version>
-			<type>maven-plugin</type>
 		</dependency>
 	</dependencies>
 	<build>

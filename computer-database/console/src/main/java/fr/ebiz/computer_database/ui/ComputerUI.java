@@ -7,29 +7,32 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import fr.ebiz.computer_database.exception.ServiceException;
 import fr.ebiz.computer_database.mapper.CompanyMapper;
 import fr.ebiz.computer_database.model.Company;
-import fr.ebiz.computer_database.service.CompanyService;
 import fr.ebiz.computer_database.util.Page;
 import fr.ebiz.computer_database.util.Util;
 import fr.ebiz.computer_database.exception.DAOException;
-import fr.ebiz.computer_database.exception.DateException;
-import fr.ebiz.computer_database.model.Computer;
 import fr.ebiz.computer_database.model.ComputerDTO;
-import fr.ebiz.computer_database.service.ComputerService;
+import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
+import org.springframework.stereotype.Component;
 
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.MediaType;
 /**
  * @author ebiz
  */
+@Component
 public class ComputerUI {
-
-    ComputerService computerService = new ComputerService();
     private int id;
     private String name;
     private String introduced;
     private String discontinued;
     private Company company;
+
+    private static HttpAuthenticationFeature httpAuthenticationFeature = HttpAuthenticationFeature.basic("ckeita", "pass");
+    private static Client client = ClientBuilder.newClient();
 
     /**
      * @throws DAOException .
@@ -63,19 +66,19 @@ public class ComputerUI {
      * @throws DAOException .
      */
     public void createOrUpdateComputer(boolean update) throws DAOException {
-        // Computer comp = new Computer();
+        client.register(httpAuthenticationFeature);
         Scanner input = new Scanner(System.in);
         boolean checkDates = false, intrValid = false, discValid = false;
-        String name, intrDate = null, discDate = null, cmpId, computId = null;
+        String name, intrDate = null, discDate = null, companyId, computerId = null;
 
         // Choose if we create or update
         if (update) {
             System.out.println("***Update Computer***");
             do {
                 System.out.println("Choose The id of the computer to update");
-                computId = input.nextLine();
-            } while (computId.length() == 0);
-            this.id = Integer.parseInt(computId);
+                computerId = input.nextLine();
+            } while (computerId.length() == 0);
+            this.id = Integer.parseInt(computerId);
         } else {
             System.out.println("***Create new Computer***");
         }
@@ -148,30 +151,30 @@ public class ComputerUI {
             }
         }
         System.out.println("Set company ID");
-        cmpId = input.nextLine();
-        if (cmpId.length() != 0) {
-            CompanyService companyService = new CompanyService();
-            CompanyMapper companyMapper = new CompanyMapper();
-            company = companyMapper.mapToObject(companyService.findCompanyById(Integer.parseInt(cmpId)));
+        companyId = input.nextLine();
+        if (companyId.length() != 0) {
+            company = client.target(Util.REST_URI)
+                    .path(Util.ONE_COMPANY + companyId)
+                    .request(MediaType.APPLICATION_JSON)
+                    .get(Company.class);
+            System.out.println(company);
         }
 
-        // Process Update or Delete
+        // Process Update or Create
+        ComputerDTO computerDTO = new ComputerDTO();
         if (update) {
-            try {
-                computerService.updateComputer(new Computer.ComputerBuilder(name).introduced(introduced)
-                        .discontinued(discontinued).company(company).id(id).build());
-            } catch (DateException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+            computerDTO.setId(computerId);
+            setDTO(computerDTO);
+            client.target(Util.REST_URI)
+                    .path(Util.COMPUTER_EDIT)
+                    .request(MediaType.APPLICATION_JSON)
+                    .put(Entity.json(computerDTO));
         } else {
-            try {
-                computerService.createComputer(new Computer.ComputerBuilder(name).introduced(introduced)
-                        .discontinued(discontinued).company(company).build());
-            } catch (DateException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+            setDTO(computerDTO);
+            client.target(Util.REST_URI)
+                    .path(Util.COMPUTER_ADD)
+                    .request(MediaType.APPLICATION_JSON)
+                    .post(Entity.json(computerDTO));
         }
     }
 
@@ -179,7 +182,7 @@ public class ComputerUI {
      * Delete a computer.
      */
     public void deleteComputer() {
-
+        client.register(httpAuthenticationFeature);
         Scanner input = new Scanner(System.in);
         String computId;
 
@@ -190,14 +193,10 @@ public class ComputerUI {
             computId = input.nextLine();
         } while (computId.length() == 0);
         this.id = Integer.parseInt(computId);
-
-        // Process delete
-        //try {
-            computerService.deleteComputer(id);
-        /*} catch (DAOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }*/
+        client.target(Util.REST_URI)
+                .path(Util.ONE_COMPUTER + id)
+                .request(MediaType.APPLICATION_JSON)
+                .delete();
     }
 
     /**
@@ -205,6 +204,7 @@ public class ComputerUI {
      * @throws DAOException .
      */
     public void showComputerDetails() throws NumberFormatException, DAOException {
+        client.register(httpAuthenticationFeature);
         String computId;
         Scanner input = new Scanner(System.in);
 
@@ -215,12 +215,11 @@ public class ComputerUI {
             computId = input.nextLine();
         } while (computId.length() == 0);
 
-        try {
-            System.out.println(computerService.findComputerById(Integer.parseInt(computId)));
-        } catch (ServiceException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        System.out.println(client.target(Util.REST_URI)
+                .path(Util.ONE_COMPUTER + computId)
+                .request(MediaType.APPLICATION_JSON)
+                .get(ComputerDTO.class));
+        System.out.println();
     }
 
     /**
@@ -252,6 +251,18 @@ public class ComputerUI {
         } catch (ParseException e) {
             System.out.println("Set a valid date: the format is " + Util.IN_FORMAT);
             return false;
+        }
+    }
+
+    /**
+     * @param computerDTO to set
+     */
+    private void setDTO(ComputerDTO computerDTO) {
+        computerDTO.setName(name);
+        computerDTO.setIntroduced(introduced);
+        computerDTO.setDiscontinued(discontinued);
+        if (company != null) {
+            computerDTO.setCompanyDTO(new CompanyMapper().mapToDTO(company));
         }
     }
 }

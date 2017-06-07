@@ -29,6 +29,12 @@
             <artifactId>service</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <!-- service-module -->
+        <dependency>
+            <groupId>fr.ebiz.computer_database</groupId>
+            <artifactId>console</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
         <!-- spring-context -->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -47,23 +53,29 @@
             <artifactId>spring-tx</artifactId>
             <version>${org.springframework-version}</version>
         </dependency>
-        <!-- spring-jdbc -->
+        <!-- spring-core -->
         <dependency>
             <groupId>org.springframework</groupId>
-            <artifactId>spring-jdbc</artifactId>
+            <artifactId>spring-core</artifactId>
             <version>${org.springframework-version}</version>
         </dependency>
-        <!-- jackson-core -->
+        <!-- spring-webmvc -->
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-            <version>${com.fasterxml.jackson.core-version}</version>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${org.springframework-version}</version>
         </dependency>
-        <!-- jackson-core -->
+        <!-- spring-orm -->
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${com.fasterxml.jackson.core-version}</version>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+            <version>${org.springframework-version}</version>
+        </dependency>
+        <!-- spring-security-config -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>${org.springframework.security-version}</version>
         </dependency>
         <!-- HikariCP -->
         <dependency>

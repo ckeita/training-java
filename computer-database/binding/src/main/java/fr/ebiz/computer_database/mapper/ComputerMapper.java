@@ -46,11 +46,11 @@ public class ComputerMapper {
      */
     public Computer mapToObject(ComputerDTO computerDTO) {
         int compId = 0;
-        if(computerDTO.getId() != null){
+        if (computerDTO.getId() != null){
             compId = Integer.parseInt(computerDTO.getId());
         }
         try {
-            if (computerDTO.getCompanyId() != 0) {
+            if (computerDTO.getCompanyDTO() != null) {
                 return new Computer.ComputerBuilder(computerDTO.getName()).id(compId).introduced(computerDTO.getIntroduced())
                         .discontinued(computerDTO.getDiscontinued()).company(companyMapper.mapToObject(computerDTO.getCompanyDTO())).build();
             } else {

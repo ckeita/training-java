@@ -6,9 +6,9 @@ import java.util.Scanner;
 import fr.ebiz.computer_database.exception.DAOException;
 import fr.ebiz.computer_database.model.CompanyDTO;
 import fr.ebiz.computer_database.model.ComputerDTO;
-import fr.ebiz.computer_database.service.CompanyService;
-import fr.ebiz.computer_database.service.ComputerService;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -19,14 +19,14 @@ import javax.ws.rs.core.MediaType;
  * @author ckeita
  */
 public class Page {
-
+    private static Logger logger = LoggerFactory.getLogger(Page.class);
     /**
      * @param instanceOfComputer the instance of the computer
      * @param numberOfRow the number of elements by one page
      * @throws DAOException .
      */
     public void paging(int numberOfRow, boolean instanceOfComputer) throws DAOException {
-        int offset = 0;
+        int offset = 0, current = 0;
         boolean finish = false;
         List<?> list;
 
@@ -44,19 +44,18 @@ public class Page {
             case "0":
                 /** List next numberOfRow Computers */
                 // check instance of elements in list
+                current = offset / numberOfRow;
                 if (instanceOfComputer) {
-                    //list = computerService.findComputersByLimit(offset, numberOfRow);
                     list = client.target(Util.REST_URI)
                             .path(Util.COMPUTERS_PAGING)
-                            .queryParam("current", String.valueOf(offset))
-                            .queryParam("limit", String.valueOf(numberOfRow))
+                            .queryParam("current", current)
+                            .queryParam("limit", numberOfRow)
                             .request(MediaType.APPLICATION_JSON)
                             .get(new GenericType<List<ComputerDTO>>(){ });
                 } else {
-                    //list = companyService.findCompaniesByLimit(offset, numberOfRow);
                     list = client.target(Util.REST_URI)
                             .path(Util.COMPANIES_PAGING)
-                            .queryParam("current", offset)
+                            .queryParam("current", current)
                             .queryParam("limit", numberOfRow)
                             .request(MediaType.APPLICATION_JSON)
                             .get(new GenericType<List<CompanyDTO>>(){ });
@@ -73,6 +72,7 @@ public class Page {
                 }
                 break;
             case "1":
+                current = offset / numberOfRow;
                 /** List previous numberOfRow Computers */
                 // Set offset to previous page
                 if (offset > 0) {
@@ -88,18 +88,16 @@ public class Page {
                         offset = 0;
                     }
                     if (instanceOfComputer) {
-                        //list = computerService.findComputersByLimit(offset, numberOfRow);
                         list = client.target(Util.REST_URI)
                                 .path(Util.COMPUTERS_PAGING)
-                                .queryParam("current", offset)
+                                .queryParam("current", current)
                                 .queryParam("limit", numberOfRow)
                                 .request(MediaType.APPLICATION_JSON)
                                 .get(new GenericType<List<ComputerDTO>>(){ });
                     } else {
-                        //list = companyService.findCompaniesByLimit(offset, numberOfRow);
                         list = client.target(Util.REST_URI)
                                 .path(Util.COMPANIES_PAGING)
-                                .queryParam("current", offset)
+                                .queryParam("current", current)
                                 .queryParam("limit", numberOfRow)
                                 .request(MediaType.APPLICATION_JSON)
                                 .get(new GenericType<List<CompanyDTO>>(){ });

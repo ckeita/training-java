@@ -1,7 +1,5 @@
 package fr.ebiz.computer_database.model;
 
-import org.springframework.stereotype.Component;
-
 /**
  * @author ebiz
  */
