@@ -47,14 +47,14 @@ public class Page {
                 current = offset / numberOfRow;
                 if (instanceOfComputer) {
                     list = client.target(Util.REST_URI)
-                            .path(Util.COMPUTERS_PAGING)
+                            .path(Util.COMPUTERS_PATH)
                             .queryParam("current", current)
                             .queryParam("limit", numberOfRow)
                             .request(MediaType.APPLICATION_JSON)
                             .get(new GenericType<List<ComputerDTO>>(){ });
                 } else {
                     list = client.target(Util.REST_URI)
-                            .path(Util.COMPANIES_PAGING)
+                            .path(Util.COMPANIES_PATH)
                             .queryParam("current", current)
                             .queryParam("limit", numberOfRow)
                             .request(MediaType.APPLICATION_JSON)
@@ -72,7 +72,6 @@ public class Page {
                 }
                 break;
             case "1":
-                current = offset / numberOfRow;
                 /** List previous numberOfRow Computers */
                 // Set offset to previous page
                 if (offset > 0) {
@@ -87,16 +86,17 @@ public class Page {
                     } else {
                         offset = 0;
                     }
+                    current = offset / numberOfRow;
                     if (instanceOfComputer) {
                         list = client.target(Util.REST_URI)
-                                .path(Util.COMPUTERS_PAGING)
+                                .path(Util.COMPUTERS_PATH)
                                 .queryParam("current", current)
                                 .queryParam("limit", numberOfRow)
                                 .request(MediaType.APPLICATION_JSON)
                                 .get(new GenericType<List<ComputerDTO>>(){ });
                     } else {
                         list = client.target(Util.REST_URI)
-                                .path(Util.COMPANIES_PAGING)
+                                .path(Util.COMPANIES_PATH)
                                 .queryParam("current", current)
                                 .queryParam("limit", numberOfRow)
                                 .request(MediaType.APPLICATION_JSON)

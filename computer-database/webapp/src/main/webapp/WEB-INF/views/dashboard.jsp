@@ -124,7 +124,7 @@
 
 	<footer class="navbar-fixed-bottom">
 		<c:set var="start" value="${curPage}" scope="page"/>
-		<c:set var="end" value="${nbPages+1}" scope="page"/>
+		<c:set var="end" value="${nbPages}" scope="page"/>
 		<div class="container text-center">
 			<ul class="pagination">
 				<c:if test="${curPage-1 > 0}">

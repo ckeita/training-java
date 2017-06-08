@@ -154,7 +154,7 @@ public class ComputerUI {
         companyId = input.nextLine();
         if (companyId.length() != 0) {
             company = client.target(Util.REST_URI)
-                    .path(Util.ONE_COMPANY + companyId)
+                    .path(Util.COMPANIES_PATH + "/" + companyId)
                     .request(MediaType.APPLICATION_JSON)
                     .get(Company.class);
             System.out.println(company);
@@ -166,13 +166,13 @@ public class ComputerUI {
             computerDTO.setId(computerId);
             setDTO(computerDTO);
             client.target(Util.REST_URI)
-                    .path(Util.COMPUTER_EDIT)
+                    .path(Util.COMPUTERS_PATH)
                     .request(MediaType.APPLICATION_JSON)
                     .put(Entity.json(computerDTO));
         } else {
             setDTO(computerDTO);
             client.target(Util.REST_URI)
-                    .path(Util.COMPUTER_ADD)
+                    .path(Util.COMPUTERS_PATH)
                     .request(MediaType.APPLICATION_JSON)
                     .post(Entity.json(computerDTO));
         }
@@ -194,7 +194,7 @@ public class ComputerUI {
         } while (computId.length() == 0);
         this.id = Integer.parseInt(computId);
         client.target(Util.REST_URI)
-                .path(Util.ONE_COMPUTER + id)
+                .path(Util.COMPUTERS_PATH + "/" + id)
                 .request(MediaType.APPLICATION_JSON)
                 .delete();
     }
@@ -216,7 +216,7 @@ public class ComputerUI {
         } while (computId.length() == 0);
 
         System.out.println(client.target(Util.REST_URI)
-                .path(Util.ONE_COMPUTER + computId)
+                .path(Util.COMPUTERS_PATH + "/" + computId)
                 .request(MediaType.APPLICATION_JSON)
                 .get(ComputerDTO.class));
         System.out.println();

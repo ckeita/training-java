@@ -36,7 +36,7 @@ public class CdbRESTController {
 
 	private static Logger logger = LoggerFactory.getLogger(CdbRESTController.class);
 
-	@RequestMapping(value = "companies", method = RequestMethod.GET)
+	/*@RequestMapping(value = "companies", method = RequestMethod.GET)
 	public List<CompanyDTO> getCompanies() throws ServiceException {
 		return companyService.findAll();
 	}
@@ -44,35 +44,35 @@ public class CdbRESTController {
 	@RequestMapping(value = "computers", method = RequestMethod.GET)
 	public List<ComputerDTO> getComputers() throws ServiceException {
 		return computerService.findAll();
-	}
+	}*/
 
-	@RequestMapping(value = "computer/id/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "computers/{id}", method = RequestMethod.GET)
 	public ComputerDTO getComputer(@PathVariable int id) throws ServiceException {
 		return computerService.findComputerById(id);
 	}
 
-	@RequestMapping(value = "computer/id/{id}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "computers/{id}", method = RequestMethod.DELETE)
 	public void deleteComputer(@PathVariable int id) throws ServiceException {
 		logger.info("---------------------------------------------In delete method");
 		computerService.deleteComputer(id);
 	}
 
-	@RequestMapping(value = "company/id/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "companies/{id}", method = RequestMethod.GET)
 	public CompanyDTO getCompany(@PathVariable int id) throws ServiceException {
 		return companyService.findCompanyById(id);
 	}
 
-	@RequestMapping(value = "computer/add", method = RequestMethod.POST)
+	@RequestMapping(value = "computers", method = RequestMethod.POST)
 	public void addComputer(@RequestBody ComputerDTO computerDTO) {
 		computerService.createComputer(computerMapper.mapToObject(computerDTO));
 	}
 
-	@RequestMapping(value = "computer/edit", method = RequestMethod.PUT)
+	@RequestMapping(value = "computers", method = RequestMethod.PUT)
 	public void editComputer(@RequestBody ComputerDTO computerDTO) {
 		computerService.updateComputer(computerMapper.mapToObject(computerDTO));
 	}
 
-	@RequestMapping(value = "computers/paging", method = RequestMethod.GET)
+	@RequestMapping(value = "computers", method = RequestMethod.GET)
 	public List<ComputerDTO> computersByPage(@RequestParam Map<String, String> params) {
 		try {
 			return pageHandler.getPage(params);
@@ -82,7 +82,7 @@ public class CdbRESTController {
 		}
 	}
 
-	@RequestMapping(value = "computers/search", method = RequestMethod.GET)
+	/*@RequestMapping(value = "computers/search", method = RequestMethod.GET)
 	public List<ComputerDTO> searchComputers(@RequestParam Map<String, String> params) {
 		try {
 			return pageHandler.getPage(params);
@@ -100,5 +100,5 @@ public class CdbRESTController {
 			logger.info(e.getMessage());
 			return null;
 		}
-	}
+	}*/
 }
