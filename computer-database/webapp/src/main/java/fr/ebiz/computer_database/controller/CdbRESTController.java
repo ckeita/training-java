@@ -7,9 +7,12 @@ import fr.ebiz.computer_database.model.CompanyDTO;
 import fr.ebiz.computer_database.model.ComputerDTO;
 import fr.ebiz.computer_database.service.CompanyService;
 import fr.ebiz.computer_database.service.ComputerService;
+import org.apache.velocity.exception.ResourceNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +22,7 @@ import java.util.Map;
  * Created by ebiz on 02/06/17.
  */
 @RestController
+@CrossOrigin
 @RequestMapping(value = "/api/")
 public class CdbRESTController {
 
@@ -36,69 +40,65 @@ public class CdbRESTController {
 
 	private static Logger logger = LoggerFactory.getLogger(CdbRESTController.class);
 
-	/*@RequestMapping(value = "companies", method = RequestMethod.GET)
-	public List<CompanyDTO> getCompanies() throws ServiceException {
-		return companyService.findAll();
-	}
-
-	@RequestMapping(value = "computers", method = RequestMethod.GET)
-	public List<ComputerDTO> getComputers() throws ServiceException {
-		return computerService.findAll();
-	}*/
-
 	@RequestMapping(value = "computers/{id}", method = RequestMethod.GET)
-	public ComputerDTO getComputer(@PathVariable int id) throws ServiceException {
-		return computerService.findComputerById(id);
+	public ResponseEntity getComputer(@PathVariable int id) {
+		try {
+			return new ResponseEntity(computerService.findComputerById(id), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity(HttpStatus.NOT_FOUND);
+		}
 	}
 
 	@RequestMapping(value = "computers/{id}", method = RequestMethod.DELETE)
-	public void deleteComputer(@PathVariable int id) throws ServiceException {
-		logger.info("---------------------------------------------In delete method");
-		computerService.deleteComputer(id);
+	public ResponseEntity deleteComputer(@PathVariable int id) {
+		try {
+			computerService.deleteComputer(id);
+			return new ResponseEntity(HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity(HttpStatus.NOT_FOUND);
+		}
+
 	}
 
 	@RequestMapping(value = "companies/{id}", method = RequestMethod.GET)
-	public CompanyDTO getCompany(@PathVariable int id) throws ServiceException {
-		return companyService.findCompanyById(id);
+	public ResponseEntity getCompany(@PathVariable int id) {
+		try {
+			return new ResponseEntity(companyService.findCompanyById(id), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity(HttpStatus.NOT_FOUND);
+		}
+
 	}
 
 	@RequestMapping(value = "computers", method = RequestMethod.POST)
-	public void addComputer(@RequestBody ComputerDTO computerDTO) {
-		computerService.createComputer(computerMapper.mapToObject(computerDTO));
+	public ResponseEntity addComputer(@RequestBody ComputerDTO computerDTO) {
+		try {
+			computerService.createComputer(computerMapper.mapToObject(computerDTO));
+			return new ResponseEntity(HttpStatus.CREATED);
+		} catch (Exception e) {
+			return new ResponseEntity(HttpStatus.BAD_REQUEST);
+		}
+
 	}
 
 	@RequestMapping(value = "computers", method = RequestMethod.PUT)
-	public void editComputer(@RequestBody ComputerDTO computerDTO) {
-		computerService.updateComputer(computerMapper.mapToObject(computerDTO));
+	public ResponseEntity editComputer(@RequestBody ComputerDTO computerDTO) {
+		try {
+			computerService.updateComputer(computerMapper.mapToObject(computerDTO));
+			return new ResponseEntity(HttpStatus.CREATED);
+		} catch (Exception e) {
+			return new ResponseEntity(HttpStatus.BAD_REQUEST);
+		}
+
 	}
 
 	@RequestMapping(value = "computers", method = RequestMethod.GET)
-	public List<ComputerDTO> computersByPage(@RequestParam Map<String, String> params) {
+	public ResponseEntity computersByPage(@RequestParam Map<String, String> params) {
 		try {
-			return pageHandler.getPage(params);
-		} catch (ServiceException  e) {
+			return new ResponseEntity(pageHandler.getPage(params), HttpStatus.OK);
+		} catch (Exception  e) {
 			logger.info(e.getMessage());
-			return null;
+			return new ResponseEntity(HttpStatus.NOT_FOUND);
 		}
 	}
-
-	/*@RequestMapping(value = "computers/search", method = RequestMethod.GET)
-	public List<ComputerDTO> searchComputers(@RequestParam Map<String, String> params) {
-		try {
-			return pageHandler.getPage(params);
-		} catch (ServiceException  e) {
-			logger.info(e.getMessage());
-			return null;
-		}
-	}
-
-	@RequestMapping(value = "computers/order", method = RequestMethod.GET)
-	public List<ComputerDTO> orderComputers(@RequestParam Map<String, String> params) {
-		try {
-			return pageHandler.getPage(params);
-		} catch (ServiceException  e) {
-			logger.info(e.getMessage());
-			return null;
-		}
-	}*/
 }
