@@ -10,6 +10,6 @@ public class DateException extends Exception {
      * @param message to print
      */
     public DateException(String message) {
-        throw new IllegalArgumentException(message);
+        super(message);
     }
 }

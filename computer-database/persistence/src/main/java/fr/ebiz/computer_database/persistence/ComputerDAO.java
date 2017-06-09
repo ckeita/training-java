@@ -36,7 +36,7 @@ public class ComputerDAO {
      * @throws DateException .
      * @throws DAOException .
      */
-    public Computer findById(int id) throws DAOException, DateException {
+    public Computer findById(int id) throws DAOException {
         Computer computer = null;
         try {
             Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Computer.class);
@@ -55,7 +55,7 @@ public class ComputerDAO {
      * @throws DateException .
      * @throws DAOException .
      */
-    public List<Computer> findAll() throws DAOException, DateException {
+    public List<Computer> findAll() throws DAOException {
         List<Computer> computers = null;
         try {
             Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Computer.class);
@@ -113,7 +113,7 @@ public class ComputerDAO {
      * @throws DateException .
      * @throws DAOException .
      */
-    public List<Computer> findByLimit(int current, int limit) throws DAOException, DateException {
+    public List<Computer> findByLimit(int current, int limit) throws DAOException {
         List<Computer> computers = null;
         try {
             Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Computer.class);
@@ -196,12 +196,14 @@ public class ComputerDAO {
      * @exception DAOException .
      */
     public void delete(int compId) throws DAOException {
+        Computer computer = null;
         try {
-            Computer computer = findById(compId);
+            computer = findById(compId);
             sessionFactory.getCurrentSession().delete(computer);
-        } catch (DateException e) {
-            e.printStackTrace();
+        } catch (DAOException e) {
+            throw new DAOException(e.getMessage());
         }
+
     }
 
     /**

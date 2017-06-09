@@ -38,6 +38,12 @@ public interface Util {
     String PARAM_COMPANY_NAME = "company";
     String PARAM_SEARCH = "search";
 
+    //WebService URI
+    String REST_URI = "http://localhost:8080/computer-database/api/";
+    String COMPUTERS_PATH = "computers";
+    String COMPANIES_PATH = "companies";
+
+
     //QUERIES
     String BASE_QUERY = "SELECT cpt.id, cpt.name, cpt.introduced, cpt.discontinued, cpy.name as companyName, cpy.id as companyId FROM computer cpt LEFT JOIN company cpy ON cpt.company_id = cpy.id ";
     String LIMIT = " LIMIT ?,?";

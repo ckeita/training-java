@@ -39,10 +39,10 @@ public class DashboardController {
 	private static Logger logger = LoggerFactory.getLogger(DashboardController.class);
 
 	@Autowired
-	ComputerService computerService;
+	private ComputerService computerService;
 
 	@Autowired
-	PageHandler pageHandler;
+	private PageHandler pageHandler;
 
 	@RequestMapping(value = "dashboard", method = RequestMethod.GET)
 	public String dashboard(@RequestParam(required = false) Map<String, String> params, Model model) {

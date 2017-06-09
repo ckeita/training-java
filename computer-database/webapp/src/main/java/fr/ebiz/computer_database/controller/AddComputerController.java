@@ -2,6 +2,7 @@ package fr.ebiz.computer_database.controller;
 
 import fr.ebiz.computer_database.exception.DAOException;
 import fr.ebiz.computer_database.exception.DateException;
+import fr.ebiz.computer_database.exception.ServiceException;
 import fr.ebiz.computer_database.mapper.CompanyMapper;
 import fr.ebiz.computer_database.model.CompanyDTO;
 import fr.ebiz.computer_database.model.Computer;
@@ -59,7 +60,7 @@ public class AddComputerController {
 	public String getAddPage(Model model) {
 		try {
 			model.addAttribute(COMPANIES, companyService.findAll());
-		} catch (DAOException e) {
+		} catch (ServiceException e) {
 			e.printStackTrace();
 		}
 		return ADD_PAGE;
@@ -84,7 +85,7 @@ public class AddComputerController {
 						.discontinued(computerToAdd.getDiscontinued()).company(null).build());
 			}
 
-		} catch (DAOException | DateException | NumberFormatException e) {
+		} catch (ServiceException | DateException | NumberFormatException e) {
 			logger.info(e.getMessage());
 			return Util.PAGE_500;
 		}

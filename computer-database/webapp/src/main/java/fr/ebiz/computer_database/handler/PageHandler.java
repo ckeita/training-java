@@ -38,8 +38,8 @@ public class PageHandler {
     private static int nbPages;
     private static int nbLinks;
     private static int curPage;
-
     private static String sortPage;
+    private static int limit = DEFAULT_LIMIT;
 
     @Autowired
     private ComputerService computerService;
@@ -50,7 +50,7 @@ public class PageHandler {
      */
     public List<ComputerDTO> getPage(Map<String, String> params)  {
         int currentPage = DEFAULT_PAGE;
-        int pageLimit = DEFAULT_LIMIT;
+        int pageLimit = limit;
         List<ComputerDTO> computers = null;
         try {
             nbComputers = computerService.getNumberOfComputers();
@@ -62,7 +62,8 @@ public class PageHandler {
                     curPage = currentPage;
                 }
                 if (params.get(PAGE_LIMIT) != null) {
-                    pageLimit = Integer.parseInt(params.get(PAGE_LIMIT));
+                    limit = Integer.parseInt(params.get(PAGE_LIMIT));
+                    pageLimit = limit;
                 }
                 if (params.get(SEARCH) != null) {
                     searchParam = params.get(SEARCH);

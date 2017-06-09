@@ -4,42 +4,37 @@ import java.util.List;
 import java.util.Scanner;
 
 import fr.ebiz.computer_database.exception.DAOException;
-import fr.ebiz.computer_database.exception.DateException;
-import fr.ebiz.computer_database.service.CompanyService;
-import fr.ebiz.computer_database.service.ComputerService;
+import fr.ebiz.computer_database.model.CompanyDTO;
+import fr.ebiz.computer_database.model.ComputerDTO;
+import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.MediaType;
 
 /**
  * @author ckeita
- * @param <T>
  */
 public class Page {
-
-    private int numberOfRow;
-    private int offset;
-    private boolean finish;
-    private boolean instanceOfComputer;
-    private List<?> list;
-
+    private static Logger logger = LoggerFactory.getLogger(Page.class);
     /**
      * @param instanceOfComputer the instance of the computer
      * @param numberOfRow the number of elements by one page
-     * @param list the list of element page
-     */
-    public Page(int numberOfRow, List<?> list, boolean instanceOfComputer) {
-        this.numberOfRow = numberOfRow;
-        this.list = list;
-        finish = false;
-        this.instanceOfComputer = instanceOfComputer;
-    }
-
-    /**
      * @throws DAOException .
      */
-    public void paging() throws DAOException {
+    public void paging(int numberOfRow, boolean instanceOfComputer) throws DAOException {
+        int offset = 0, current = 0;
+        boolean finish = false;
+        List<?> list;
+
+        HttpAuthenticationFeature httpAuthenticationFeature = HttpAuthenticationFeature.basic("ckeita", "pass");
+        Client client = ClientBuilder.newClient();
+        client.register(httpAuthenticationFeature);
 
         Scanner input = new Scanner(System.in);
-        CompanyService companyService = new CompanyService();
-        ComputerService computerService = new ComputerService();
         String choice;
         boolean fromNext = false;
         while (!finish) {
@@ -49,22 +44,28 @@ public class Page {
             case "0":
                 /** List next numberOfRow Computers */
                 // check instance of elements in list
+                current = offset / numberOfRow;
                 if (instanceOfComputer) {
-                    try {
-                        list = computerService.findComputersByLimit(offset, numberOfRow);
-                    } catch (DateException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
+                    list = client.target(Util.REST_URI)
+                            .path(Util.COMPUTERS_PATH)
+                            .queryParam("current", current)
+                            .queryParam("limit", numberOfRow)
+                            .request(MediaType.APPLICATION_JSON)
+                            .get(new GenericType<List<ComputerDTO>>(){ });
                 } else {
-                    list = companyService.findCompaniesByLimit(offset, numberOfRow);
+                    list = client.target(Util.REST_URI)
+                            .path(Util.COMPANIES_PATH)
+                            .queryParam("current", current)
+                            .queryParam("limit", numberOfRow)
+                            .request(MediaType.APPLICATION_JSON)
+                            .get(new GenericType<List<CompanyDTO>>(){ });
                 }
                 // Set offset to next page
                 offset += numberOfRow;
 
                 if (list.size() != 0) {
                     // show the current page
-                    printElements();
+                    printElements(list);
                     fromNext = true;
                 } else { // the end is reached
                     System.out.println("*You reach the end*\n");
@@ -85,18 +86,24 @@ public class Page {
                     } else {
                         offset = 0;
                     }
+                    current = offset / numberOfRow;
                     if (instanceOfComputer) {
-                        try {
-                            list = computerService.findComputersByLimit(offset, numberOfRow);
-                        } catch (DateException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
+                        list = client.target(Util.REST_URI)
+                                .path(Util.COMPUTERS_PATH)
+                                .queryParam("current", current)
+                                .queryParam("limit", numberOfRow)
+                                .request(MediaType.APPLICATION_JSON)
+                                .get(new GenericType<List<ComputerDTO>>(){ });
                     } else {
-                        list = companyService.findCompaniesByLimit(offset, numberOfRow);
+                        list = client.target(Util.REST_URI)
+                                .path(Util.COMPANIES_PATH)
+                                .queryParam("current", current)
+                                .queryParam("limit", numberOfRow)
+                                .request(MediaType.APPLICATION_JSON)
+                                .get(new GenericType<List<CompanyDTO>>(){ });
                     }
                     // show the current page
-                    printElements();
+                    printElements(list);
                 } else { // the end is reached
                     System.out.println("*You reach the top*\n");
                 }
@@ -113,12 +120,12 @@ public class Page {
     }
 
     /**
-     * Print the current page.
+     * @param list of computers or companies
      */
-    private void printElements() {
+    private void printElements(List<?> list) {
 
         for (int i = 0; i < list.size(); i++) {
-            System.out.println(list.get(i).toString());
+            System.out.println(list.get(i));
         }
         System.out.println();
     }

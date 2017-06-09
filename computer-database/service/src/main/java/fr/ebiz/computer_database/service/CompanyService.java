@@ -3,6 +3,7 @@ package fr.ebiz.computer_database.service;
 import java.util.List;
 
 import fr.ebiz.computer_database.exception.DAOException;
+import fr.ebiz.computer_database.exception.ServiceException;
 import fr.ebiz.computer_database.mapper.CompanyMapper;
 import fr.ebiz.computer_database.model.CompanyDTO;
 import fr.ebiz.computer_database.persistence.CompanyDAO;
@@ -27,8 +28,12 @@ public class CompanyService {
      * @return the string of the object
      * @exception DAOException .
      */
-    public CompanyDTO findCompanyById(int id) throws DAOException {
-        return companyMapper.mapToDTO(companyDAO.findById(id));
+    public CompanyDTO findCompanyById(int id) throws ServiceException {
+        try {
+            return companyMapper.mapToDTO(companyDAO.findById(id));
+        } catch (DAOException e) {
+            throw new ServiceException(e.getMessage());
+        }
     }
 
     /**
@@ -37,16 +42,23 @@ public class CompanyService {
      * @return the list of computers
      * @exception DAOException .
      */
-    public List<CompanyDTO> findCompaniesByLimit(int offset, int max) throws DAOException {
-        return companyMapper.getAll(companyDAO.findByLimit(offset, max));
+    public List<CompanyDTO> findCompaniesByLimit(int offset, int max) throws ServiceException {
+        try {
+            return companyMapper.getAll(companyDAO.findByLimit(offset, max));
+        } catch (DAOException e) {
+            throw new ServiceException(e.getMessage());
+        }
     }
 
     /**
      * @return the list of computers
      * @exception DAOException .
      */
-    //@Transactional
-    public List<CompanyDTO> findAll() throws DAOException {
-        return companyMapper.getAll(companyDAO.findAll());
+    public List<CompanyDTO> findAll() throws ServiceException {
+        try {
+            return companyMapper.getAll(companyDAO.findAll());
+        } catch (DAOException e) {
+            throw new ServiceException(e.getMessage());
+        }
     }
 }

@@ -8,12 +8,28 @@
     <http pattern="/resources/css/**" security="none" />
     <http pattern="/resources/js/**" security="none" />
     <http pattern="/resources/fonts/**" security="none" />
+
+    <http pattern="/api/**" create-session="stateless">
+        <!--<intercept-url pattern="/api/**" access="hasAnyRole('ROLE_USER')" method="GET"/>
+        <intercept-url pattern="/api/**" access="hasAnyRole('ROLE_USER')" method="DELETE"/>
+        <intercept-url pattern="/api/**" access="hasAnyRole('ROLE_USER')" method="POST"/>
+        <intercept-url pattern="/api/**" access="hasAnyRole('ROLE_USER')" method="PUT"/>-->
+        <intercept-url pattern="/api/**" access="permitAll" method="GET"/>
+        <intercept-url pattern="/api/**" access="permitAll" method="DELETE"/>
+        <intercept-url pattern="/api/**" access="permitAll" method="POST"/>
+        <intercept-url pattern="/api/**" access="permitAll" method="PUT"/>
+        <!-- Basic Auth -->
+        <http-basic/>
+    </http>
+
     <http auto-config="true">
         <intercept-url pattern="/login" access="permitAll" />
         <intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>
         <form-login login-page="/login" default-target-url="/dashboard" authentication-failure-url="/login?error"/>
         <logout logout-success-url="/login?logout" />
+        <csrf disabled="true"/>
     </http>
+
     <authentication-manager>
         <authentication-provider user-service-ref="cdbUserDetailsService"/>
     </authentication-manager>

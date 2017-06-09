@@ -7,10 +7,12 @@ import java.util.Scanner;
 import fr.ebiz.computer_database.util.Page;
 import fr.ebiz.computer_database.exception.DAOException;
 import fr.ebiz.computer_database.model.CompanyDTO;
+import org.springframework.stereotype.Component;
 
 /**
  * @author ebiz
  */
+@Component
 public class CompanyUI {
 
     /**
@@ -18,8 +20,6 @@ public class CompanyUI {
      */
     public void viewCompany() throws DAOException {
         System.out.println("****List of Companies****");
-        // To check instance of list elements
-        List<CompanyDTO> list = new ArrayList<>();
         boolean finish = false;
         String choice;
         Scanner input = new Scanner(System.in);
@@ -30,8 +30,7 @@ public class CompanyUI {
                 // Need at least one element by page
                 if (Integer.parseInt(choice) > 0) {
                     // process the paging
-                    Page p = new Page(Integer.parseInt(choice), list, false);
-                    p.paging();
+                    new Page().paging(Integer.parseInt(choice), false);
                     finish = true;
                 } else {
                     System.out.println("Please choose a valid number");
