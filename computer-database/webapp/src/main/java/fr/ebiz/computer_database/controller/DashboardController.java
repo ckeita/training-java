@@ -32,6 +32,7 @@ public class DashboardController {
 	private static final String NB_LINKS = "nbLinks";
 	private static final String CUR_PAGE = "curPage";
 	private static final String SELECTION = "selection";
+	private static final String PAGE_CDB = "page";
 
 	private static final String DASHBOARD_VIEW = "dashboard";
 	private static final String REDIRECT = "redirect:";
@@ -48,12 +49,13 @@ public class DashboardController {
 	public String dashboard(@RequestParam(required = false) Map<String, String> params, Model model) {
 
 		logger.info("[PARAM_SIZE]", params.size());
-		model.addAttribute(COMPUTERS, pageHandler.getPage(params));
+		/*model.addAttribute(COMPUTERS, pageHandler.getPage(params));
 		model.addAttribute(NB_COMPUTERS, pageHandler.getNbComputers());
 		model.addAttribute(NB_PAGES, pageHandler.getNbPages());
 		model.addAttribute(NB_LINKS, pageHandler.getNbLinks());
 		model.addAttribute(CUR_PAGE, pageHandler.getCurPage());
-		model.addAttribute(SORT_ORDER, pageHandler.getSortPage());
+		model.addAttribute(SORT_ORDER, pageHandler.getSortPage());*/
+		model.addAttribute(PAGE_CDB, pageHandler.getPage(params));
 		return DASHBOARD_VIEW;
 	}
 
