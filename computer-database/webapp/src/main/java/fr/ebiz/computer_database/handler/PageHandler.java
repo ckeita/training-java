@@ -48,7 +48,8 @@ public class PageHandler {
      * @param params to retrieve
      * @return the computers to print
      */
-    public List<ComputerDTO> getPage(Map<String, String> params)  {
+    public PageCDB getPage(Map<String, String> params)  {
+        PageCDB pageCDB = new PageCDB();
         int currentPage = DEFAULT_PAGE;
         int pageLimit = limit;
         List<ComputerDTO> computers = null;
@@ -85,13 +86,20 @@ public class PageHandler {
                 }
                 nbPages = (int) nbComputers / pageLimit;
                 nbLinks = nbPages / pageLimit;
-                return computers;
+                //return computers;
             } else {
                 orderState = false;
                 searchState = false;
                 curPage = currentPage + 1;
-                return computerService.findComputersByLimit(currentPage * pageLimit, pageLimit);
+                computers = computerService.findComputersByLimit(currentPage * pageLimit, pageLimit);
             }
+            pageCDB.setComputers(computers);
+            pageCDB.setCurPage(curPage);
+            pageCDB.setLimit(pageLimit);
+            pageCDB.setNbComputers(nbComputers);
+            pageCDB.setNbPages(nbPages);
+            pageCDB.setNbLinks(nbLinks);
+            return pageCDB;
         } catch (DateException | DAOException | NumberFormatException e) {
             logger.info(e.getMessage());
         }

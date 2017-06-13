@@ -20,7 +20,7 @@
 		<org.springframework-version>4.3.8.RELEASE</org.springframework-version>
 		<org.springframework.security-version>4.2.2.RELEASE</org.springframework.security-version>
 		<ch.qos.logback-version>1.2.3</ch.qos.logback-version>
-		<org.slf4j-version>1.5.6</org.slf4j-version>
+		<org.slf4j-version>1.7.25</org.slf4j-version>
 		<junit-version>4.11</junit-version>
 		<org.hibernate-version>5.2.10.Final</org.hibernate-version>
 		<org.mockito-version>1.9.5</org.mockito-version>

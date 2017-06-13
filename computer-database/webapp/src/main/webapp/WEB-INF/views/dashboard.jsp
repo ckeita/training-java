@@ -43,7 +43,7 @@
 
 	<section id="main">
 	<div class="container">
-		<h1 id="homeTitle">${nbComputers} <spring:message code="found"/> </h1>
+		<h1 id="homeTitle">${page.nbComputers} <spring:message code="found"/> </h1>
 		<div id="actions" class="form-horizontal">
 			<div class="pull-left">
 				<form id="searchForm" action="dashboard" method="GET" class="form-inline">
@@ -94,7 +94,7 @@
 			</thead>
 			<!-- Browse attribute computers -->
 			<tbody id="results">
-				<c:forEach var="computer" items="${computers}">
+				<c:forEach var="computer" items="${page.computers}">
 					<tr>
 						<td style="display: none;" class="editMode"><input type="checkbox" name="cb"
 						class="cb" value="${computer.id}"></td>
@@ -123,24 +123,24 @@
 	</section>
 
 	<footer class="navbar-fixed-bottom">
-		<c:set var="start" value="${curPage}" scope="page"/>
-		<c:set var="end" value="${nbPages}" scope="page"/>
+		<c:set var="start" value="${page.curPage}" scope="page"/>
+		<c:set var="end" value="${page.nbPages}" scope="page"/>
 		<div class="container text-center">
 			<ul class="pagination">
-				<c:if test="${curPage-1 > 0}">
+				<c:if test="${page.curPage-1 > 0}">
 					<li>
-						<a href="dashboard?current=${curPage-1}" aria-label="Previous"> <span aria-hidden="true">&laquo;</span></a>
+						<a href="dashboard?current=${page.curPage-1}" aria-label="Previous"> <span aria-hidden="true">&laquo;</span></a>
 					</li>
 				</c:if>
-				<c:if test="${start+4 <= nbPages}">
+				<c:if test="${start+4 <= page.nbPages}">
 					<c:set var="end" value="${start+4}" scope="page"/>
 				</c:if>
 				<c:forEach var="i" begin="${start}" end="${end}">
 					<mytags:link target="dashboard?current=${i}" current="${current+i}"/>
 				</c:forEach>
-				<c:if test="${curPage+1 < nbPages-2}">
+				<c:if test="${page.curPage+1 < page.nbPages-2}">
 					<li>
-						<a href="dashboard?current=${curPage+1}" aria-label="Next"> <span aria-hidden="true">&raquo;</span></a>
+						<a href="dashboard?current=${page.curPage+1}" aria-label="Next"> <span aria-hidden="true">&raquo;</span></a>
 					</li>
 				</c:if>
 			</ul>
